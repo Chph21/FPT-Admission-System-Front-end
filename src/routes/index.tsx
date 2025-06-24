@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home/Home';
-import Layout from '../components/Layout/Layout';
+import Layout from '../components/layout/Layout';
+import ChatBotPage from '../pages/ChatBot/ChatBotPage';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       },
       // Add more routes here as needed
     ]
+  },
+  {
+    path: '/chatbot',
+    element: <ChatBotPage />
   }
 ]);
 
