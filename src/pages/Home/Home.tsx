@@ -1,16 +1,57 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { logout } from '../../store/slice/authSlice';
+import { User, LogOut, UserPlus } from 'lucide-react';
 import './Home.css';
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <div className="home">
+      {/* User Status Bar */}
+      {isAuthenticated && user && (
+        <div className="user-status-bar">
+          <div className="container">
+            <div className="user-info">
+              <User className="user-icon" />
+              <span className="welcome-text">Xin chào, {user.name}!</span>
+            </div>
+            <button onClick={handleLogout} className="logout-btn">
+              <LogOut className="logout-icon" />
+              Đăng xuất
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
           <h1>Tuyển sinh ĐẠI HỌC năm học 2025</h1>
           <h2>chính thức bắt đầu!</h2>
-          <Link to="/dang-ky" className="cta-button">ĐĂNG KÝ NGAY</Link>
+          {isAuthenticated ? (
+            <div className="authenticated-actions">
+              <Link to="/dashboard" className="cta-button">VÀO HỆ THỐNG</Link>
+              <p className="auth-status">Bạn đã đăng nhập thành công!</p>
+            </div>
+          ) : (
+            <div className="auth-actions">
+              <Link to="/register" className="cta-button">ĐĂNG KÝ NGAY</Link>
+              <Link to="/login" className="secondary-button">
+                <UserPlus className="login-icon" />
+                ĐĂNG NHẬP
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
@@ -97,7 +138,11 @@ const Home: React.FC = () => {
           <div className="cta-content">
             <h2>ĐĂNG KÝ XÉT TUYỂN NGAY HÔM NAY</h2>
             <p>VỮNG CHẮC TƯƠNG LAI NGÀY MAI</p>
-            <Link to="/dang-ky" className="cta-button">ĐĂNG KÝ NGAY</Link>
+            {isAuthenticated ? (
+              <Link to="/dashboard" className="cta-button">VÀO HỆ THỐNG</Link>
+            ) : (
+              <Link to="/register" className="cta-button">ĐĂNG KÝ NGAY</Link>
+            )}
           </div>
         </div>
       </section>
