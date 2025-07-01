@@ -36,6 +36,8 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
         
         <div className="flex-1 relative">
           <textarea
+            id="chat-message"
+            name="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
