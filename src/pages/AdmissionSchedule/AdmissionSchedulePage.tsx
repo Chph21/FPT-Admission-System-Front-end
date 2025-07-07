@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AdmissionSchedule.css';
 import AdmissionScheduleForm from '../../components/admission/AdmissionSchedule/AdmissionScheduleForm';
 import AdmissionScheduleTable from '../../components/admission/AdmissionSchedule/AdmissionScheduleTable';
@@ -14,6 +14,24 @@ const AdmissionSchedulePage: React.FC = () => {
     status: '',
   });
   const [schedules, setSchedules] = useState<any[]>([]);
+  useEffect(() => {
+    fetch('https://fpt-admission-system.onrender.com/api/schedules')
+      .then((res) => res.json())
+      .then((data) => {
+        // Map API fields to table fields
+        const mapped = data.map((item: any) => ({
+          id: item.id || item.createAt + item.admissionAt,
+          staff: item.staffId || '-',
+          admissionAt: item.admissionAt,
+          status: item.status,
+          user: item.userId,
+          meetlink: item.meetLink,
+          createdAt: item.createAt,
+        }));
+        setSchedules(mapped);
+      })
+      .catch(() => setSchedules([]));
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });

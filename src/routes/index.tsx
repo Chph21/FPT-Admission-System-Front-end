@@ -4,6 +4,10 @@ import Layout from '../components/Layout/Layout';
 import ChatBotPage from '../pages/ChatBot/ChatBotPage';
 import AdmissionSchedulePage from '../pages/AdmissionSchedule/AdmissionSchedulePage';
 import StaffAdmissionSchedulePage from '../pages/StaffAdmissionSchedule/StaffAdmissionSchedulePage';
+import Login from '../pages/Authen/Login';
+import Register from '../pages/Authen/Register';
+import TestPage from '../pages/Authen/TestPage';
+import LoginSimple from '../pages/Authen/LoginSimple';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +31,23 @@ const router = createBrowserRouter([
   {
     path: '/staff/admissionschedule',
     element: <StaffAdmissionSchedulePage />
+  },
+  {
+
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/register',
+    element: <Register />
+  },
+  {
+    path: '/test',
+    element: <TestPage />
+  },
+  {
+    path: '/login-simple',
+    element: <LoginSimple />
   }
 ]);
 
