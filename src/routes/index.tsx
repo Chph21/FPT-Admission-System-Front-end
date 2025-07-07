@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import Layout from '../components/Layout/Layout';
 import ChatBotPage from '../pages/ChatBot/ChatBotPage';
+import AdmissionSchedulePage from '../pages/AdmissionSchedule/AdmissionSchedulePage';
+import StaffAdmissionSchedulePage from '../pages/StaffAdmissionSchedule/StaffAdmissionSchedulePage';
 import Login from '../pages/Authen/Login';
 import Register from '../pages/Authen/Register';
 import TestPage from '../pages/Authen/TestPage';
@@ -16,7 +18,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />
       },
-      // Add more routes here as needed
+      {
+        path: 'admission-schedule',
+        element: <AdmissionSchedulePage />
+      },
     ]
   },
   {
@@ -24,6 +29,11 @@ const router = createBrowserRouter([
     element: <ChatBotPage />
   },
   {
+    path: '/staff/admissionschedule',
+    element: <StaffAdmissionSchedulePage />
+  },
+  {
+
     path: '/login',
     element: <Login />
   },
@@ -41,4 +51,4 @@ const router = createBrowserRouter([
   }
 ]);
 
-export default router; 
+export default router;
