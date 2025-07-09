@@ -5,6 +5,13 @@ import ChatBotPage from '../pages/ChatBot/ChatBotPage';
 import StaffLayout from '../pages/Staff/layout/StaffLayout';
 // import { MajorList } from '../pages/Staff/major/ListMajor'
 import { MajorManagement } from '../pages/Staff/major/MajorManagement';
+import AdmissionSchedulePage from '../pages/AdmissionSchedule/AdmissionSchedulePage';
+import StaffAdmissionSchedulePage from '../pages/StaffAdmissionSchedule/StaffAdmissionSchedulePage';
+import Login from '../pages/Authen/Login';
+import Register from '../pages/Authen/Register';
+import TestPage from '../pages/Authen/TestPage';
+import LoginSimple from '../pages/Authen/LoginSimple';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -14,7 +21,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />
       },
-      // Add more routes here as needed
+      {
+        path: 'admission-schedule',
+        element: <AdmissionSchedulePage />
+      },
     ]
   },
   {
@@ -22,18 +32,40 @@ const router = createBrowserRouter([
     element: <ChatBotPage />
   },
   {
-    path:'/staff',
+    path: '/staff',
     element: <StaffLayout />,
     children: [
       {
         path: 'majors',
         element: <MajorManagement />
-      }
+      },
+      {
+        path: 'admissionschedule',
+        element: <StaffAdmissionSchedulePage />
+      },
       // Add more routes here as needed
     ]
+  },
+
+  {
+
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/register',
+    element: <Register />
+  },
+  {
+    path: '/test',
+    element: <TestPage />
+  },
+  {
+    path: '/login-simple',
+    element: <LoginSimple />
   }
 
-  
+
 ]);
 
-export default router; 
+export default router;
