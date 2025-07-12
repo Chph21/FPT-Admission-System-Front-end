@@ -91,7 +91,7 @@ const Header: React.FC = () => {
             <li><Link to="/tuyen-sinh">Tuyển sinh</Link></li>
             <li><Link to="/trai-nghiem">Trải nghiệm toàn cầu</Link></li>
             <li><Link to="/sinh-vien">Sinh viên</Link></li>
-            <li><Link to="/cuu-sinh-vien">Cựu Sinh viên</Link></li>
+            <li><Link to="/chatbot">Trợ lý ảo</Link></li>
             <li><Link to="/lien-he">Liên hệ</Link></li>
           </ul>
         </div>
