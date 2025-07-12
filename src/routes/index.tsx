@@ -8,6 +8,12 @@ import Login from '../pages/Authen/Login';
 import Register from '../pages/Authen/Register';
 import TestPage from '../pages/Authen/TestPage';
 import LoginSimple from '../pages/Authen/LoginSimple';
+import { AdminLayout } from '../components/Admin/layout/AdminLayout';
+import Dashboard from '../pages/Admin/Dashboard';
+import Analytics from '../pages/Admin/Analytics';
+import UserManager from '../pages/Admin/UserManager';
+import { Setting } from '../pages/Admin/Setting';
+import { Error404 } from '../pages/Admin/Error404';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +54,32 @@ const router = createBrowserRouter([
   {
     path: '/login-simple',
     element: <LoginSimple />
+  },
+  {
+    path: '/admin',
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />
+      },
+      {
+        path: 'analytics',
+        element: <Analytics />
+      },
+      {
+        path: 'users',
+        element: <UserManager />
+      },
+      {
+        path: 'settings',
+        element: <Setting />
+      },
+      {
+        path: 'error404',
+        element: <Error404 />
+      }
+    ]
   }
 ]);
 
