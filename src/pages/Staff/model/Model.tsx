@@ -9,35 +9,6 @@ export interface Staff {
   status: 'active' | 'inactive';
 }
 
-// export interface Major {
-//   id: string;
-//   name: string;
-//   code: string;
-//   description: string;
-//   duration: number;
-//   tuitionFee: number;
-//   capacity: number;
-//   enrolled: number;
-//   status: 'active' | 'inactive';
-//   campus: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
-
-export interface Campus {
-  id: string;
-  name: string;
-  code: string;
-  address: string;
-  city: string;
-  phone: string;
-  email: string;
-  capacity: number;
-  established: string;
-  status: 'active' | 'inactive';
-  facilities: string[];
-}
-
 export interface Post {
   id: string;
   title: string;
@@ -60,24 +31,55 @@ export interface DashboardStats {
   pendingReviews: number;
 }
 
+export interface Campus {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+export interface CampusFormData {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+}
+
 export interface Major {
   id: string;
   name: string;
-  code: string;
   description: string;
-  childMajors: ChildMajor[];
+  duration: number;
+  fee: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface MajorFormData {
+  name: string;
+  description: string;
+  duration: number;
+  fee: number;
 }
 
 export interface ChildMajor {
   id: string;
   name: string;
-  code: string;
   description: string;
+  duration: number;
+  fee: number;
+  parentMajorId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export interface MajorFormData {
+export interface ChildMajorFormData {
+  id: string;
   name: string;
-  code: string;
   description: string;
-  childMajors: Omit<ChildMajor, 'id'>[];
+  duration: number;
+  fee: number;
+  parentMajorId: string;
 }

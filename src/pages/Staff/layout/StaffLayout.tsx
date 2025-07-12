@@ -3,16 +3,17 @@ import { Sidebar } from '../layout/Sidebar';
 import { Header } from '../layout/Header';
 import { DashboardOverview } from '../Dashboard/Overview';
 import { MajorManagement } from '../major/MajorManagement';
-import { CampusList } from '../campus/CampusList';
+// import { CampusList } from '../campus/CampusList';
+import CampusManagement from '../campus/CampusManagement';
 // import { PostsList } from './components/Posts/PostsList';
-import { mockStats, mockMajors, mockCampuses, mockPosts } from '../data/MockData';
-import type { Major, Campus, Post } from '../model/Model';
+import { mockStats} from '../data/MockData';
+// import type { Major, Campus, Post } from '../model/Model';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [majors, setMajors] = useState<Major[]>(mockMajors);
-  const [campuses, setCampuses] = useState<Campus[]>(mockCampuses);
-  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  // const [majors, setMajors] = useState<Major[]>(mockMajors);
+  // const [campuses, setCampuses] = useState<Campus[]>(mockCampuses);
+  // const [posts, setPosts] = useState<Post[]>(mockPosts);
 
   const getPageTitle = () => {
     switch (activeTab) {
@@ -28,47 +29,33 @@ function App() {
     }
   };
 
-  const handleAddMajor = () => {
-    console.log('Add major clicked');
-    // Implementation for add major modal/form
-  };
+  // const handleAddMajor = () => {
+  //   console.log('Add major clicked');
+  //   // Implementation for add major modal/form
+  // };
 
-  const handleEditMajor = (major: Major) => {
-    console.log('Edit major:', major);
-    // Implementation for edit major modal/form
-  };
+  // const handleEditMajor = (major: Major) => {
+  //   console.log('Edit major:', major);
+  //   // Implementation for edit major modal/form
+  // };
 
-  const handleDeleteMajor = (id: string) => {
-    setMajors(majors.filter(major => major.id !== id));
-  };
+  // const handleDeleteMajor = (id: string) => {
+  //   setMajors(majors.filter(major => major.id !== id));
+  // };
 
-  const handleAddCampus = () => {
-    console.log('Add campus clicked');
-    // Implementation for add campus modal/form
-  };
+  // const handleAddCampus = () => {
+  //   console.log('Add campus clicked');
+  //   // Implementation for add campus modal/form
+  // };
 
-  const handleEditCampus = (campus: Campus) => {
-    console.log('Edit campus:', campus);
-    // Implementation for edit campus modal/form
-  };
+  // const handleEditCampus = (campus: Campus) => {
+  //   console.log('Edit campus:', campus);
+  //   // Implementation for edit campus modal/form
+  // };
 
-  const handleDeleteCampus = (id: string) => {
-    setCampuses(campuses.filter(campus => campus.id !== id));
-  };
-
-//   const handleAddPost = () => {
-//     console.log('Add post clicked');
-//     // Implementation for add post modal/form
-//   };
-
-//   const handleEditPost = (post: Post) => {
-//     console.log('Edit post:', post);
-//     // Implementation for edit post modal/form
-//   };
-
-//   const handleDeletePost = (id: string) => {
-//     setPosts(posts.filter(post => post.id !== id));
-//   };
+  // const handleDeleteCampus = (id: string) => {
+  //   setCampuses(campuses.filter(campus => campus.id !== id));
+  // };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -76,31 +63,10 @@ function App() {
         return <DashboardOverview stats={mockStats} />;
       case 'majors':
         return <MajorManagement />;
-          // <MajorManagement
-          //   majors={[majors]}
-          //   onAddMajor={handleAddMajor}
-          //   onEditMajor={handleEditMajor}
-          //   onDeleteMajor={handleDeleteMajor}
-          // />
-
       case 'campuses':
         return (
-          <CampusList
-            campuses={campuses}
-            onAddCampus={handleAddCampus}
-            onEditCampus={handleEditCampus}
-            onDeleteCampus={handleDeleteCampus}
-          />
+         <CampusManagement />     
         );
-    //   case 'posts':
-    //     return (
-    //       <PostsList
-    //         posts={posts}
-    //         onAddPost={handleAddPost}
-    //         onEditPost={handleEditPost}
-    //         onDeletePost={handleDeletePost}
-    //       />
-    //     );
      
       default:
         return <DashboardOverview stats={mockStats} />;

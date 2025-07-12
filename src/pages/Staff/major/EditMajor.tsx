@@ -18,9 +18,9 @@ export const EditMajorPage: React.FC<EditMajorPageProps> = ({
 }) => {
   const initialData: MajorFormData = {
     name: major.name,
-    code: major.code,
     description: major.description,
-    childMajors: major.childMajors
+    duration: major.duration,
+    fee: major.fee,
   };
 
   return (
