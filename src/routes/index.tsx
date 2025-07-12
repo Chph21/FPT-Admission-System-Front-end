@@ -2,6 +2,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import Layout from '../components/Layout/Layout';
 import ChatBotPage from '../pages/ChatBot/ChatBotPage';
+import StaffLayout from '../pages/Staff/layout/StaffLayout';
+// import { MajorList } from '../pages/Staff/major/ListMajor'
+import { MajorManagement } from '../pages/Staff/major/MajorManagement';
 import AdmissionSchedulePage from '../pages/AdmissionSchedule/AdmissionSchedulePage';
 import StaffAdmissionSchedulePage from '../pages/StaffAdmissionSchedule/StaffAdmissionSchedulePage';
 import Login from '../pages/Authen/Login';
@@ -35,9 +38,21 @@ const router = createBrowserRouter([
     element: <ChatBotPage />
   },
   {
-    path: '/staff/admissionschedule',
-    element: <StaffAdmissionSchedulePage />
+    path: '/staff',
+    element: <StaffLayout />,
+    children: [
+      {
+        path: 'majors',
+        element: <MajorManagement />
+      },
+      {
+        path: 'admissionschedule',
+        element: <StaffAdmissionSchedulePage />
+      },
+      // Add more routes here as needed
+    ]
   },
+
   {
 
     path: '/login',
@@ -81,6 +96,8 @@ const router = createBrowserRouter([
       }
     ]
   }
+
+
 ]);
 
 export default router;
