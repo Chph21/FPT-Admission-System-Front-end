@@ -1,7 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home/Home';
-import Layout from '../components/Layout/Layout';
+import Layout from '../components/layout/Layout';
 import ChatBotPage from '../pages/ChatBot/ChatBotPage';
+import StaffLayout from '../pages/Staff/layout/StaffLayout';
+// import { MajorList } from '../pages/Staff/major/ListMajor'
+import { MajorManagement } from '../pages/Staff/major/MajorManagement';
 import AdmissionSchedulePage from '../pages/AdmissionSchedule/AdmissionSchedulePage';
 import StaffAdmissionSchedulePage from '../pages/StaffAdmissionSchedule/StaffAdmissionSchedulePage';
 import Login from '../pages/Authen/Login';
@@ -9,6 +12,12 @@ import Register from '../pages/Authen/Register';
 import TestPage from '../pages/Authen/TestPage';
 import LoginSimple from '../pages/Authen/LoginSimple';
 import TicketListPage from '../pages/Ticket/TicketListPage';
+import { AdminLayout } from '../components/Admin/layout/AdminLayout';
+import Dashboard from '../pages/Admin/Dashboard';
+import Analytics from '../pages/Admin/Analytics';
+import UserManager from '../pages/Admin/UserManager';
+import { Setting } from '../pages/Admin/Setting';
+import { Error404 } from '../pages/Admin/Error404';
 
 const router = createBrowserRouter([
   {
@@ -30,9 +39,21 @@ const router = createBrowserRouter([
     element: <ChatBotPage />
   },
   {
-    path: '/staff/admissionschedule',
-    element: <StaffAdmissionSchedulePage />
+    path: '/staff',
+    element: <StaffLayout />,
+    children: [
+      {
+        path: 'majors',
+        element: <MajorManagement />
+      },
+      {
+        path: 'admissionschedule',
+        element: <StaffAdmissionSchedulePage />
+      },
+      // Add more routes here as needed
+    ]
   },
+
   {
 
     path: '/login',
@@ -52,8 +73,35 @@ const router = createBrowserRouter([
   },
   {
     path: '/tickets',
-    element: <TicketListPage />
+    element: <TicketListPage />},
+  {
+    path: '/admin',
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />
+      },
+      {
+        path: 'analytics',
+        element: <Analytics />
+      },
+      {
+        path: 'users',
+        element: <UserManager />
+      },
+      {
+        path: 'settings',
+        element: <Setting />
+      },
+      {
+        path: 'error404',
+        element: <Error404 />
+      }
+    ]
   }
+
+
 ]);
 
 export default router;

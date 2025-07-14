@@ -6,7 +6,7 @@ import DebugRedux from '../DebugRedux';
 
 const Layout: React.FC = () => {
   return (
-    <div className="layout">
+    <div className="Layout">
       <DebugRedux />
       <Header />
       <main>
