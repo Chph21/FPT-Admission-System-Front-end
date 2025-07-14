@@ -88,23 +88,24 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
           <div className="flex items-center space-x-3">
             <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-              {user.avata ? (
+              {user?.avata ? (
                 <img
                   src={user.avata}
                   className="h-full w-full rounded-full object-cover"
                 />
               ) : (
                 <span className="text-white text-lg font-semibold">
-                  {user.name.charAt(0).toUpperCase()}
+                  {user?.name?.charAt(0)?.toUpperCase() || "?"}
                 </span>
               )}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-white">{user.name}</p>
-              <p className="text-xs text-slate-400">{user.email}</p>
+              <p className="text-sm font-medium text-white">{user?.name || "Chưa đăng nhập"}</p>
+              <p className="text-xs text-slate-400">{user?.email || "..."}</p>
             </div>
           </div>
         </div>
+
       </div>
     </>
   );
