@@ -101,19 +101,19 @@ export const Setting: React.FC = () => {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Settings</h1>
-                    <p className="text-slate-400 mt-2">Manage your account settings and profile information.</p>
+                    <h1 className="text-3xl font-bold text-gray-800">Cài đặt</h1>
+                    <p className="text-gray-600 mt-2">Quản lý cài đặt tài khoản và thông tin cá nhân.</p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-1 space-y-6">
                     {/* Profile Image Section */}
-                    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6">
-                        <h2 className="text-xl font-semibold text-white mb-6">Avatar</h2>
+                    <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-6">Ảnh đại diện</h2>
                         <div className="flex flex-col items-center space-y-4">
                             <div className="relative">
-                                <div className="h-32 w-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                                <div className="h-32 w-32 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center shadow-lg">
                                     {userProfile.image ? (
                                         <img
                                             src={userProfile.image}
@@ -127,28 +127,28 @@ export const Setting: React.FC = () => {
                                     )}
                                 </div>
                                 {isEditing && (
-                                    <button className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full transition-colors duration-200">
+                                    <button className="absolute bottom-0 right-0 bg-orange-600 hover:bg-orange-700 text-white p-2 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
                                         <Camera className="h-4 w-4" />
                                     </button>
                                 )}
                             </div>
                             <div className="text-center">
-                                <p className="text-white font-medium">{userProfile.fullName}</p>
-                                <p className="text-slate-400 text-sm">#{userProfile.userName}</p>
-                                <p className="text-slate-500 text-xs mt-1">{userProfile.email}</p>
+                                <p className="text-gray-800 font-medium">{userProfile.fullName}</p>
+                                <p className="text-gray-600 text-sm">#{userProfile.userName}</p>
+                                <p className="text-gray-500 text-xs mt-1">{userProfile.email}</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Password Section */}
-                    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6">
-                        <h2 className="text-xl font-semibold text-white mb-6">Password Settings</h2>
+                    <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-6">Cài đặt mật khẩu</h2>
                         <div className="space-y-6">
                             {/* Current Password */}
                             <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm font-medium text-slate-300">
+                                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
                                     <Lock className="h-4 w-4" />
-                                    <span>Current Password</span>
+                                    <span>Mật khẩu hiện tại</span>
                                 </label>
                                 <div className="relative">
                                     <input
@@ -156,17 +156,17 @@ export const Setting: React.FC = () => {
                                         value={editableData.currentPassword}
                                         onChange={(e) => handleInputChange('currentPassword', e.target.value)}
                                         disabled={!isEditing}
-                                        placeholder="Enter current password"
-                                        className={`w-full px-4 py-3 pr-12 rounded-lg border transition-colors duration-200 ${isEditing
-                                            ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                                            : 'bg-slate-800 border-slate-700 text-slate-400 cursor-not-allowed'
+                                        placeholder="Nhập mật khẩu hiện tại"
+                                        className={`w-full px-4 py-3 pr-12 rounded-lg border transition-all duration-200 ${isEditing
+                                            ? 'bg-gray-50 border-orange-200 text-gray-700 placeholder-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent'
+                                            : 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
                                             }`}
                                     />
                                     {isEditing && (
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors duration-200"
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-orange-400 hover:text-orange-600 transition-colors duration-200"
                                         >
                                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                         </button>
@@ -176,28 +176,28 @@ export const Setting: React.FC = () => {
 
                             {/* New Password */}
                             <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm font-medium text-slate-300">
+                                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
                                     <Lock className="h-4 w-4" />
-                                    <span>New Password</span>
+                                    <span>Mật khẩu mới</span>
                                 </label>
                                 <input
                                     type="password"
                                     value={editableData.newPassword}
                                     onChange={(e) => handleInputChange('newPassword', e.target.value)}
                                     disabled={!isEditing}
-                                    placeholder="Enter new password"
-                                    className={`w-full px-4 py-3 rounded-lg border transition-colors duration-200 ${isEditing
-                                        ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                                        : 'bg-slate-800 border-slate-700 text-slate-400 cursor-not-allowed'
+                                    placeholder="Nhập mật khẩu mới"
+                                    className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${isEditing
+                                        ? 'bg-gray-50 border-orange-200 text-gray-700 placeholder-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent'
+                                        : 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
                                         }`}
                                 />
                             </div>
 
                             {/* Confirm New Password */}
                             <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm font-medium text-slate-300">
+                                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
                                     <Lock className="h-4 w-4" />
-                                    <span>Confirm New Password</span>
+                                    <span>Xác nhận mật khẩu mới</span>
                                 </label>
                                 <div className="relative">
                                     <input
@@ -205,17 +205,17 @@ export const Setting: React.FC = () => {
                                         value={editableData.confirmPassword}
                                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                                         disabled={!isEditing}
-                                        placeholder="Confirm new password"
-                                        className={`w-full px-4 py-3 pr-12 rounded-lg border transition-colors duration-200 ${isEditing
-                                            ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                                            : 'bg-slate-800 border-slate-700 text-slate-400 cursor-not-allowed'
+                                        placeholder="Nhập lại mật khẩu mới"
+                                        className={`w-full px-4 py-3 pr-12 rounded-lg border transition-all duration-200 ${isEditing
+                                            ? 'bg-gray-50 border-orange-200 text-gray-700 placeholder-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent'
+                                            : 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
                                             }`}
                                     />
                                     {isEditing && (
                                         <button
                                             type="button"
                                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors duration-200"
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-orange-400 hover:text-orange-600 transition-colors duration-200"
                                         >
                                             {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                         </button>
@@ -289,17 +289,17 @@ export const Setting: React.FC = () => {
                 {/* Profile Information */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* Read-only Information */}
-                    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6">
-                        <h2 className="text-xl font-semibold text-white mb-6">Account Information</h2>
+                    <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-6">Thông tin tài khoản</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {readOnlyFields(userProfile).map((field) => (
                                 <div key={field.label} className="space-y-2">
-                                    <label className="flex items-center space-x-2 text-sm font-medium text-slate-300">
-                                        <field.icon className="h-4 w-4" />
+                                    <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+                                        <field.icon className="h-4 w-4 text-orange-600" />
                                         <span>{field.label}</span>
                                     </label>
-                                    <div className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3">
-                                        <p className="text-white">{field.value}</p>
+                                    <div className="bg-gray-50 border border-orange-200 rounded-lg px-4 py-3">
+                                        <p className="text-gray-800">{field.value}</p>
                                     </div>
                                 </div>
                             ))}
@@ -307,13 +307,13 @@ export const Setting: React.FC = () => {
                     </div>
 
                     {/* Editable Information */}
-                    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6">
-                        <h2 className="text-xl font-semibold text-white mb-6">Editable Information</h2>
+                    <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-6">Thông tin có thể chỉnh sửa</h2>
                         <div className="space-y-6">
                             {editableFields(editableData).map((field) => (
                                 <div key={field.field} className="space-y-2">
-                                    <label className="flex items-center space-x-2 text-sm font-medium text-slate-300">
-                                        <field.icon className="h-4 w-4" />
+                                    <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+                                        <field.icon className="h-4 w-4 text-orange-600" />
                                         <span>{field.label}</span>
                                     </label>
                                     <input
@@ -322,9 +322,9 @@ export const Setting: React.FC = () => {
                                         onChange={(e) => handleInputChange(field.field, e.target.value)}
                                         disabled={!isEditing}
                                         placeholder={field.placeholder}
-                                        className={`w-full px-4 py-3 rounded-lg border transition-colors duration-200 ${isEditing
-                                            ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                                            : 'bg-slate-800 border-slate-700 text-slate-400 cursor-not-allowed'
+                                        className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${isEditing
+                                            ? 'bg-gray-50 border-orange-200 text-gray-700 placeholder-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent'
+                                            : 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
                                             }`}
                                     />
                                 </div>
@@ -335,21 +335,21 @@ export const Setting: React.FC = () => {
                 </div>
             </div>
             {/* Security Notice */}
-            <div className="bg-slate-900 border border-slate-700 rounded-xl p-6">
-                <h2 className="text-xl font-semibold text-white mb-4">Security Information</h2>
+            <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Thông tin bảo mật</h2>
                 <div className="space-y-3">
-                    <div className="flex items-start space-x-3 p-3 bg-slate-800 rounded-lg border-l-4 border-blue-500">
-                        <Shield className="h-5 w-5 text-blue-400 mt-0.5" />
+                    <div className="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                        <Shield className="h-5 w-5 text-orange-600 mt-0.5" />
                         <div>
-                            <p className="text-blue-400 text-sm font-medium">Account Security</p>
-                            <p className="text-slate-300 text-sm">Your account is protected with two-factor authentication and regular security monitoring.</p>
+                            <p className="text-orange-600 text-sm font-medium">Bảo mật tài khoản</p>
+                            <p className="text-gray-700 text-sm">Tài khoản của bạn được bảo vệ bằng xác thực hai yếu tố và giám sát bảo mật thường xuyên.</p>
                         </div>
                     </div>
-                    <div className="flex items-start space-x-3 p-3 bg-slate-800 rounded-lg border-l-4 border-green-500">
-                        <Check className="h-5 w-5 text-green-400 mt-0.5" />
+                    <div className="flex items-start space-x-3 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <Check className="h-5 w-5 text-green-600 mt-0.5" />
                         <div>
-                            <p className="text-green-400 text-sm font-medium">Data Protection</p>
-                            <p className="text-slate-300 text-sm">All personal information is encrypted and stored securely according to industry standards.</p>
+                            <p className="text-green-600 text-sm font-medium">Bảo vệ dữ liệu</p>
+                            <p className="text-gray-700 text-sm">Tất cả thông tin cá nhân được mã hóa và lưu trữ an toàn theo tiêu chuẩn ngành.</p>
                         </div>
                     </div>
                 </div>
