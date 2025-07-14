@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface AdmissionSchedule {
@@ -8,7 +8,7 @@ interface AdmissionSchedule {
   status: string;
   user: string;
   meetlink: string;
-  createdAt: string;
+  timeCreated: string;
   response?: string;
 }
 
@@ -19,7 +19,7 @@ interface RawAdmissionSchedule {
   status: string;
   user: { username: string } | null;
   meetLink: string;
-  createdAt: string;
+  timeCreated: string;
 }
 
 const StaffAdmissionSchedulePage: React.FC = () => {
@@ -32,10 +32,9 @@ const StaffAdmissionSchedulePage: React.FC = () => {
   const [isProcessingOAuth, setIsProcessingOAuth] = useState(false);
   const hasProcessedOAuth = useRef(false); // Thêm ref để theo dõi
 
-  const fetchSchedules = useCallback(() => {
-    setLoading(true);
+  useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:8080/api/schedules', {
+    fetch('https://fpt-admission-system.onrender.com/api/schedules', {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
       .then((res) => {
@@ -43,18 +42,16 @@ const StaffAdmissionSchedulePage: React.FC = () => {
         return res.json();
       })
       .then((data: RawAdmissionSchedule[]) => {
-        const mappedData = data.map(
-          (item): AdmissionSchedule => ({
-            id: item.id,
-            staff: item.staff?.username ?? '-',
-            admissionAt: item.admissionAt,
-            status: item.status,
-            user: item.user?.username ?? '-',
-            meetlink: item.meetLink,
-            createdAt: item.createdAt,
-            response: '',
-          }),
-        );
+        const mappedData = data.map((item) => ({
+          id: item.id,
+          staff: item.staff?.username ?? '-',
+          admissionAt: item.admissionAt,
+          status: item.status,
+          user: item.user?.username ?? '-',
+          meetlink: item.meetLink,
+          timeCreated: item.timeCreated,
+          response: '',
+        }));
         setSchedules(mappedData);
       })
       .catch((error) => {
@@ -63,10 +60,6 @@ const StaffAdmissionSchedulePage: React.FC = () => {
       })
       .finally(() => setLoading(false));
   }, []);
-
-  useEffect(() => {
-    fetchSchedules();
-  }, [fetchSchedules]);
 
   // Xử lý callback sau khi Google redirect về với code
   useEffect(() => {
@@ -81,7 +74,7 @@ const StaffAdmissionSchedulePage: React.FC = () => {
         const token = localStorage.getItem('token');
         try {
           const encodedCode = encodeURIComponent(code);
-          const res = await fetch(`http://localhost:8080/api/schedules/meeting-link/${scheduleId}?code=${encodedCode}`, {
+          const res = await fetch(`https://fpt-admission-system.onrender.com/api/schedules/meeting-link/${scheduleId}?code=${encodedCode}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -94,8 +87,15 @@ const StaffAdmissionSchedulePage: React.FC = () => {
             throw new Error(errorData.message || 'Tạo link meet thất bại!');
           }
 
+          const updatedSchedule = await res.json();
+          setSchedules(prev =>
+            prev.map(s =>
+              s.id === scheduleId
+                ? { ...s, meetlink: updatedSchedule.meetLink, status: updatedSchedule.status || 'COMPLETED' }
+                : s
+            )
+          );
           alert('Tạo link Google Meet thành công!');
-          fetchSchedules(); // Tải lại danh sách lịch hẹn
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Đã có lỗi không xác định.';
           alert(`Lỗi: ${message}`);
@@ -108,17 +108,17 @@ const StaffAdmissionSchedulePage: React.FC = () => {
     };
 
     processOAuthCallback();
-  }, [navigate, fetchSchedules]);
+  }, [navigate]);
 
   const handleEdit = (id: string) => {
     setEditingId(id);
     setShowModal(true);
-  };
+  }; 
 
   const handleSave = async (scheduleId: string) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8080/api/schedules/google-auth-url', {
+      const res = await fetch('https://fpt-admission-system.onrender.com/api/schedules/google-auth-url', {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
@@ -172,9 +172,9 @@ const StaffAdmissionSchedulePage: React.FC = () => {
             ) : error ? (
               <tr><td colSpan={8} style={{ color: 'red' }}>{error}</td></tr>
             ) : schedules.map(s => (
-              <tr key={s.id}>
+              <tr key={s.id}>s
                 <td>{s.staff}</td>
-                <td>{new Date(s.createdAt).toLocaleString()}</td>
+                <td>{new Date(s.timeCreated).toLocaleString()}</td>
                 <td>{new Date(s.admissionAt).toLocaleString()}</td>
                 <td>{s.status}</td>
                 <td>{s.user}</td>

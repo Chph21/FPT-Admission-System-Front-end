@@ -167,7 +167,9 @@ const Home: React.FC = () => {
 
       {/* Admission Ticket Section */}
       <section className="admission-ticket-section">
-        <AdmissionTicketForm onSubmit={handleTicketSubmit} />
+        <AdmissionTicketForm onSubmit={handleTicketSubmit} 
+          isLoggedIn={isAuthenticated}
+          userEmail={user?.email}/>
       </section>
 
       <AdmissionTicketSticker />

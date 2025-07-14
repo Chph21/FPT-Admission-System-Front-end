@@ -4,8 +4,19 @@ import AdmissionScheduleForm from '../../components/admission/AdmissionSchedule/
 import AdmissionScheduleTable from '../../components/admission/AdmissionSchedule/AdmissionScheduleTable';
 import { useNavigate } from 'react-router-dom';
 
+export interface ScheduleDTO {
+  id: string;
+  staff: string;
+  admissionAt: string;
+  status: string;
+  user: string;
+  meetlink: string;
+  createdAt: string;
+}
+
 const AdmissionSchedulePage: React.FC = () => {
   const navigate = useNavigate();
+
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     admissionAt: '',
@@ -13,41 +24,54 @@ const AdmissionSchedulePage: React.FC = () => {
     meetlink: '',
     status: '',
   });
-  const [schedules, setSchedules] = useState<any[]>([]);
+
+  const [schedules, setSchedules] = useState<ScheduleDTO[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  /* ---------------- FETCH ONCE ---------------- */
   useEffect(() => {
-    fetch('https://fpt-admission-system.onrender.com/api/schedules')
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:8080/api/schedules', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
       .then((res) => res.json())
       .then((data) => {
-        // Map API fields to table fields
-        const mapped = data.map((item: any) => ({
+        const mapped: ScheduleDTO[] = data.map((item: any) => ({
           id: item.id || item.createAt + item.admissionAt,
-          staff: item.staffId || '-',
+          staff: item.staff?.username ?? '-',
           admissionAt: item.admissionAt,
           status: item.status,
-          user: item.userId,
+          user: item.user?.username ?? '-',
           meetlink: item.meetLink,
           createdAt: item.createAt,
         }));
         setSchedules(mapped);
+        setLoading(false);
       })
-      .catch(() => setSchedules([]));
+      .catch(() => {
+        setError('Không thể tải dữ liệu');
+        setLoading(false);
+      });
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  /* ------------- FORM HANDLERS (nếu cần) ------------- */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSchedules([
-      ...schedules,
+    // TODO: POST lên API và sau khi thành công => refetch / push vào state
+    setSchedules((prev) => [
+      ...prev,
       {
-        id: schedules.length + 1,
+        id: crypto.randomUUID(),
         admissionAt: form.admissionAt,
         staff: form.staff,
         meetlink: form.meetlink,
         status: form.status,
         createdAt: new Date().toISOString(),
+        user: '-',
       },
     ]);
     setForm({ admissionAt: '', staff: '', meetlink: '', status: '' });
@@ -56,18 +80,18 @@ const AdmissionSchedulePage: React.FC = () => {
 
   return (
     <div className="admission-schedule-container">
-      <button
-        className="back-to-home-btn"
-        onClick={() => navigate('/')}
-      >
+      <button className="back-to-home-btn" onClick={() => navigate('/')}>
         ← Về trang chủ
       </button>
+
       <h1 className="admission-schedule-title">Admission Schedule</h1>
+
       <div className="admission-schedule-header">
         <button className="admission-schedule-btn" onClick={() => setShowForm(true)}>
           Đăng ký tư vấn tuyển sinh
         </button>
       </div>
+
       {showForm && (
         <AdmissionScheduleForm
           form={form}
@@ -76,7 +100,9 @@ const AdmissionSchedulePage: React.FC = () => {
           onCancel={() => setShowForm(false)}
         />
       )}
-      <AdmissionScheduleTable schedules={schedules} />
+
+      {/* 👉 Truyền data + trạng thái xuống bảng */}
+      <AdmissionScheduleTable schedules={schedules} loading={loading} error={error} />
     </div>
   );
 };

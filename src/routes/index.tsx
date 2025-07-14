@@ -8,6 +8,7 @@ import Login from '../pages/Authen/Login';
 import Register from '../pages/Authen/Register';
 import TestPage from '../pages/Authen/TestPage';
 import LoginSimple from '../pages/Authen/LoginSimple';
+import TicketListPage from '../pages/Ticket/TicketListPage';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
   {
     path: '/login-simple',
     element: <LoginSimple />
+  },
+  {
+    path: '/tickets',
+    element: <TicketListPage />
   }
 ]);
 
