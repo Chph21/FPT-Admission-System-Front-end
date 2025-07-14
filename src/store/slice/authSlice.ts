@@ -62,7 +62,11 @@ export const registerUser = createAsyncThunk(
           'Content-Type': 'application/json',
           'accept': '*/*',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          name: userData.name.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+          email: userData.email,
+          password: userData.password
+        }),
       });
 
       const data = await response.json();
