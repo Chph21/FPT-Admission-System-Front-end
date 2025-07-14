@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   X,
@@ -38,21 +38,21 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-75 bg-slate-900 border-r border-slate-700 transform transition-transform duration-300 ease-in-out
+        fixed inset-y-0 left-0 z-50 w-75 bg-gradient-to-b from-orange-600 to-orange-700 border-r border-orange-500 transform transition-transform duration-300 ease-in-out shadow-xl
         lg:translate-x-0 lg:static lg:inset-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <div className="flex items-center justify-between h-16 px-4 border-b border-slate-700">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-orange-500 bg-orange-700">
           <Link to="/admin" className="flex items-center space-x-2 text-white">
             <img
               src='https://companieslogo.com/img/orig/FPT.VN_BIG.D-b2da87b8.png?t=1722927800'
-              className="h-6 object-cover bg-gradient-to-r from-blue-500 via-orange-500 to-green-500"
+              className="h-8 w-8 object-cover rounded-lg"
             />
-            <span className="text-xl font-bold">FPT Admission System</span>
+            <span className="text-xl font-bold text-white">FPT Admission</span>
           </Link>
           <button
             onClick={onClose}
-            className="lg:hidden text-slate-400 hover:text-white"
+            className="lg:hidden text-white hover:text-orange-200 transition-colors duration-200"
           >
             <X className="h-6 w-6" />
           </button>
@@ -67,15 +67,15 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   <Link
                     to={item.href}
                     className={`
-                      flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200
+                      flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200
                       ${isActive
-                        ? 'bg-blue-600 text-white shadow-lg'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                        ? 'bg-white text-orange-700 shadow-lg transform scale-105'
+                        : 'text-white hover:bg-white/10 hover:text-orange-200'
                       }
                     `}
                     onClick={() => onClose()}
                   >
-                    <item.icon className="mr-3 h-5 w-5 flex-shrink-0 text-white" />
+                    <item.icon className={`mr-3 h-5 w-5 flex-shrink-0 ${isActive ? 'text-orange-700' : 'text-white'}`} />
                     {item.name}
                   </Link>
                 </li>
@@ -85,9 +85,9 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </nav>
 
         {/* User profile section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-orange-500 bg-orange-700">
           <div className="flex items-center space-x-3">
-            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center shadow-md">
               {user?.avata ? (
                 <img
                   src={user.avata}
@@ -101,7 +101,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-white">{user?.name || "Chưa đăng nhập"}</p>
-              <p className="text-xs text-slate-400">{user?.email || "..."}</p>
+              <p className="text-xs text-orange-200">{user?.email || "..."}</p>
             </div>
           </div>
         </div>

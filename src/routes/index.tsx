@@ -15,7 +15,7 @@ import Dashboard from '../pages/Admin/Dashboard';
 import Analytics from '../pages/Admin/Analytics';
 import UserManager from '../pages/Admin/UserManager';
 import { Setting } from '../pages/Admin/Setting';
-import { Error404 } from '../pages/Admin/Error404';
+import Error404 from '../pages/Admin/Error404';
 import PostListPage from '../pages/Post/PostListPage';
 import CreatePostPage from '../pages/Post/CreatePostPage';
 import EditPostPage from '../pages/Post/EditPostPage';
