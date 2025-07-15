@@ -2,12 +2,32 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { jwtDecode } from 'jwt-decode';
+
+interface DecodedToken {
+    roles: string[];
+    exp: number;
+    email: string;
+    sub: string;
+    iat: number;
+}
 
 const EditPostPage: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const data = JSON.parse(localStorage.getItem("user") || "{}");
+    const userRole = React.useMemo(() => {
+        if (!token) return null;
+        try {
+            const decoded = jwtDecode<DecodedToken>(token);
+            console.log('Decoded token:', decoded); 
+            return decoded.roles?.includes('ROLE_ADMIN') ? 'ADMIN' : null;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return null;
+        }
+    }, [token]);
 
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
@@ -170,7 +190,7 @@ const EditPostPage: React.FC = () => {
                         Lưu thay đổi
                     </button>
 
-                    {data?.role === 'ADMIN' && (
+                    {userRole === 'ADMIN' && (
                         <button
                             type="button"
                             onClick={handleDelete}
