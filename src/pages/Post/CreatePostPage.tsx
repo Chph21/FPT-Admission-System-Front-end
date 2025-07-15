@@ -139,7 +139,7 @@ const CreatePostPage = () => {
 
             const deletedImages = oldImages.filter(url => !newImages.includes(url));
             deletedImages.forEach(url => {
-              fetch("http://localhost:8080/api/delete-image", {
+              fetch("https://fpt-admission-system.onrender.com/api/delete-image", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

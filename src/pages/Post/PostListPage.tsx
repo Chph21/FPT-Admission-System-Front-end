@@ -47,7 +47,7 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
             size: String(size)
         });
 
-        const res = await fetch(`http://localhost:8080/api/posts?${params.toString()}`, {
+        const res = await fetch(`https://fpt-admission-system.onrender.com/api/posts?${params.toString()}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
@@ -100,7 +100,7 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
         if (!window.confirm("Bạn có chắc muốn đăng bài viết này không?")) return;
 
         try {
-            const res = await fetch(`http://localhost:8080/api/posts/${id}/publish`, {
+            const res = await fetch(`https://fpt-admission-system.onrender.com/api/posts/${id}/publish`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

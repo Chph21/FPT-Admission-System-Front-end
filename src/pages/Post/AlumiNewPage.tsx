@@ -29,7 +29,7 @@ const AlumniNewsPage: React.FC = () => {
     const offset = pageNum * pageSize;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/posts/latest?limit=${limit}&offset=${offset}&category=CUU_SINH_VIEN`);
+      const res = await fetch(`https://fpt-admission-system.onrender.com/api/posts/latest?limit=${limit}&offset=${offset}&category=CUU_SINH_VIEN`);
       if (!res.ok) throw new Error('Fetch failed');
 
       const data: Post[] = await res.json();
