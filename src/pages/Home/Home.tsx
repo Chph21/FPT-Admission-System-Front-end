@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logout } from '../../store/slice/authSlice';
-import { User, LogOut, UserPlus } from 'lucide-react';
+import { User, LogOut, UserPlus, ArrowRight, Phone, Mail, Clock, CheckCircle, Star } from 'lucide-react';
 import './Home.css';
 import AdmissionTicketForm from '../../components/admission/AdmissionTicket/AdmissionTicketForm';
 import '../../components/admission/AdmissionTicket/AdmissionTicket.css';
 import AdmissionTicketSticker from '../../components/admission/AdmissionTicket/AdmissionTicketSticker';
+import fptLogo from '../../assets/Logo_Trường_Đại_học_FPT.svg.png';
 
 const Home: React.FC = () => {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -50,7 +51,8 @@ const Home: React.FC = () => {
       )}
 
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero" style={{ backgroundImage: `url(${fptLogo})` }}>
+        <div className="hero-overlay" />
         <div className="hero-content">
           <h1>Tuyển sinh ĐẠI HỌC năm học 2025</h1>
           <h2>chính thức bắt đầu!</h2>
@@ -149,27 +151,95 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="cta-section">
+      {/* Enhanced CTA Section */}
+      <section className="enhanced-cta-section">
         <div className="container">
-          <div className="cta-content">
-            <h2>ĐĂNG KÝ XÉT TUYỂN NGAY HÔM NAY</h2>
-            <p>VỮNG CHẮC TƯƠNG LAI NGÀY MAI</p>
-            <Link to="/admission-schedule" className="cta-button">ĐĂNG KÝ NGAY</Link>
-            {isAuthenticated ? (
-              <Link to="/dashboard" className="cta-button">VÀO HỆ THỐNG</Link>
-            ) : (
-              <Link to="/register" className="cta-button">ĐĂNG KÝ NGAY</Link>
-            )}
+          <div className="cta-background">
+            <div className="cta-content">
+              <div className="cta-header">
+                <div className="cta-badge">
+                  <Star className="star-icon" />
+                  <span>ƯU ĐÃI ĐẶC BIỆT</span>
+                </div>
+                <h2>ĐĂNG KÝ XÉT TUYỂN NGAY HÔM NAY</h2>
+                <p className="cta-subtitle">VỮNG CHẮC TƯƠNG LAI NGÀY MAI</p>
+              </div>
+              
+              <div className="cta-features">
+                <div className="feature-item">
+                  <CheckCircle className="check-icon" />
+                  <span>Miễn phí đăng ký xét tuyển</span>
+                </div>
+                <div className="feature-item">
+                  <CheckCircle className="check-icon" />
+                  <span>Hỗ trợ tư vấn 24/7</span>
+                </div>
+                <div className="feature-item">
+                  <CheckCircle className="check-icon" />
+                  <span>Quy trình đơn giản, nhanh chóng</span>
+                </div>
+              </div>
+
+              <div className="cta-actions">
+                {isAuthenticated ? (
+                  <Link to="/dashboard" className="enhanced-cta-button primary">
+                    <span>VÀO HỆ THỐNG</span>
+                    <ArrowRight className="arrow-icon" />
+                  </Link>
+                ) : (
+                  <Link to="/register" className="enhanced-cta-button primary">
+                    <span>ĐĂNG KÝ NGAY</span>
+                    <ArrowRight className="arrow-icon" />
+                  </Link>
+                )}
+                <Link to="/admission-schedule" className="enhanced-cta-button secondary">
+                  <span>XEM LỊCH TUYỂN SINH</span>
+                  <Clock className="clock-icon" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Admission Ticket Section */}
-      <section className="admission-ticket-section">
-        <AdmissionTicketForm onSubmit={handleTicketSubmit} 
-          isLoggedIn={isAuthenticated}
-          userEmail={user?.email}/>
+      {/* Enhanced Consultation Section */}
+      <section className="consultation-section">
+        <div className="container">
+          <div className="consultation-content">
+            <div className="consultation-header">
+              <h2>GỬI YÊU CẦU TƯ VẤN TUYỂN SINH</h2>
+              <p>Đội ngũ tư vấn chuyên nghiệp sẵn sàng hỗ trợ bạn 24/7</p>
+            </div>
+            
+            <div className="consultation-features">
+              <div className="consultation-feature">
+                <div className="feature-icon-wrapper">
+                  <Phone className="phone-icon" />
+                </div>
+                <h3>Tư vấn qua điện thoại</h3>
+                <p>Gọi ngay: 1900 636 191</p>
+              </div>
+              
+              <div className="consultation-feature">
+                <div className="feature-icon-wrapper">
+                  <Mail className="mail-icon" />
+                </div>
+                <h3>Tư vấn qua email</h3>
+                <p>daihocfpt@fpt.edu.vn</p>
+              </div>
+              
+              <div className="consultation-feature">
+                <div className="feature-icon-wrapper">
+                  <Clock className="clock-icon" />
+                </div>
+                <h3>Thời gian tư vấn</h3>
+                <p>8:00 - 22:00 (Thứ 2 - Chủ nhật)</p>
+              </div>
+            </div>
+
+            
+          </div>
+        </div>
       </section>
 
       <AdmissionTicketSticker />
