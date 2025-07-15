@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
-    "@stomp/stompjs": "^7.1.1",
     "@reduxjs/toolkit": "^2.8.2",
+    "@stomp/stompjs": "^7.1.1",
     "@tailwindcss/vite": "^4.1.8",
     "axios": "^1.10.0",
     "lucide-react": "^0.513.0",
@@ -20,12 +20,13 @@
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.1",
-    "sockjs-client": "^1.6.1",
     "recharts": "^3.0.2",
+    "sockjs-client": "^1.6.1",
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/axios": "^0.9.36",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/sockjs-client": "^1.5.4",

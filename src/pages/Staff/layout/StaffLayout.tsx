@@ -7,6 +7,8 @@ import { MajorManagement } from '../major/MajorManagement';
 import CampusManagement from '../campus/CampusManagement';
 // import { PostsList } from './components/Posts/PostsList';
 import { mockStats} from '../data/MockData';
+import StaffAdmissionSchedulePage from '../../StaffAdmissionSchedule/StaffAdmissionSchedulePage';
+import TicketListPage from '../../Ticket/TicketListPage';
 // import type { Major, Campus, Post } from '../model/Model';
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
       case 'dashboard': return 'Dashboard Overview';
       case 'majors': return 'Majors Management';
       case 'campuses': return 'Campus Management';
+      case 'admissionschedule': return 'Manage Schedule';
+      case 'tickets': return 'Ticket List';
       case 'posts': return 'Posts Management';
       case 'staff': return 'Staff Management';
       case 'analytics': return 'Analytics & Reports';
@@ -64,10 +68,11 @@ function App() {
       case 'majors':
         return <MajorManagement />;
       case 'campuses':
-        return (
-         <CampusManagement />     
-        );
-     
+        return <CampusManagement />;
+      case 'admissionschedule':
+        return <StaffAdmissionSchedulePage />;
+      case 'tickets':
+        return <TicketListPage />;
       default:
         return <DashboardOverview stats={mockStats} />;
     }

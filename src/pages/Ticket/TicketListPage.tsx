@@ -52,7 +52,6 @@ const TicketListPage: React.FC = () => {
 
   return (
     <div className="ticket-list-container">
-      <div className="ticket-list-title">Danh sách Ticket</div>
       {loading ? (
         <div>Đang tải...</div>
       ) : error ? (

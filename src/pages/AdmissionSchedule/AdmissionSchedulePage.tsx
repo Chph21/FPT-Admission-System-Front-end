@@ -19,6 +19,7 @@ const AdmissionSchedulePage: React.FC = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
+    admissionDate: '',
     admissionAt: '',
     staff: '',
     meetlink: '',
@@ -32,7 +33,7 @@ const AdmissionSchedulePage: React.FC = () => {
   /* ---------------- FETCH ONCE ---------------- */
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:8080/api/schedules', {
+    fetch('https://fpt-admission-system.onrender.com/api/schedules', {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
       .then((res) => res.json())
@@ -61,21 +62,51 @@ const AdmissionSchedulePage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: POST lên API và sau khi thành công => refetch / push vào state
-    setSchedules((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        admissionAt: form.admissionAt,
-        staff: form.staff,
-        meetlink: form.meetlink,
-        status: form.status,
-        createdAt: new Date().toISOString(),
-        user: '-',
+    const token = localStorage.getItem('token');
+    // Format: yyyy-MM-ddTHH:mm:ss
+    const admissionAt = `${form.admissionDate}T${form.admissionAt}:00`;
+    fetch('https://fpt-admission-system.onrender.com/api/schedules', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
-    ]);
-    setForm({ admissionAt: '', staff: '', meetlink: '', status: '' });
-    setShowForm(false);
+      body: JSON.stringify(admissionAt),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Tạo lịch thất bại!');
+        return res.json();
+      })
+      .then(() => {
+        // Refetch lại danh sách
+        setLoading(true);
+        fetch('https://fpt-admission-system.onrender.com/api/schedules', {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
+          .then(res => res.json())
+          .then(data => {
+            const mapped = data.map((item: any) => ({
+              id: item.id || item.createAt + item.admissionAt,
+              staff: item.staff?.username ?? '-',
+              admissionAt: item.admissionAt,
+              status: item.status,
+              user: item.user?.username ?? '-',
+              meetlink: item.meetLink,
+              createdAt: item.createAt,
+            }));
+            setSchedules(mapped);
+            setLoading(false);
+          })
+          .catch(() => {
+            setError('Không thể tải dữ liệu');
+            setLoading(false);
+          });
+        setForm({ admissionDate: '', admissionAt: '', staff: '', meetlink: '', status: '' });
+        setShowForm(false);
+      })
+      .catch(err => {
+        alert(err.message || 'Có lỗi xảy ra!');
+      });
   };
 
   return (

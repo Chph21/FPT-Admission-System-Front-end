@@ -137,21 +137,17 @@ const StaffAdmissionSchedulePage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ background: '#fff', color: '#111', minHeight: '100vh' }}>
       {isProcessingOAuth && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.5)', display: 'flex',
+          background: 'rgba(0, 123, 255, 0.12)', display: 'flex',
           justifyContent: 'center', alignItems: 'center',
-          zIndex: 2000, color: 'white', fontSize: '1.5rem'
+          zIndex: 2000, color: '#1976d2', fontSize: '1.5rem', fontWeight: 500
         }}>
-          Đang xử lý xác thực Google...
+          Đang đồng bộ với Google...
         </div>
       )}
-      <button className="back-to-home-btn" onClick={() => navigate('/')}>
-        ← Về trang chủ
-      </button>
-      <h1 className="admission-schedule-title">Quản lý lịch tư vấn tuyển sinh</h1>
       <div className="admission-schedule-table-container">
         <table className="admission-schedule-table">
           <thead>
@@ -172,7 +168,7 @@ const StaffAdmissionSchedulePage: React.FC = () => {
             ) : error ? (
               <tr><td colSpan={8} style={{ color: 'red' }}>{error}</td></tr>
             ) : schedules.map(s => (
-              <tr key={s.id}>s
+              <tr key={s.id}>
                 <td>{s.staff}</td>
                 <td>{new Date(s.timeCreated).toLocaleString()}</td>
                 <td>{new Date(s.admissionAt).toLocaleString()}</td>
