@@ -2,12 +2,32 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { jwtDecode } from 'jwt-decode';
+
+interface DecodedToken {
+    roles: string[];
+    exp: number;
+    email: string;
+    sub: string;
+    iat: number;
+}
 
 const EditPostPage: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const data = JSON.parse(localStorage.getItem("user") || "{}");
+    const userRole = React.useMemo(() => {
+        if (!token) return null;
+        try {
+            const decoded = jwtDecode<DecodedToken>(token);
+            console.log('Decoded token:', decoded); 
+            return decoded.roles?.includes('ROLE_ADMIN') ? 'ADMIN' : null;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return null;
+        }
+    }, [token]);
 
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
@@ -16,7 +36,7 @@ const EditPostPage: React.FC = () => {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:8080/api/posts/${id}`)
+        fetch(`https://fpt-admission-system.onrender.com/api/posts/${id}`)
             .then(res => res.json())
             .then(post => {
                 setTitle(post.title);
@@ -46,7 +66,7 @@ const EditPostPage: React.FC = () => {
             const file = await this.loader.file;
             data.append("upload", file);
 
-            const res = await fetch("http://localhost:8080/api/upload-image", {
+            const res = await fetch("https://fpt-admission-system.onrender.com/api/upload-image", {
                 method: "POST",
                 headers: { Authorization: `Bearer ${token}` },
                 body: data,
@@ -67,7 +87,7 @@ const EditPostPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const res = await fetch(`http://localhost:8080/api/posts/${id}`, {
+        const res = await fetch(`https://fpt-admission-system.onrender.com/api/posts/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +110,7 @@ const EditPostPage: React.FC = () => {
         const confirmed = window.confirm("Bạn có chắc chắn muốn xoá bài viết này?");
         if (!confirmed || !id) return;
 
-        const res = await fetch(`http://localhost:8080/api/posts/${id}`, {
+        const res = await fetch(`https://fpt-admission-system.onrender.com/api/posts/${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -148,7 +168,7 @@ const EditPostPage: React.FC = () => {
                         const deletedImages = oldImages.filter(url => !newImages.includes(url));
 
                         deletedImages.forEach(url => {
-                            fetch("http://localhost:8080/api/delete-image", {
+                            fetch("https://fpt-admission-system.onrender.com/api/delete-image", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
@@ -170,7 +190,7 @@ const EditPostPage: React.FC = () => {
                         Lưu thay đổi
                     </button>
 
-                    {data?.role === 'ADMIN' && (
+                    {userRole === 'ADMIN' && (
                         <button
                             type="button"
                             onClick={handleDelete}

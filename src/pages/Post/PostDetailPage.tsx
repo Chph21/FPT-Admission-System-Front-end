@@ -47,7 +47,7 @@ const PostDetailPage: React.FC = () => {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:8080/api/posts/${id}`)
+        fetch(`https://fpt-admission-system.onrender.com/api/posts/${id}`)
             .then((res) => res.json())
             .then((data) => setPost(data))
             .catch((err) => console.error('Error fetching post detail:', err));

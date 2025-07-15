@@ -15,7 +15,7 @@ interface PostResponse {
 
 const fetchPostUrl = async (category: string, title: string): Promise<string> => {
     const encodedTitle = encodeURIComponent(title);
-    const res = await fetch(`http://localhost:8080/api/posts/${category}/${encodedTitle}`);
+    const res = await fetch(`https://fpt-admission-system.onrender.com/api/posts/${category}/${encodedTitle}`);
     if (!res.ok) throw new Error('Failed to fetch post');
     const data: PostResponse = await res.json();
     return `/posts/${data.id}`;
