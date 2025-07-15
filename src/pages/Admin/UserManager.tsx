@@ -138,35 +138,35 @@ const AccountManager: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Account Manager</h1>
-          <p className="text-slate-400 mt-2">Manage accounts, roles, and permissions across the platform.</p>
+          <h1 className="text-3xl font-bold text-gray-800">Quản lý tài khoản</h1>
+          <p className="text-gray-600 mt-2">Quản lý tài khoản, vai trò và quyền hạn trên nền tảng.</p>
         </div>
         <div className="flex items-center space-x-3">
-          <button className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
+          <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 border border-gray-300 hover:border-gray-400 shadow-sm">
             <Download className="h-4 w-4" />
-            <span>Export</span>
+            <span>Xuất dữ liệu</span>
           </button>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
+          <button className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
             onClick={() => setIsOpenAddModal(true)}>
             <Plus className="h-4 w-4" />
-            <span>Add Account</span>
+            <span>Thêm tài khoản</span>
           </button>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-slate-900 border border-slate-700 rounded-xl p-6">
+      <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-orange-400" />
               <input
                 type="text"
-                placeholder="Search accounts by name or email..."
+                placeholder="Tìm kiếm tài khoản theo tên hoặc email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-orange-200 rounded-lg text-gray-700 placeholder-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
               />
             </div>
           </div>
@@ -177,9 +177,9 @@ const AccountManager: React.FC = () => {
               <select
                 value={selectedRole}
                 onChange={(e) => setSelectedRole(e.target.value)}
-                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-gray-50 border border-orange-200 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-200"
               >
-                <option value="all">All Roles</option>
+                <option value="all">Tất cả vai trò</option>
                 <option value="ADMIN">Admin</option>
                 <option value="STAFF">Staff</option>
                 <option value="USER">User</option>
@@ -187,11 +187,11 @@ const AccountManager: React.FC = () => {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-gray-50 border border-orange-200 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-200"
               >
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="all">Tất cả trạng thái</option>
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Không hoạt động</option>
               </select>
             </div>
           </div>
@@ -199,51 +199,51 @@ const AccountManager: React.FC = () => {
       </div>
 
       {/* Accounts Table */}
-      <div className="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden">
+      <div className="bg-white border border-orange-200 rounded-xl overflow-hidden shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full table-auto">
-            <thead className="bg-slate-800 border-b border-slate-700 columns-5">
+            <thead className="bg-orange-50 border-b border-orange-200 columns-5">
               <tr>
                 <th className="text-left py-4 px-19 text-sm">
-                  <p className="font-medium text-white">Name</p>
-                  <p className="text-sm text-slate-400">Email</p>
+                  <p className="font-medium text-gray-800">Tên</p>
+                  <p className="text-sm text-gray-600">Email</p>
                 </th>
-                <th className="text-center py-4 px-6 text-sm font-medium text-white">Role</th>
-                <th className="text-center py-4 px-6 text-sm font-medium text-white">Phone</th>
-                <th className="text-center py-4 px-6 text-sm font-medium text-white">Status</th>
-                <th className="text-center py-4 px-6 text-sm font-medium text-white">Actions</th>
+                <th className="text-center py-4 px-6 text-sm font-medium text-gray-800">Vai trò</th>
+                <th className="text-center py-4 px-6 text-sm font-medium text-gray-800">Số điện thoại</th>
+                <th className="text-center py-4 px-6 text-sm font-medium text-gray-800">Trạng thái</th>
+                <th className="text-center py-4 px-6 text-sm font-medium text-gray-800">Thao tác</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className="divide-y divide-orange-100">
               {isLoading ? (
                 <tr>
                   <td colSpan={5} className="py-12">
                     <div className="flex flex-col items-center justify-center space-y-4">
                       {/* Spinner */}
                       <div className="relative">
-                        <div className="w-12 h-12 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin"></div>
+                        <div className="w-12 h-12 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
                       </div>
                       {/* Loading text */}
                       <div className="text-center">
-                        <p className="text-white font-medium">Loading accounts...</p>
-                        <p className="text-slate-400 text-sm">Please wait while we fetch the data</p>
+                        <p className="text-gray-800 font-medium">Đang tải tài khoản...</p>
+                        <p className="text-gray-600 text-sm">Vui lòng chờ trong khi chúng tôi tải dữ liệu</p>
                       </div>
                     </div>
                   </td>
                 </tr>
               ) : (
                 filteredAccounts.map((account) => (
-                  <tr key={account.id} className="hover:bg-slate-800 transition-colors duration-200">
+                  <tr key={account.id} className="hover:bg-orange-50 transition-colors duration-200">
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-3">
-                        <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center shadow-md">
                           <span className="text-white font-medium text-sm">
                             {account.name.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
                         <div>
-                          <p className="font-medium text-white">{account.name}</p>
-                          <p className="text-sm text-slate-400">{account.email}</p>
+                          <p className="font-medium text-gray-800">{account.name}</p>
+                          <p className="text-sm text-gray-600">{account.email}</p>
                         </div>
                       </div>
                     </td>
@@ -253,38 +253,35 @@ const AccountManager: React.FC = () => {
                       </div>
                     </td>
                     <td className="py-4 px-6 text-center">
-                      <span className='px-3 py-1 text-xs font-medium'>
+                      <span className='px-3 py-1 text-xs font-medium text-gray-600'>
                         {account.phone ? account.phone : 'N/A'}
                       </span>
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-2 justify-center text-center">
                         <div className={`w-20 px-3 py-1 rounded-full text-xs font-medium border ${getEnableColor(account.enable)}`}>
-                          {account.enable ? 'Enabled' : 'Disabled'}
+                          {account.enable ? 'Hoạt động' : 'Tạm khóa'}
                         </div>
                       </div>
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center justify-center space-x-2">
-                        <button className={`${account.role === 'USER' ? 'text-orange-400 hover:text-orange-300 cursor-pointer' : 'text-gray-400 hover:text-gray-300'} p-2  hover:bg-slate-800 rounded-lg transition-colors duration-200`}
+                        <button className={`${account.role === 'USER' ? 'text-orange-600 hover:text-orange-700 cursor-pointer' : 'text-gray-400 hover:text-gray-500'} p-2 hover:bg-orange-100 rounded-lg transition-all duration-200`}
                           onClick={() => handleUpgradeAccount(account.id)}
                           disabled={account.role !== 'USER'}>
                           <CircleArrowUp className="h-4 w-4" />
                         </button>
-                        <button className="cursor-pointer p-2 text-blue-400 hover:text-blue-300 hover:bg-slate-800 rounded-lg transition-colors duration-200"
+                        <button className="cursor-pointer p-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200"
                           onClick={() => {
                             setSelectedAccount(account)
                             setIsOpenEditModal(true)
                           }}>
                           <Edit className="h-4 w-4" />
                         </button>
-                        <button className={`cursor-pointer p-2 ${account.enable ? 'text-red-400 hover:text-red-300' : 'text-green-400 hover:text-green-300'} hover:bg-slate-800 rounded-lg transition-colors duration-200`}
+                        <button className={`cursor-pointer p-2 ${account.enable ? 'text-red-600 hover:text-red-700 hover:bg-red-50' : 'text-green-600 hover:text-green-700 hover:bg-green-50'} rounded-lg transition-all duration-200`}
                           onClick={() => handleDelete(account.id)}>
                           {account.enable ? <CircleSlash2 className="h-4 w-4" /> : <CheckLine className="h-4 w-4" />}
                         </button>
-                        {/* <button className="p-2 text-slate-400 hover:text-slate-300 hover:bg-slate-800 rounded-lg transition-colors duration-200">
-                        <MoreVertical className="h-4 w-4" />
-                      </button> */}
                       </div>
                     </td>
                   </tr>
@@ -298,8 +295,8 @@ const AccountManager: React.FC = () => {
         {/* Empty State */}
         {(filteredAccounts.length === 0 && isLoading == false) && (
           <div className="text-center py-12">
-            <div className="text-slate-400 text-lg mb-2">No accounts found</div>
-            <p className="text-slate-500">Try adjusting your search or filter criteria</p>
+            <div className="text-gray-600 text-lg mb-2">Không tìm thấy tài khoản</div>
+            <p className="text-gray-500">Thử điều chỉnh tìm kiếm hoặc tiêu chí lọc</p>
           </div>
         )}
       </div>
@@ -307,19 +304,19 @@ const AccountManager: React.FC = () => {
       {/* Pagination */}
       {filteredAccounts.length > 0 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-slate-400">
-            Showing {filteredAccounts.length} of {accounts.length} accounts
+          <p className="text-sm text-gray-600">
+            Hiển thị {filteredAccounts.length} trong tổng số {accounts.length} tài khoản
           </p>
           <div className="flex items-center space-x-2">
-            <button className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors duration-200">
-              Previous
+            <button className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200">
+              Trước
             </button>
-            <button className="px-3 py-2 bg-blue-600 text-white rounded-lg">1</button>
-            <button className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors duration-200">
+            <button className="px-3 py-2 bg-orange-600 text-white rounded-lg">1</button>
+            <button className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200">
               2
             </button>
-            <button className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors duration-200">
-              Next
+            <button className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200">
+              Tiếp
             </button>
           </div>
         </div>

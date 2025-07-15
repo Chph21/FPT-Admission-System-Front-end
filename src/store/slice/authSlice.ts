@@ -56,13 +56,19 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData: RegisterRequest, { rejectWithValue }) => {
     try {
+      const requestBody = {
+        name: userData.name.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+        email: userData.email,
+        password: userData.password
+      };
+      
       const response = await fetch('http://localhost:8080/api/authen/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'accept': '*/*',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
@@ -134,13 +140,9 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        if (action.payload.token) {
-          state.token = action.payload.token;
-          state.user = action.payload.user;
-          state.isAuthenticated = true;
-          localStorage.setItem('token', action.payload.token);
-          localStorage.setItem('user', JSON.stringify(action.payload.user));
-        }
+        // Registration successful but user needs to login
+        // Don't automatically authenticate user after registration
+        console.log('Registration completed successfully');
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;

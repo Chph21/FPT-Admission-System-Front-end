@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, Phone, Calendar } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { registerUser, clearError } from '../../store/slice/authSlice';
 import fptLogo from '../../assets/Logo_Trường_Đại_học_FPT.svg.png';
@@ -8,29 +8,35 @@ import fptLogo from '../../assets/Logo_Trường_Đại_học_FPT.svg.png';
 interface RegisterFormData {
   fullName: string;
   email: string;
-  phone: string;
-  dateOfBirth: string;
   password: string;
   confirmPassword: string;
+}
+
+interface FormErrors {
+  fullName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  terms?: string;
 }
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { isLoading, error, isAuthenticated, user } = useAppSelector((state) => state.auth);
+  const [registrationAttempted, setRegistrationAttempted] = useState(false);
 
   const [formData, setFormData] = useState<RegisterFormData>({
     fullName: '',
     email: '',
-    phone: '',
-    dateOfBirth: '',
     password: '',
     confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState<Partial<RegisterFormData>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -45,6 +51,39 @@ const Register: React.FC = () => {
       dispatch(clearError());
     };
   }, [dispatch]);
+
+  // Handle successful registration
+  useEffect(() => {
+    if (!isLoading && !error && successMessage) {
+      // Redirect to login after 2 seconds
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+    }
+  }, [isLoading, error, successMessage, navigate]);
+
+  // Clear success message when error occurs
+  useEffect(() => {
+    if (error) {
+      setSuccessMessage('');
+      setRegistrationAttempted(false);
+    }
+  }, [error]);
+
+  // Check for successful registration
+  useEffect(() => {
+    if (registrationAttempted && !isLoading && !error) {
+      setSuccessMessage('Đăng ký thành công! Chuyển hướng đến trang đăng nhập...');
+      setFormData({
+        fullName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+      setAcceptTerms(false);
+      setRegistrationAttempted(false);
+    }
+  }, [registrationAttempted, isLoading, error]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,7 +101,7 @@ const Register: React.FC = () => {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<RegisterFormData> = {};
+    const newErrors: FormErrors = {};
 
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Họ và tên là bắt buộc';
@@ -74,23 +113,6 @@ const Register: React.FC = () => {
       newErrors.email = 'Email là bắt buộc';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email không hợp lệ';
-    }
-
-    if (!formData.phone) {
-      newErrors.phone = 'Số điện thoại là bắt buộc';
-    } else if (!/^[0-9]{10,11}$/.test(formData.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Số điện thoại không hợp lệ';
-    }
-
-    if (!formData.dateOfBirth) {
-      newErrors.dateOfBirth = 'Ngày sinh là bắt buộc';
-    } else {
-      const birthDate = new Date(formData.dateOfBirth);
-      const today = new Date();
-      const age = today.getFullYear() - birthDate.getFullYear();
-      if (age < 16 || age > 100) {
-        newErrors.dateOfBirth = 'Tuổi phải từ 16 đến 100';
-      }
     }
 
     if (!formData.password) {
@@ -108,7 +130,7 @@ const Register: React.FC = () => {
     }
 
     if (!acceptTerms) {
-      newErrors.confirmPassword = 'Bạn phải đồng ý với điều khoản sử dụng';
+      newErrors.terms = 'Bạn phải đồng ý với điều khoản sử dụng';
     }
 
     setErrors(newErrors);
@@ -130,10 +152,8 @@ const Register: React.FC = () => {
     };
 
     // Dispatch register action
-    const result = await dispatch(registerUser(registerData));
-    
-    // If registration is successful, user will be automatically logged in
-    // and redirected due to useEffect above
+    setRegistrationAttempted(true);
+    await dispatch(registerUser(registerData));
   };
 
   return (
@@ -158,6 +178,13 @@ const Register: React.FC = () => {
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
             {error}
+          </div>
+        )}
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+            {successMessage}
           </div>
         )}
 
@@ -220,59 +247,7 @@ const Register: React.FC = () => {
               )}
             </div>
 
-            {/* Phone Field */}
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                Số điện thoại
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  required
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className={`appearance-none relative block w-full px-3 py-3 pl-10 border ${
-                    errors.phone ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm`}
-                  placeholder="Nhập số điện thoại"
-                />
-              </div>
-              {errors.phone && (
-                <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
-              )}
-            </div>
 
-            {/* Date of Birth Field */}
-            <div>
-              <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-2">
-                Ngày sinh
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Calendar className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="dateOfBirth"
-                  name="dateOfBirth"
-                  type="date"
-                  required
-                  value={formData.dateOfBirth}
-                  onChange={handleInputChange}
-                  className={`appearance-none relative block w-full px-3 py-3 pl-10 border ${
-                    errors.dateOfBirth ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm`}
-                />
-              </div>
-              {errors.dateOfBirth && (
-                <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>
-              )}
-            </div>
 
             {/* Password Field */}
             <div>
@@ -354,31 +329,36 @@ const Register: React.FC = () => {
           </div>
 
           {/* Terms and Conditions */}
-          <div className="flex items-center">
-            <input
-              id="accept-terms"
-              name="accept-terms"
-              type="checkbox"
-              checked={acceptTerms}
-              onChange={(e) => setAcceptTerms(e.target.checked)}
-              className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
-            />
-            <label htmlFor="accept-terms" className="ml-2 block text-sm text-gray-900">
-              Tôi đồng ý với{' '}
-              <Link
-                to="/terms"
-                className="font-medium text-orange-600 hover:text-orange-500"
-              >
-                điều khoản sử dụng
-              </Link>{' '}
-              và{' '}
-              <Link
-                to="/privacy"
-                className="font-medium text-orange-600 hover:text-orange-500"
-              >
-                chính sách bảo mật
-              </Link>
-            </label>
+          <div>
+            <div className="flex items-center">
+              <input
+                id="accept-terms"
+                name="accept-terms"
+                type="checkbox"
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
+                className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+              />
+              <label htmlFor="accept-terms" className="ml-2 block text-sm text-gray-900">
+                Tôi đồng ý với{' '}
+                <Link
+                  to="/terms"
+                  className="font-medium text-orange-600 hover:text-orange-500"
+                >
+                  điều khoản sử dụng
+                </Link>{' '}
+                và{' '}
+                <Link
+                  to="/privacy"
+                  className="font-medium text-orange-600 hover:text-orange-500"
+                >
+                  chính sách bảo mật
+                </Link>
+              </label>
+            </div>
+            {errors.terms && (
+              <p className="mt-1 text-sm text-red-600">{errors.terms}</p>
+            )}
           </div>
 
           {/* Submit Button */}
