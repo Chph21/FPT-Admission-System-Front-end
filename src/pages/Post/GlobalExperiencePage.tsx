@@ -27,7 +27,7 @@ const GlobalExperiencePage: React.FC = () => {
         try {
             const offset = currentPage * pageSize;
             const res = await fetch(
-                `http://localhost:8080/api/posts/latest?limit=${pageSize}&offset=${offset}&category=TRAI_NGHIEM_TOAN_CAU`
+                `https://fpt-admission-system.onrender.com/api/posts/latest?limit=${pageSize}&offset=${offset}&category=TRAI_NGHIEM_TOAN_CAU`
             );
             if (!res.ok) throw new Error('Failed to fetch posts');
             const data: Post[] = await res.json();

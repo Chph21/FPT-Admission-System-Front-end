@@ -32,7 +32,7 @@ const CategorySection: React.FC<Props> = ({ title, category }) => {
     const fetchPosts = async (currentOffset: number, category: string) => {
         try {
             const res = await fetch(
-                `http://localhost:8080/api/posts/latest?limit=${limit}&offset=${currentOffset}&category=${category}`
+                `https://fpt-admission-system.onrender.com/api/posts/latest?limit=${limit}&offset=${currentOffset}&category=${category}`
             );
             const data = await res.json();
 
