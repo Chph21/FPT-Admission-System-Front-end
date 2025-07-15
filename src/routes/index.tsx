@@ -11,7 +11,22 @@ import Login from '../pages/Authen/Login';
 import Register from '../pages/Authen/Register';
 import TestPage from '../pages/Authen/TestPage';
 import LoginSimple from '../pages/Authen/LoginSimple';
-
+// import { AdminLayout } from '../components/Admin/layout/AdminLayout';
+// import Dashboard from '../pages/Admin/Dashboard';
+// import Analytics from '../pages/Admin/Analytics';
+// import UserManager from '../pages/Admin/UserManager';
+// import { Setting } from '../pages/Admin/Setting';
+// import Error404 from '../pages/Admin/Error404';
+// import PostListPage from '../pages/Post/PostListPage';
+// import CreatePostPage from '../pages/Post/CreatePostPage';
+// import EditPostPage from '../pages/Post/EditPostPage';
+// import AlumniNewsPage from '../pages/Post/AlumiNewPage';
+// import NewsPage from '../pages/Post/NewPage';
+// import PostDetailPage from '../pages/Post/PostDetailPage';
+// import TrainingProgramPage from '../pages/Post/TrainingProgramPage';
+// import GlobalExperiencePage from '../pages/Post/GlobalExperiencePage';
+import CampusManagement from '../pages/Staff/campus/CampusManagement';
+import { DashboardOverview } from '../pages/Staff/Dashboard/Overview';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -35,9 +50,17 @@ const router = createBrowserRouter([
     path: '/staff',
     element: <StaffLayout />,
     children: [
+       {
+        index: true,
+        element: <DashboardOverview />
+      },
       {
         path: 'majors',
         element: <MajorManagement />
+      },
+      {
+        path: 'campuses',
+        element: <CampusManagement />
       },
       {
         path: 'admissionschedule',

@@ -3,7 +3,7 @@ import { DivideIcon as LucideIcon } from 'lucide-react';
 
 interface StatsCardProps {
   title: string;
-  value: string | number;
+  value: string | number | React.ReactNode;
   change?: string;
   changeType?: 'increase' | 'decrease';
   icon: typeof LucideIcon;
@@ -26,21 +26,14 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-500 hover:shadow-lg transition-shadow">
+    <div className="bg-white p-10 rounded-xl shadow-sm border border-gray-500 hover:shadow-lg transition-shadow">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-2xl font-medium text-gray-600">{title}</p>
           <p className="text-4xl font-bold text-gray-900 mt-2">{value}</p>
-          {change && (
-            <p className={`text-sm mt-2 flex items-center ${
-              changeType === 'increase' ? 'text-green-600' : 'text-red-600'
-            }`}>
-              <span>{change}</span>
-            </p>
-          )}
         </div>
         <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
-          <Icon className="w-6 h-6 text-white" />
+          <Icon className="w-10 h-10 text-white" />
         </div>
       </div>
     </div>

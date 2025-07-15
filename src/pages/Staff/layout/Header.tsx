@@ -8,11 +8,11 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 px-10 py-10">
+    <header className="bg-gradient-to-b from-orange-600 to-orange-700 shadow-sm border-b border-gray-200 px-10 py-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-          <p className="text-sm text-gray-600 mt-1">Manage your admission system efficiently</p>
+          <h1 className="text-5xl font-bold text-white">{title}</h1>
+          <p className="text-xl text-white mt-1">Manage your admission system efficiently</p>
         </div>
         
         <div className="flex items-center space-x-4">

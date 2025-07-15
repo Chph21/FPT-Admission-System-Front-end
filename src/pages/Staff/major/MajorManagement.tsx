@@ -304,7 +304,7 @@ export const MajorManagement: React.FC = () => {
   // Main major list page with child majors below
   if (currentPage === 'major-list') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="min-h-screen text-white">
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -316,10 +316,10 @@ export const MajorManagement: React.FC = () => {
               <div className="flex gap-3">
                 <button
                   onClick={handleCreateNew}
-                  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white text-white px-4 py-2 rounded-lg hover: from-orange-700 hover:to-orange-800 transition-colors"
                 >
-                  <Plus className="w-5 h-5" />
-                  Add Major
+                  <Plus className="w-8 h-8 text-white" />
+                  <span className='text-white text-xl font-bold'>Add New Major</span>
                 </button>
               </div>
             </div>
@@ -346,10 +346,11 @@ export const MajorManagement: React.FC = () => {
               </div>
               <button
                 onClick={handleCreateChildMajor}
-                className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                className="flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white px-4 py-2 rounded-lg hover:from-orange-700 hover:to-orange-800 transition-colors"
               >
-                <Plus className="w-5 h-5" />
-                Add Child Major
+                <Plus className="w-8 h-8" />
+                <span className='text-white text-xl font-bold'>Add Child Major</span>
+
               </button>
             </div>
 

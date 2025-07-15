@@ -178,9 +178,12 @@ const handleSaveCampus = async (data: CampusFormData) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-white">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
          {/* Header with Search and Add Button */}
+         <div>
+          <h1 className="text-3xl font-bold text-gray-900">Campus Management</h1>
+        </div>
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
@@ -196,10 +199,10 @@ const handleSaveCampus = async (data: CampusFormData) => {
             
             <button
               onClick={handleAddCampus}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white px-4 py-2 rounded-lg hover:from-orange-700 hover:to-orange-800 transition-colors bold"
             >
-              <Plus className="w-5 h-5" />
-              Add Campus
+              <Plus className="w-8 h-8 text-white font-bold" />
+              <span className='text-white text-xl font-bold'>Add  New Campus</span>
             </button>
           </div>
 

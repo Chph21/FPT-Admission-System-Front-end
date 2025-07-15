@@ -1,14 +1,12 @@
 
 import React from 'react';
-import { 
-  Home, 
-  GraduationCap, 
-  Building, 
-  FileText, 
-  Users, 
-  Settings,
-  BarChart3,
-  Bell
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import {
+  Home,
+  GraduationCap,
+  Building,
+  FileText,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -25,17 +23,19 @@ const menuItems = [
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
   return (
-    <div className="w-64 bg-white shadow-lg h-full flex flex-col">
-      <div className="p-6 border-b border-gray-200 mt-5">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-            <GraduationCap className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">FPT Admission</h1>
-            <p className="text-sm text-gray-600">Staff Dashboard</p>
-          </div>
-        </div>
+    <div className="w-80 bg-gradient-to-b from-orange-600 to-orange-700 shadow-lg h-full flex flex-col">
+      <div className="flex items-center justify-between h-20 px-4 border-b border-orange-500 bg-orange-700">
+        <Link to="/" className="flex items-center space-x-2 text-white">
+          <img
+            src='https://companieslogo.com/img/orig/FPT.VN_BIG.D-b2da87b8.png?t=1722927800'
+            alt="FPT Logo"
+            className=" w-12 object-cover text-white"
+          />
+        <span className="text-3xl font-bold text-white">FPT Admission</span>
+
+
+        </Link>
+        {/* <p className="text-2xl text-white-600">Staff Dashboard</p> */}
       </div>
       
       <nav className="flex-1 p-4 space-y-3 w-full">
