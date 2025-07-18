@@ -10,11 +10,10 @@ const CreatePostPage = () => {
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
   const prevImageUrlsRef = useRef<string[]>([]);
+  const urlToPublicIdMap = useRef<Map<string, string>>(new Map());
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  // ✅ Tự xác định basePath là "/admin" hay "/staff"
   const basePath = location.pathname.startsWith("/admin") ? "/admin" : "/staff";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,7 +23,7 @@ const CreatePostPage = () => {
       return;
     }
 
-    const res = await fetch("http://localhost:8080/api/posts", {
+    const res = await fetch("https://fpt-admission-system.onrender.com/api/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +46,9 @@ const CreatePostPage = () => {
   };
 
   class MyUploadAdapter {
-    constructor(loader) {
+    private loader: any;
+
+    constructor(loader: any) {
       this.loader = loader;
     }
 
@@ -56,7 +57,7 @@ const CreatePostPage = () => {
       const file = await this.loader.file;
       data.append("upload", file);
 
-      const response = await fetch("http://localhost:8080/api/upload-image", {
+      const response = await fetch("https://fpt-admission-system.onrender.com/api/upload-image", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`
@@ -65,16 +66,21 @@ const CreatePostPage = () => {
       });
 
       const result = await response.json();
+
+      if (result?.url && result?.public_id) {
+        urlToPublicIdMap.current.set(result.url, result.public_id);
+      }
+
       return {
         default: result.url
       };
     }
 
-    abort() { }
+    abort() {}
   }
 
-  function MyCustomUploadAdapterPlugin(editor) {
-    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+  function MyCustomUploadAdapterPlugin(editor: any) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
       return new MyUploadAdapter(loader);
     };
   }
@@ -85,6 +91,24 @@ const CreatePostPage = () => {
     return Array.from(div.querySelectorAll("img"))
       .map(img => img.getAttribute("src") || "")
       .filter(Boolean);
+  };
+
+  const deleteImageByUrl = async (url: string) => {
+    const publicId = urlToPublicIdMap.current.get(url);
+    if (!publicId) return;
+
+    try {
+      await fetch("https://fpt-admission-system.onrender.com/api/delete-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ public_id: publicId })
+      });
+    } catch (err) {
+      console.error("Không thể xóa ảnh:", err);
+    }
   };
 
   return (
@@ -138,16 +162,7 @@ const CreatePostPage = () => {
             const newImages = extractImageUrls(newContent);
 
             const deletedImages = oldImages.filter(url => !newImages.includes(url));
-            deletedImages.forEach(url => {
-              fetch("https://fpt-admission-system.onrender.com/api/delete-image", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify({ url })
-              });
-            });
+            deletedImages.forEach(deleteImageByUrl);
 
             prevImageUrlsRef.current = newImages;
           }}

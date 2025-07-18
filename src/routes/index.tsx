@@ -27,6 +27,9 @@ import GlobalExperiencePage from '../pages/Post/GlobalExperiencePage';
 import CampusManagement from '../pages/Staff/campus/CampusManagement';
 import { DashboardOverview } from '../pages/Staff/Dashboard/Overview';
 
+import ContactPage from '../pages/Contact/ContactPage';
+import AboutPage from '../pages/About/AboutPage';
+import ApplicationForm from '../pages/Application/ApplicationForm';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -59,6 +62,18 @@ const router = createBrowserRouter([
       {
         path: 'trai-nghiem',
         element: <GlobalExperiencePage />
+      },
+      {
+        path: 'lien-he',
+        element: <ContactPage />
+      },
+      {
+        path: 'gioi-thieu',
+        element: <AboutPage />
+      },
+      {
+        path: 'dang-ky',
+        element: <ApplicationForm />
       }
     ]
   },

@@ -237,9 +237,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="consultation-form-wrapper">
-              <AdmissionTicketForm onSubmit={handleTicketSubmit} />
-            </div>
+          
           </div>
         </div>
       </section>
