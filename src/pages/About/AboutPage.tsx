@@ -111,14 +111,12 @@ const AboutPage: React.FC = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div
-          className="relative w-full h-[500px] bg-center bg-cover bg-no-repeat flex items-center justify-center"
+          className="relative w-full h-[500px] bg-center bg-cover flex items-center justify-center"
           style={{
-            backgroundImage: `url('/src/assets/backgr.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundImage: "url('/backgr.jpg')",
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
           <div className="relative z-10 text-center">
             <h1 className="text-white text-4xl md:text-6xl font-bold uppercase tracking-wide drop-shadow-2xl mb-4">
               Giới thiệu
