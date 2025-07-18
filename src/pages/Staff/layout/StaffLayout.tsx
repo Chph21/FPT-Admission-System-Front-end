@@ -2,10 +2,6 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from '../layout/Sidebar';
 import { Header } from '../layout/Header';
-// Removed unused imports
-
-
-
 const StaffLayout = () => {
   return (
     <div className="flex h-screen bg-gray-50">

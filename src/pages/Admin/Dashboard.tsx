@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Calendar,
-  BookOpen,
-  DollarSign,
   TrendingUp,
   Users,
   FileText,
@@ -25,11 +23,14 @@ import {
 import type { Account, Response } from '../../components/DataConfig/Interface';
 import { api } from '../../components/DataConfig/Api';
 import { applicationTrendData, coursePopularityData, getSimpleRoleColor, recentApplications } from '../../components/DataConfig/DataLoader';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
-  
+
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isAccountLoading, setIsAccountLoading] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAccounts();
@@ -62,7 +63,7 @@ const Dashboard: React.FC = () => {
 
   const chartData = Object.entries(roleCounts).map(([role, count]) => ({
     role: role,
-    count: count,
+    Value: count,
   }));
 
   const getStatusColor = (status: string) => {
@@ -85,9 +86,12 @@ const Dashboard: React.FC = () => {
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
+      const displayLabel = label || payload[0]?.name || payload[0]?.payload?.role;
       return (
-        <div className="bg-white border border-orange-200 rounded-lg p-3 shadow-lg">
-          <p className="text-gray-800 font-medium">{`${label}`}</p>
+        <div className="bg-white border border-orange-200 rounded-lg p-3 shadow-lg text-black">
+          {displayLabel && (
+            <p className="text-gray-800 font-medium">{displayLabel}</p>
+          )}
           {payload.map((entry: any, index: number) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
               {`${entry.dataKey}: ${entry.value}`}
@@ -183,7 +187,7 @@ const Dashboard: React.FC = () => {
                     innerRadius={60}
                     outerRadius={120}
                     paddingAngle={1}
-                    dataKey='count'
+                    dataKey='Value'
                     nameKey='role'
                   >
                     {chartData.map((data) => (
@@ -258,21 +262,17 @@ const Dashboard: React.FC = () => {
           <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Thao tác nhanh</h2>
             <div className="space-y-3">
-              <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all duration-200 text-left border border-orange-200 hover:border-orange-300">
+              <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all 
+              duration-200 text-left border border-orange-200 hover:border-orange-300"
+                onClick={() => navigate('/admin/applications')}>
                 <FileText className="h-5 w-5 text-orange-600" />
                 <span className="text-gray-800 font-medium">Duyệt đăng ký</span>
               </button>
-              <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all duration-200 text-left border border-orange-200 hover:border-orange-300">
+              <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all 
+              duration-200 text-left border border-orange-200 hover:border-orange-300"
+              onClick={() => navigate('/admin/users')}>
                 <Users className="h-5 w-5 text-orange-600" />
                 <span className="text-gray-800 font-medium">Quản lý người dùng</span>
-              </button>
-              <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all duration-200 text-left border border-orange-200 hover:border-orange-300">
-                <BookOpen className="h-5 w-5 text-orange-600" />
-                <span className="text-gray-800 font-medium">Thêm khóa học mới</span>
-              </button>
-              <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all duration-200 text-left border border-orange-200 hover:border-orange-300">
-                <DollarSign className="h-5 w-5 text-orange-600" />
-                <span className="text-gray-800 font-medium">Báo cáo tài chính</span>
               </button>
             </div>
           </div>

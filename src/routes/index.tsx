@@ -25,7 +25,8 @@ import NewsPage from '../pages/Post/NewPage';
 import PostDetailPage from '../pages/Post/PostDetailPage';
 import TrainingProgramPage from '../pages/Post/TrainingProgramPage';
 import GlobalExperiencePage from '../pages/Post/GlobalExperiencePage';
-
+import ContactPage from '../pages/Contact/ContactPage';
+import AboutPage from '../pages/About/AboutPage';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
       {
         path: 'trai-nghiem',
         element: <GlobalExperiencePage />
+      },
+      {
+        path: 'lien-he',
+        element: <ContactPage />
+      },
+      {
+        path: 'gioi-thieu',
+        element: <AboutPage />
       }
     ]
   },

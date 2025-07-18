@@ -6,10 +6,11 @@ const NewsPage: React.FC = () => {
     <div className="w-full overflow-hidden">
       {/* Banner */}
       <div
-        className="relative w-full h-[301px] bg-center bg-cover flex items-center justify-center"
+        className="relative w-full h-[301px] bg-cover flex items-center justify-center"
         style={{
           backgroundImage:
             "url('https://daihoc.fpt.edu.vn/wp-content/uploads/2025/01/header-2024-png.avif')",
+          backgroundPosition: 'center 100%',
         }}
       >
         <h1 className="text-white text-3xl md:text-5xl font-bold uppercase tracking-wide drop-shadow-lg">
