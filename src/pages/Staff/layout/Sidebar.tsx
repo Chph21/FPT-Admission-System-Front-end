@@ -5,13 +5,16 @@ import {
   GraduationCap,
   Building,
   FileText,
+  BarChart3,
 } from 'lucide-react';
 
 const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/staff' },
-  { id: 'majors', label: 'Majors', icon: GraduationCap, path: '/staff/majors' },
-  { id: 'campuses', label: 'Campuses', icon: Building, path: '/staff/campuses' },
-  { id: 'posts', label: 'Posts', icon: FileText, path: '/staff/posts' },
+  { id: 'dashboard', label: 'Dashboard', icon: Home },
+  { id: 'majors', label: 'Majors', icon: GraduationCap },
+  { id: 'campuses', label: 'Campuses', icon: Building },
+  { id: 'admissionschedule', label: 'Manage Schedule', icon: BarChart3   },
+  { id: 'tickets', label: 'Tickets', icon: FileText },
+  { id: 'posts', label: 'Posts', icon: FileText },
 ];
 
 export const Sidebar = () => {
