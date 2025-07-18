@@ -1,52 +1,76 @@
 import React, { useState } from 'react';
 import './AdmissionTicket.css';
 
-export interface AdmissionTicket {
-  id: number;
-  staff: string;
-  createDate: string;
-  topic: string;
-  content: string;
-  response: string;
-  status: string;
-  user: string;
-}
-
 export interface AdmissionTicketFormProps {
-  onSubmit: (ticket: { topic: string; content: string }) => void;
-  disabled?: boolean;
+  onSubmit?: (ticket: { topic: string; content: string; email?: string }) => void;
+  isLoggedIn: boolean;
+  userEmail?: string;
 }
 
-const AdmissionTicketForm: React.FC<AdmissionTicketFormProps> = ({ onSubmit, disabled }) => {
+const AdmissionTicketForm: React.FC<AdmissionTicketFormProps> = ({
+  onSubmit,
+  isLoggedIn,
+  userEmail,
+}) => {
   const [form, setForm] = useState({
     topic: '',
     content: '',
+    email: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (disabled) return;
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (disabled) return;
-    onSubmit(form);
-    setForm({ topic: '', content: '' });
+    const { topic, content, email } = form;
+    const finalEmail = isLoggedIn ? userEmail : email;
+
+    const body = { topic, content, email: finalEmail };
+
+    try {
+      await fetch(
+        `http://localhost:8080/api/tickets?content=${encodeURIComponent(content)}&response=${topic}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(finalEmail),
+        }
+      );
+      onSubmit?.({ topic, content, email: finalEmail });
+      alert('Gửi yêu cầu thành công!');
+      setForm({ topic: '', content: '', email: '' });
+    } catch (err) {
+      alert('Gửi yêu cầu thất bại!');
+      console.error(err);
+    }
   };
 
   return (
     <form className="admission-ticket-form" onSubmit={handleSubmit}>
       <h3 className="admission-ticket-title">Gửi yêu cầu tư vấn tuyển sinh</h3>
+
       <div className="admission-ticket-group">
         <label>Chủ đề</label>
-        <input name="topic" value={form.topic} onChange={handleChange} required disabled={disabled} />
+        <input name="topic" value={form.topic} onChange={handleChange} required />
       </div>
+
       <div className="admission-ticket-group">
         <label>Nội dung</label>
-        <textarea name="content" value={form.content} onChange={handleChange} required rows={3} disabled={disabled} />
+        <textarea name="content" value={form.content} onChange={handleChange} required rows={3} />
       </div>
-      <button type="submit" className="admission-ticket-submit" disabled={disabled}>Gửi yêu cầu</button>
+
+      {!isLoggedIn && (
+        <div className="admission-ticket-group">
+          <label>Email</label>
+          <input name="email" type="email" value={form.email} onChange={handleChange} required />
+        </div>
+      )}
+
+      <button type="submit" className="admission-ticket-submit">
+        Gửi yêu cầu
+      </button>
     </form>
   );
 };
