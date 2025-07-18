@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home/Home';
-import Layout from '../components/layout/Layout';
+import Layout from '../components/Layout/Layout';
 import ChatBotPage from '../pages/ChatBot/ChatBotPage';
 import StaffLayout from '../pages/Staff/layout/StaffLayout';
 import { MajorManagement } from '../pages/Staff/major/MajorManagement';
@@ -24,7 +24,8 @@ import NewsPage from '../pages/Post/NewPage';
 import PostDetailPage from '../pages/Post/PostDetailPage';
 import TrainingProgramPage from '../pages/Post/TrainingProgramPage';
 import GlobalExperiencePage from '../pages/Post/GlobalExperiencePage';
-
+import ContactPage from '../pages/Contact/ContactPage';
+import AboutPage from '../pages/About/AboutPage';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
       {
         path: 'trai-nghiem',
         element: <GlobalExperiencePage />
+      },
+      {
+        path: 'lien-he',
+        element: <ContactPage />
+      },
+      {
+        path: 'gioi-thieu',
+        element: <AboutPage />
       }
     ]
   },
