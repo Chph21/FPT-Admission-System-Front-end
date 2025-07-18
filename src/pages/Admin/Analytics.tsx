@@ -6,19 +6,11 @@ import {
     Clock,
     TrendingUp,
     TrendingDown,
-    Calendar,
     Download,
     Filter,
-    BarChart3,
-    PieChart,
-    Activity
 } from 'lucide-react';
 import {
-    LineChart,
     Line,
-    AreaChart,
-    Area,
-    BarChart,
     Bar,
     PieChart as RechartsPieChart,
     Pie,

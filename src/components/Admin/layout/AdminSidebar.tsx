@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   X,
@@ -38,7 +38,8 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-75 bg-gradient-to-b from-orange-600 to-orange-700 border-r border-orange-500 transform transition-transform duration-300 ease-in-out shadow-xl
+        fixed inset-y-0 left-0 z-50 w-75 bg-gradient-to-b from-orange-600 to-orange-700 border-r 
+        border-orange-500 transform transition-transform duration-300 ease-in-out shadow-xl
         lg:translate-x-0 lg:static lg:inset-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
@@ -46,7 +47,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <Link to="/admin" className="flex items-center space-x-2 text-white">
             <img
               src='https://companieslogo.com/img/orig/FPT.VN_BIG.D-b2da87b8.png?t=1722927800'
-              className="h-8 w-8 object-cover rounded-lg"
+              className="w-11 object-cover"
             />
             <span className="text-xl font-bold text-white">FPT Admission</span>
           </Link>

@@ -63,7 +63,7 @@ export const NavigationItems = [
     { name: 'Dashboard', href: '/admin', icon: Home },
     { name: 'User Manager', href: '/admin/users', icon: Users },
     { name: 'Applications', href: '/admin/error404', icon: FileText },
-    { name: 'Analytics', href: '/admin/error404', icon: BarChart3 },
+    { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
     { name: 'Posts', href: '/admin/posts', icon: BookOpen },
     { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
