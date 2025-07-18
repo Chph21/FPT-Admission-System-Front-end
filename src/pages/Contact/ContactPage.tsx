@@ -92,13 +92,13 @@ const ContactPage: React.FC = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div
-          className="relative w-full h-[400px] bg-center bg-cover flex items-center justify-center"
+          className="relative w-full h-[400px] bg-cover flex items-center justify-center"
           style={{
-            backgroundImage: "url('/backgr.jpg')",
+            backgroundImage: "url('https://ptehelper.com.au/wp-content/uploads/2023/07/tieng-anh-dau-vao-dai-hoc-fpt-1536x864.webp')",
+            backgroundPosition: 'center 70%',
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-          <div className="relative z-10 text-center">
+         <div className="relative z-10 text-center">
             <h1 className="text-white text-4xl md:text-6xl font-bold uppercase tracking-wide drop-shadow-2xl mb-4">
               Liên hệ
             </h1>

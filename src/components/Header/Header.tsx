@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logout } from '../../store/slice/authSlice';
 import { User, LogOut, Search, Globe, Menu, X, ChevronDown } from 'lucide-react';
@@ -66,6 +66,7 @@ const Header: React.FC = () => {
   const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
@@ -107,7 +108,6 @@ const Header: React.FC = () => {
     { to: '/gioi-thieu', label: t('about') },
     { to: '/tin-tuc', label: t('news') },
     { to: '/nganh-hoc', label: t('majors') },
-    { to: '/tuyen-sinh', label: t('admission') },
     { to: '/trai-nghiem', label: t('experience') },
     { to: '/cuu-sinh-vien', label: t('alumni') },
     { to: '/chatbot', label: t('chatbot') },
@@ -206,13 +206,22 @@ const Header: React.FC = () => {
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-              {navItems.map((item, index) => (
-                <li key={index}>
-                  <Link to={item.to} onClick={() => setIsMenuOpen(false)}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {navItems.map((item, index) => {
+                const isActive = item.to === '/' 
+                  ? location.pathname === '/' 
+                  : location.pathname === item.to || location.pathname.startsWith(item.to);
+                return (
+                  <li key={index}>
+                    <Link 
+                      to={item.to} 
+                      onClick={() => setIsMenuOpen(false)}
+                      className={isActive ? 'active' : ''}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </nav>

@@ -400,6 +400,28 @@
   transform: translateY(-2px);
 }
 
+.nav-menu li a.active {
+  color: white;
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-menu li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+.nav-menu li a.active::before {
+  left: 0;
+}
+
 /* Mobile Menu Button */
 .mobile-menu-btn {
   display: none;

@@ -22,6 +22,7 @@ import {
   Mail,
   Clock
 } from 'lucide-react';
+import backgrImage from '../../assets/backgr.jpg';
 
 
 const AboutPage: React.FC = () => {
@@ -111,17 +112,18 @@ const AboutPage: React.FC = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div
-          className="relative w-full h-[500px] bg-center bg-cover flex items-center justify-center"
+          className="relative w-full h-[500px] bg-cover flex items-center justify-center"
           style={{
-            backgroundImage: "url('/backgr.jpg')",
+            backgroundImage: "url('https://ptehelper.com.au/wp-content/uploads/2023/07/tieng-anh-dau-vao-dai-hoc-fpt-1536x864.webp')",
+            backgroundPosition: 'center 67.3%',
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
           <div className="relative z-10 text-center">
             <h1 className="text-white text-4xl md:text-6xl font-bold uppercase tracking-wide drop-shadow-2xl mb-4">
               Giới thiệu
             </h1>
-            <p className="text-white text-lg md:text-xl max-w-3xl mx-auto drop-shadow-2xl font-medium">
+            <p className="text-white-700 text-lg md:text-xl max-w-3xl mx-auto drop-shadow-2xl font-medium">
               Trường Đại học FPT - Nơi ươm mầm tài năng công nghệ tương lai
             </p>
           </div>
