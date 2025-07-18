@@ -4,7 +4,7 @@ import { CampusForm } from './CampusForm';
 import { campusApi } from '../service/CampusApi';
 import type { CampusApiResponse } from '../service/CampusApi';
 import type { Campus, CampusFormData } from '../model/Model';
-import { Search, X, Plus } from 'lucide-react';
+import { Search, X, Plus, Lock } from 'lucide-react';
 
 const CampusManagement: React.FC = () => {
   const [campuses, setCampuses] = useState<Campus[]>([]);
@@ -15,6 +15,7 @@ const CampusManagement: React.FC = () => {
     const [filteredCampuses, setFilteredCampuses] = useState<Campus[]>([]);
   const [searching, setSearching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
+
 
   // Convert API response to Campus model
   const mapApiResponseToCampus = (apiCampus: CampusApiResponse): Campus => ({
@@ -246,7 +247,9 @@ const handleSaveCampus = async (data: CampusFormData) => {
           onAddCampus={handleAddCampus}
           onEditCampus={handleEditCampus}
           onDeleteCampus={handleDeleteCampus}
-          searchKeyword='{searchKeyword}'
+          // searchKeyword='{searchKeyword}'
+                searchKeyword={searchKeyword}
+
         />
       </main>
 

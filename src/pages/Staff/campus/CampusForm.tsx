@@ -74,9 +74,9 @@ export const CampusForm: React.FC<CampusFormProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 backdrop-blur-sm z-40 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-orange-600 to-orange-700">
           <div className="flex items-center space-x-3">
             <Building2 className="w-6 h-6 text-white" />
             <h2 className="text-xl font-semibold text-white">
@@ -169,7 +169,7 @@ export const CampusForm: React.FC<CampusFormProps> = ({
             </button>
             <button
               type="submit"
-              className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center space-x-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-2 rounded-lg hover:from-orange-700 hover:to-orange-800 transition-colors"
             >
               <Save className="w-4 h-4" />
               <span>{campus ? 'Update Campus' : 'Create Campus'}</span>

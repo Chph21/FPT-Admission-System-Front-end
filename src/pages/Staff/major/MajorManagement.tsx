@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, Plus, ArrowLeft } from 'lucide-react';
+import {  Plus } from 'lucide-react';
 import { MajorList } from './ListMajor';
 import { CreateMajorPage } from './CreateMajor';
 import { EditMajorPage } from './EditMajor';
 import { ChildMajorList } from './ChildMajorList';
 import { majorApi } from '../service/MajorApi';
-import type { MajorApiResponse } from '../service/MajorApi';
+import type { MajorApiResponse, MajorFormData } from '../service/MajorApi';
 import { childMajorApi } from '../service/ChildMajorApi';
-import type { Major, MajorFormData, ChildMajorFormData, ChildMajor } from '../model/Model';
+import type { Major, ChildMajorFormData, ChildMajor } from '../model/Model';
 import { ChildMajorForm } from './ChidMajorForm';
 
 export const MajorManagement: React.FC = () => {
@@ -31,8 +31,8 @@ export const MajorManagement: React.FC = () => {
   const [editingChildMajor, setEditingChildMajor] = useState<ChildMajor | null>(null);
   const [childMajorFormMode, setChildMajorFormMode] = useState<'create' | 'edit'>('create');
   const [childMajors, setChildMajors] = useState<ChildMajor[]>([]);
-  const [selectedMajor, setSelectedMajor] = useState<Major | null>(null);
   const [loadingChildMajors, setLoadingChildMajors] = useState(false);
+
 
   // Convert API response to Major model
   const mapApiResponseToMajor = (apiMajor: MajorApiResponse): Major => ({
@@ -148,6 +148,7 @@ export const MajorManagement: React.FC = () => {
   const handleCreateMajor = async (formData: MajorFormData) => {
     try {
       await majorApi.createMajor({
+        idCampus: formData.idCampus,
         name: formData.name,
         description: formData.description,
         duration: formData.duration,
@@ -166,6 +167,7 @@ export const MajorManagement: React.FC = () => {
 
     try {
       await majorApi.updateMajor(editingMajor.id, {
+        idCampus: formData.idCampus,
         name: formData.name,
         description: formData.description,
         duration: formData.duration,
@@ -310,7 +312,10 @@ export const MajorManagement: React.FC = () => {
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Major Management</h1>
+                <h1 className="text-5xl font-bold text-gray-900">Major Management</h1>
+                <p className="text-gray-600 mt-1">
+                  Manage majors ({filteredMajors.length} total)
+                </p>
               </div>
 
               <div className="flex gap-3">
@@ -339,9 +344,9 @@ export const MajorManagement: React.FC = () => {
           <div className="mt-12 border-t pt-8">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">All Child Majors</h2>
+                <h2 className="text-5xl font-bold text-gray-900">All Child Majors</h2>
                 <p className="text-gray-600 mt-1">
-                  Manage child majors for all parent majors ({childMajors.length} total)
+                  Manage child majors({childMajors.length} total)
                 </p>
               </div>
               <button

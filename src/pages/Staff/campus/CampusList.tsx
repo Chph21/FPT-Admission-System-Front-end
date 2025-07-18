@@ -98,3 +98,4 @@ export const CampusList: React.FC<CampusListProps> = ({
     </div>
   );
 };
+

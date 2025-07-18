@@ -57,13 +57,6 @@ export interface Major {
   updatedAt?: Date;
 }
 
-export interface MajorFormData {
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-}
-
 export interface ChildMajor {
   id: string;
   name: string;

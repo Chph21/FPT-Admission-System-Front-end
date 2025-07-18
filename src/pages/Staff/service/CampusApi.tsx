@@ -21,7 +21,15 @@ export const campusApi = {
   // Get all campuses
   getAllCampuses: async (): Promise<CampusApiResponse[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/campuses`);
+      const response = await fetch(`${API_BASE_URL}/campuses`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
+        },
+
+      });
+
       if (!response.ok) {
         throw new Error('Failed to fetch campuses');
       }
@@ -39,6 +47,7 @@ export const campusApi = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
         body: JSON.stringify(campus),
       });
@@ -59,6 +68,7 @@ export const campusApi = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
         body: JSON.stringify(campus),
       });
@@ -77,6 +87,10 @@ export const campusApi = {
     try {
       const response = await fetch(`${API_BASE_URL}/campuses/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
+        },
       });
       if (!response.ok) {
         throw new Error('Failed to delete campus');
@@ -102,6 +116,7 @@ export const campusApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
       });
       

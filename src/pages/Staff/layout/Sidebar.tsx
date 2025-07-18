@@ -42,13 +42,13 @@ export const Sidebar = () => {
             <button
               key={id}
               onClick={() => navigate(path)}
-              className={`w-full flex items-center space-x-3 px-4 py-4 rounded-lg text-left transition-all duration-200 ${isActive
-                  ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'
+              className={`w-full flex items-center text-xl space-x-5 px-6 py-4 rounded-lg text-left transition-all duration-200 ${isActive
+                  ? 'bg-white text-3xl font-bold text-orange-700 shadow-lg transform scale-105'
+                  : 'text-white hover:bg-white/10 hover:text-orange-200'
                 }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-gray-500'}`} />
-              <span className="font-medium">{label}</span>
+              <Icon className={`w-5 h-5 ${isActive ? 'text-orange-700' : 'text-white'}`} />
+              <span className="font-semibold">{label}</span>
             </button>
           );
         })}

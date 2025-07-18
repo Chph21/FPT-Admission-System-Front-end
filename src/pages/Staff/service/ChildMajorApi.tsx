@@ -32,6 +32,7 @@ export const childMajorApi = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
         body: JSON.stringify(childMajor),
       });
@@ -55,6 +56,7 @@ export const childMajorApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
       });
       if (!response.ok) {
@@ -74,6 +76,7 @@ export const childMajorApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
       });
       if (!response.ok) {
@@ -93,6 +96,7 @@ export const childMajorApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
       });
       if (!response.ok) {
@@ -128,6 +132,7 @@ export const childMajorApi = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
         body: JSON.stringify({
           name: updateData.name,
@@ -157,6 +162,7 @@ export const childMajorApi = {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
       });
       
@@ -184,6 +190,7 @@ export const childMajorApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
       });
       

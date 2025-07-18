@@ -22,6 +22,7 @@ export interface MajorApiResponse {
 }
 
 export interface MajorFormData {
+  idCampus: string,
   name: string;
   description: string;
   duration: number;
@@ -37,6 +38,7 @@ export const majorApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
         },
       });
       if (!response.ok) {
@@ -56,6 +58,8 @@ export const majorApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
+
         },
       });
       if (!response.ok) {
@@ -72,18 +76,25 @@ export const majorApi = {
   createMajor: async (major: MajorFormData): Promise<MajorApiResponse> => {
     try {
       console.log('Creating major:', major);
-      const response = await fetch(`${API_BASE_URL}/majors`, {
+      
+      // Build URL with idCampus as query parameter
+      const url = `${API_BASE_URL}/majors?idCampus=${encodeURIComponent(major.idCampus)}`;
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({
           name: major.name,
           description: major.description,
           duration: major.duration,
           fee: major.fee
+          // Note: idCampus is NOT in the body, it's in the URL parameter
         }),
       });
+      
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Failed to create major: ${response.status} - ${errorText}`);
@@ -103,6 +114,8 @@ export const majorApi = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
+
         },
         body: JSON.stringify({
           name: major.name,
@@ -129,6 +142,8 @@ export const majorApi = {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
+
         },
       });
       if (!response.ok) {
@@ -156,6 +171,8 @@ export const majorApi = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you use token-based auth
+
         },
       });
 
