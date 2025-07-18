@@ -66,7 +66,7 @@ const EditPostPage: React.FC = () => {
             const file = await this.loader.file;
             data.append("upload", file);
 
-            const res = await fetch("https://fpt-admission-system.onrender.com/api/upload-image", {
+            const res = await fetch("http://localhost:8080/api/upload-image", {
                 method: "POST",
                 headers: { Authorization: `Bearer ${token}` },
                 body: data,

@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface PostListPageProps {
-    basePath: string; // Thêm prop này
+    basePath: string; 
 }
 
 const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
