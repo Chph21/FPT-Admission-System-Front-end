@@ -17,11 +17,12 @@ const EditPostPage: React.FC = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const data = JSON.parse(localStorage.getItem("user") || "{}");
+    const basePath = location.pathname.startsWith("/admin") ? "/admin" : "/staff";
     const userRole = React.useMemo(() => {
         if (!token) return null;
         try {
             const decoded = jwtDecode<DecodedToken>(token);
-            console.log('Decoded token:', decoded); 
+            console.log('Decoded token:', decoded);
             return decoded.roles?.includes('ROLE_ADMIN') ? 'ADMIN' : null;
         } catch (error) {
             console.error('Error decoding token:', error);
@@ -73,8 +74,17 @@ const EditPostPage: React.FC = () => {
             });
 
             const result = await res.json();
-            return { default: result.url };
+            console.log("Upload response:", result);
+
+            if (!result.url) {
+                throw new Error("Không tìm thấy URL trong phản hồi upload!");
+            }
+
+            return {
+                default: result.url, 
+            };
         }
+
 
         abort() { }
     }
@@ -99,7 +109,7 @@ const EditPostPage: React.FC = () => {
 
         if (res.ok) {
             alert("Cập nhật thành công!");
-            navigate(`/posts/${id}`);
+            navigate(`${basePath}/posts`);
         } else {
             const error = await res.json();
             alert("Lỗi: " + (error?.error || "Không rõ"));
@@ -174,7 +184,7 @@ const EditPostPage: React.FC = () => {
                                     "Content-Type": "application/json",
                                     Authorization: `Bearer ${token}`
                                 },
-                                body: JSON.stringify({ url })
+                                body: JSON.stringify({ public_id: "bspdu48zngixt3pvpuhk" })
                             });
                         });
 
