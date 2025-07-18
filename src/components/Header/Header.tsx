@@ -112,6 +112,7 @@ const Header: React.FC = () => {
     { to: '/cuu-sinh-vien', label: t('alumni') },
     { to: '/chatbot', label: t('chatbot') },
     { to: '/lien-he', label: t('contact') },
+    { to: '/dang-ky', label: language === 'vi' ? 'Đăng ký' : 'Apply' },
   ];
 
   return (
