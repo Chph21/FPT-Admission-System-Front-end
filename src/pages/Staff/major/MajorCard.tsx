@@ -1,14 +1,17 @@
 import React from 'react';
-import { GraduationCap, Edit, Trash2, Users, Eye } from 'lucide-react';
-import type { Major } from '../model/Model';
+import { GraduationCap, Edit, Trash2, MapPin } from 'lucide-react';
+import type { Major, Campus } from '../model/Model';
 
 interface MajorCardProps {
   major: Major;
   onEdit: (major: Major) => void;
   onDelete: (id: string) => void;
+
+
 }
 
-export const MajorCard: React.FC<MajorCardProps> = ({ major, onEdit, onDelete }) => {
+export const MajorCard: React.FC<MajorCardProps> = ({ major, onEdit, onDelete, }) => {// Find campus name by ID
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       <div className="flex items-start justify-between mb-4">
@@ -30,7 +33,7 @@ export const MajorCard: React.FC<MajorCardProps> = ({ major, onEdit, onDelete })
             <Edit className="w-4 h-4" />
           </button>
           <button
-            onClick={() => onDelete(major.id)}
+            onClick={() => onDelete(major?.id || '')}
             className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
             title="Delete Major"
           >

@@ -1,38 +1,13 @@
+import type { Major } from "../model/Model";
+
 const API_BASE_URL = 'http://localhost:8080/api'; // Replace with your actual API URL
 
 // Define the ChildMajor interface based on your API response structure
-export interface ChildMajor {
-  id: string;
-  name: string;
-  description?: string;
-  duration?: number;
-  fee?: number;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface MajorApiResponse {
-  id: string;
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface MajorFormData {
-  idCampus: string,
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-}
 
 export const majorApi = {
 
   // Get all majors
-  getAllMajors: async (): Promise<MajorApiResponse[]> => {
+  getAllMajors: async (): Promise<Major[]> => {
     try {
       const response = await fetch(`${API_BASE_URL}/majors/parents`, {
         method: 'GET',
@@ -52,7 +27,7 @@ export const majorApi = {
   },
 
   // Get major by ID
-  getMajorById: async (id: string): Promise<MajorApiResponse> => {
+  getMajorById: async (id: string): Promise<Major> => {
     try {
       const response = await fetch(`${API_BASE_URL}/majors/${id}`, {
         method: 'GET',
@@ -73,13 +48,13 @@ export const majorApi = {
   },
 
   // Create new major
-  createMajor: async (major: MajorFormData): Promise<MajorApiResponse> => {
+  createMajor: async (major: Major, idCampus: string): Promise<Major> => {
     try {
       console.log('Creating major:', major);
-      
+
       // Build URL with idCampus as query parameter
-      const url = `${API_BASE_URL}/majors?idCampus=${encodeURIComponent(major.idCampus)}`;
-      
+      const url = `${API_BASE_URL}/majors?idCampus=${encodeURIComponent(idCampus)}`;
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -94,7 +69,7 @@ export const majorApi = {
           // Note: idCampus is NOT in the body, it's in the URL parameter
         }),
       });
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Failed to create major: ${response.status} - ${errorText}`);
@@ -107,7 +82,7 @@ export const majorApi = {
   },
 
   // Update major
-  updateMajor: async (id: string, major: MajorFormData): Promise<MajorApiResponse> => {
+  updateMajor: async (id: string, major: Major): Promise<Major> => {
     try {
       console.log('Updating major:', id, major);
       const response = await fetch(`${API_BASE_URL}/majors/${id}`, {
@@ -157,7 +132,7 @@ export const majorApi = {
   },
 
   // Search majors
-  searchMajors: async (keyword?: string): Promise<MajorApiResponse[]> => {
+  searchMajors: async (keyword?: string): Promise<Major[]> => {
     try {
       const params = new URLSearchParams();
       if (keyword && keyword.trim()) {

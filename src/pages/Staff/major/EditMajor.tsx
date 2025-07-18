@@ -1,12 +1,11 @@
 import React from 'react';
 import { ArrowLeft, GraduationCap } from 'lucide-react';
 import type { Major } from '../model/Model';
-import type { MajorFormData } from '../model/Model';
 import { MajorForm } from './MajorForm';
 
 interface EditMajorPageProps {
   major: Major;
-  onSubmit: (data: MajorFormData) => void;
+  onSubmit: (data: Major) => void;
   onBack: () => void;
   majors: Major[];
 }
@@ -16,7 +15,7 @@ export const EditMajorPage: React.FC<EditMajorPageProps> = ({
   onSubmit,
   onBack,
 }) => {
-  const initialData: MajorFormData = {
+  const initialData: Major = {
     name: major.name,
     description: major.description,
     duration: major.duration,

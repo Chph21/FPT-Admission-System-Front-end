@@ -1,31 +1,10 @@
+import type { Major } from "../model/Model";
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
-export interface ChildMajorFormData {
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-  parentMajorId: string;
-}
-
-export interface ChildMajorApiResponse {
-  id: string;
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-  parentMajorId?: {
-    id: string;
-    name: string;
-  };
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 export const childMajorApi = {
   // CREATE
-  createChildMajor: async (childMajor: ChildMajorFormData): Promise<ChildMajorApiResponse> => {
+  createChildMajor: async (childMajor: Major): Promise<Major> => {
     try {
       console.log('Creating child major:', childMajor);
       const response = await fetch(`${API_BASE_URL}/majors/child`, {
@@ -50,7 +29,7 @@ export const childMajorApi = {
   },
 
   // READ - Get all child majors
-  getAllChildMajors: async (): Promise<ChildMajorApiResponse[]> => {
+  getAllChildMajors: async (): Promise<Major[]> => {
     try {
       const response = await fetch(`${API_BASE_URL}/majors/children`, {
         method: 'GET',
@@ -70,7 +49,7 @@ export const childMajorApi = {
   },
 
   // READ - Get child major by ID
-  getChildMajorById: async (id: string): Promise<ChildMajorApiResponse> => {
+  getChildMajorById: async (id: string): Promise<Major> => {
     try {
       const response = await fetch(`${API_BASE_URL}/child-majors/${id}`, {
         method: 'GET',
@@ -90,7 +69,7 @@ export const childMajorApi = {
   },
 
   // READ - Get child majors by parent major ID
-  getChildMajorsByParentId: async (parentMajorId: string): Promise<ChildMajorApiResponse[]> => {
+  getChildMajorsByParentId: async (parentMajorId: string): Promise<Major[]> => {
     try {
       const response = await fetch(`${API_BASE_URL}/child-majors/parent/${parentMajorId}`, {
         method: 'GET',
@@ -110,7 +89,7 @@ export const childMajorApi = {
   },
 
    // UPDATE - Fixed endpoint and payload
-  updateChildMajor: async (id: string, childMajor: ChildMajorFormData): Promise<ChildMajorApiResponse> => {
+  updateChildMajor: async (id: string, childMajor: Major): Promise<Major> => {
     try {
       console.log('Updating child major:', id, childMajor);
       
@@ -118,11 +97,13 @@ export const childMajorApi = {
       let updateData = { ...childMajor };
       
       // If parentMajorId is missing, get it from current data
-      if (!updateData.parentMajorId || updateData.parentMajorId.trim() === '') {
+      if (!updateData.parentMajors?.id || updateData.parentMajors.id.trim() === '') {
         try {
           const currentData = await childMajorApi.getChildMajorById(id);
-          updateData.parentMajorId = currentData.parentMajorId?.id ?? '';
-          console.log('Retrieved current parentMajorId:', currentData.parentMajorId?.id);
+          if (updateData.parentMajors) {
+            updateData.parentMajors.id = currentData.parentMajors?.id || undefined; // Ensure we have the current parentMajorId
+          }
+          console.log('Retrieved current parentMajorId:', currentData.parentMajors?.id);
         } catch (error) {
           console.warn('Could not fetch current child major data:', error);
         }
@@ -139,7 +120,7 @@ export const childMajorApi = {
           description: updateData.description,
           duration: updateData.duration,
           fee: updateData.fee,
-          parentMajorId: updateData.parentMajorId
+          parentMajorId: updateData.parentMajors?.id || null, // Ensure parentMajorId is set correctly
         }),
       });
       
@@ -177,7 +158,7 @@ export const childMajorApi = {
   },
 
   // SEARCH
-  searchChildMajors: async (keyword?: string): Promise<ChildMajorApiResponse[]> => {
+  searchChildMajors: async (keyword?: string): Promise<Major[]> => {
     try {
       const params = new URLSearchParams();
       if (keyword && keyword.trim()) {

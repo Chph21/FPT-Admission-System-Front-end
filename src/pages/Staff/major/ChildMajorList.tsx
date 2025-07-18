@@ -1,10 +1,10 @@
 import React from 'react';
 import { Edit, Trash2, Clock, DollarSign, Calendar, Plus } from 'lucide-react';
-import type { ChildMajor } from '../model/Model';
+import type { Major } from '../model/Model';
 
 interface ChildMajorListProps {
-    childMajors: ChildMajor[];
-    onEdit: (childMajor: ChildMajor) => void;
+    childMajors: Major[];
+    onEdit: (childMajor: Major) => void;
     onDelete: (id: string) => void;
     onCreate: () => void;
     majorName: string;
@@ -62,7 +62,7 @@ export const ChildMajorList: React.FC<ChildMajorListProps> = ({
                                     <Edit className="w-4 h-4" />
                                 </button>
                                 <button
-                                    onClick={() => onDelete(childMajor.id)}
+                                    onClick={() => onDelete(childMajor?.id || '')}
                                     className="text-gray-600 hover:text-red-600 p-1 rounded transition-colors"
                                     title="Delete child major"
                                 >

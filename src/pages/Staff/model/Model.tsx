@@ -48,31 +48,21 @@ export interface CampusFormData {
 }
 
 export interface Major {
-  id: string;
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  timeCreated?: Date,
+  timeUpdatedLast?: Date | null,
+  deleted?: boolean,
+  id?: string,
+  name: string,
+  description: string,
+  duration: number,
+  fee: number,
+  parentMajors?: Major | null,
+  major_campuses?: Major_Campus[]
 }
 
-export interface ChildMajor {
-  id: string;
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-  parentMajorId: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export interface ChildMajorFormData {
-  id: string;
-  name: string;
-  description: string;
-  duration: number;
-  fee: number;
-  parentMajorId: string;
+interface Major_Campus {
+  timeCreated: Date,
+  timeUpdatedLast: Date | null,
+  deleted: boolean,
+  id: string
 }

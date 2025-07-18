@@ -1,5 +1,4 @@
 import React from 'react';
-import { Search, Filter, SortAsc, Plus } from 'lucide-react';
 import type { Major } from '../model/Model';
 import { MajorCard } from './MajorCard';
 

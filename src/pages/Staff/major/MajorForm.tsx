@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Save, FileText } from 'lucide-react';
-import type { MajorFormData } from '../service/MajorApi';
 import { campusApi, type CampusApiResponse } from '../service/CampusApi';
+import type { Major } from '../model/Model';
 
 interface MajorFormProps {
-  onSubmit: (data: MajorFormData) => void;
-  initialData?: MajorFormData;
+  onSubmit: (data: Major, idCampus: string) => void;
+  initialData?: Major;
   onCancel?: () => void;
   isEditing?: boolean;
 }
@@ -17,13 +17,14 @@ export const MajorForm: React.FC<MajorFormProps> = ({
   isEditing = false
 }) => {
 
-  const [formData, setFormData] = useState<MajorFormData>({
-    idCampus: '',
+  const [formData, setFormData] = useState<Major>({
     name: initialData?.name || '',
     description: initialData?.description || '',
     duration: initialData?.duration || 0,
     fee: initialData?.fee || 0,
   });
+
+  const [idCampus, setIdCampus] = useState<string>();
 
   const [campus, setCampus] = useState<CampusApiResponse[]>([]);
 
@@ -42,7 +43,7 @@ export const MajorForm: React.FC<MajorFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit(formData, idCampus || '');
   };
 
   return (
@@ -58,21 +59,7 @@ export const MajorForm: React.FC<MajorFormProps> = ({
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className='text-gray-800'>
-            <label className='text-gray-800'>
-              Campus
-            </label>
-            <select value={formData.idCampus} onChange={(e) => setFormData(prev => ({ ...prev, idCampus: e.target.value }))}>
-              <option value="">Select Campus</option>
-                {campus.map(
-                (c) => (
-                  <option key={c.id} value={c.id}>
-                  {c.name}
-                  </option>
-                )
-                )}
-            </select>
-          </div>
+
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Major Name
@@ -87,6 +74,34 @@ export const MajorForm: React.FC<MajorFormProps> = ({
             />
           </div>
 
+          {/* Major Selection */}
+          <div>{!isEditing && (
+            <>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select Campus *
+              </label>
+
+              <div className="flex items-center justify-center py-3">
+                <select
+                  value={formData.parentMajors?.id}
+                  onChange={(e) => setIdCampus(e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 'border-gray-300'
+                  }`}
+                >
+                  <option value="">-- Select Campus --</option>
+                  {/* Only show default option in create mode */}
+
+                  {campus.map(
+                    (c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+            </>)}
+          </div>
         </div>
 
         <div>
@@ -102,34 +117,34 @@ export const MajorForm: React.FC<MajorFormProps> = ({
           />
         </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Duration (Months)
-            </label>
-            <input
-              type="text"
-              value={formData.duration}
-              onChange={(e) => setFormData(prev => ({ ...prev, duration: Number(e.target.value) }))}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800"
-              placeholder="e.g., 24"
-              required
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Duration (Months)
+          </label>
+          <input
+            type="text"
+            value={formData.duration}
+            onChange={(e) => setFormData(prev => ({ ...prev, duration: Number(e.target.value) }))}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800"
+            placeholder="e.g., 24"
+            required
+          />
+        </div>
 
-          <div>
-             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Fee (VND)
-            </label>
-            <input
-              type="text"
-              value={formData.fee}
-              onChange={(e) => setFormData(prev => ({ ...prev, fee: Number(e.target.value) }))}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800"
-              placeholder="e.g., 50000000"
-              required
-            />
-          </div>
-          
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Fee (VND)
+          </label>
+          <input
+            type="text"
+            value={formData.fee}
+            onChange={(e) => setFormData(prev => ({ ...prev, fee: Number(e.target.value) }))}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800"
+            placeholder="e.g., 50000000"
+            required
+          />
+        </div>
+
         <div className="flex gap-4 pt-6 border-t border-gray-200">
           <button
             type="submit"

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Save, DollarSign, Clock, BookOpen, User } from 'lucide-react';
+import { Save, DollarSign, Clock, BookOpen, User } from 'lucide-react';
 import { majorApi } from '../service/MajorApi';
-import type { Major, ChildMajorFormData, ChildMajor } from '../model/Model';
+import type { Major } from '../model/Model';
 
 interface ChildMajorFormProps {
-  onSubmit: (data: ChildMajorFormData, isEdit?: boolean) => void;
+  onSubmit: (data: Major, isEdit?: boolean) => void;
   onBack: () => void;
   isOpen: boolean;
-  editingChildMajor?: ChildMajor | null; // For edit mode
+  editingChildMajor?: Major | null; // For edit mode
   mode?: 'create' | 'edit'; // Form mode
 }
 
@@ -18,16 +18,16 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
   editingChildMajor,
   mode = 'create'
 }) => {
-  const [formData, setFormData] = useState<ChildMajorFormData>({
+  const [formData, setFormData] = useState<Major>({
     id: '',
     name: '',
     description: '',
     duration: 0,
     fee: 0,
-    parentMajorId: ''
+    parentMajors: null
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof ChildMajorFormData, string>>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof Major, string>>>({});
   const [loading, setLoading] = useState(false);
   const [majors, setMajors] = useState<Major[]>([]);
   const [loadingMajors, setLoadingMajors] = useState(true);
@@ -37,18 +37,15 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
     console.log('Form initialization triggered:', { mode, editingChildMajor, majorsLoaded: majors.length > 0 }); // Debug log
 
     if (editingChildMajor && mode === 'edit') {
-      console.log('Setting edit data:', editingChildMajor); // Debug log
-      console.log('Parent Major ID:', editingChildMajor.parentMajorId); // Debug log
-      console.log('Available majors:', majors.map(m => ({ id: m.id, name: m.name }))); // Debug log
-
       setFormData({
         id: editingChildMajor.id || '',
         name: editingChildMajor.name,
         description: editingChildMajor.description,
         duration: editingChildMajor.duration,
         fee: editingChildMajor.fee,
-        parentMajorId: editingChildMajor.parentMajorId
+        parentMajors: editingChildMajor.parentMajors
       });
+      console.log('Editing child major:', editingChildMajor); // Debug log
     } else {
       // Reset form for create mode
       setFormData({
@@ -57,7 +54,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
         description: '',
         duration: 0,
         fee: 0,
-        parentMajorId: ''
+        parentMajors: null
       });
     }
   }, [editingChildMajor, mode, isOpen]);
@@ -71,13 +68,10 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
         const mappedMajors = apiMajors.map(apiMajor => ({
           id: apiMajor.id,
           name: apiMajor.name,
-          majorName: apiMajor.name,
           description: apiMajor.description,
           duration: apiMajor.duration ?? 0,
           fee: apiMajor.fee ?? 0,
-          childMajors: [],
-          createdAt: apiMajor.createdAt ? new Date(apiMajor.createdAt) : new Date(),
-          updatedAt: apiMajor.updatedAt ? new Date(apiMajor.updatedAt) : new Date(),
+          parentMajors: null
         }));
         setMajors(mappedMajors);
       } catch (error) {
@@ -93,7 +87,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
   }, [isOpen]);
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<Record<keyof ChildMajorFormData, string>> = {};
+    const newErrors: Partial<Record<keyof Major, string>> = {};
 
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
@@ -103,8 +97,8 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
       newErrors.description = 'Description is required';
     }
 
-    if (!formData.parentMajorId) {
-      newErrors.parentMajorId = 'Please select a major';
+    if (!formData.parentMajors) {
+      newErrors.parentMajors = 'Please select a major';
     }
 
     if (formData.duration <= 0) {
@@ -149,7 +143,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
     }));
 
     // Clear error when user starts typing
-    if (errors[name as keyof ChildMajorFormData]) {
+    if (errors[name as keyof Major]) {
       setErrors(prev => ({
         ...prev,
         [name]: undefined
@@ -165,7 +159,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
       description: '',
       duration: 0,
       fee: 0,
-      parentMajorId: ''
+      parentMajors: null
     });
     setErrors({});
     onBack();
@@ -229,10 +223,10 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
                 </div>
               ) : (
                 <select
-                  name="parentMajorId"
-                  value={formData.parentMajorId}
+                  name="parentMajors"
+                  value={formData.parentMajors?.id}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${errors.parentMajorId ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${errors.parentMajors ? 'border-red-500' : 'border-gray-300'
                     }`}
                 >
                   <option value="">-- Select a Major --</option>
@@ -246,8 +240,8 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
                 </select>
               )}
 
-              {errors.parentMajorId && (
-                <p className="text-red-500 text-sm mt-1">{errors.parentMajorId}</p>
+              {errors.parentMajors && (
+                <p className="text-red-500 text-sm mt-1">{errors.parentMajors}</p>
               )}
             </div>
 

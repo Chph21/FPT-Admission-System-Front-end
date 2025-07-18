@@ -5,13 +5,12 @@ import { CreateMajorPage } from './CreateMajor';
 import { EditMajorPage } from './EditMajor';
 import { ChildMajorList } from './ChildMajorList';
 import { majorApi } from '../service/MajorApi';
-import type { MajorApiResponse, MajorFormData } from '../service/MajorApi';
 import { childMajorApi } from '../service/ChildMajorApi';
-import type { Major, ChildMajorFormData, ChildMajor } from '../model/Model';
+import type { Major} from '../model/Model';
 import { ChildMajorForm } from './ChidMajorForm';
 
 export const MajorManagement: React.FC = () => {
-  const [majors, setMajors] = useState<Major[]>([]);
+  const [majors, setMajors] = useState<Major[]>([]); 
   const [filteredMajors, setFilteredMajors] = useState<Major[]>([]);
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
@@ -28,21 +27,19 @@ export const MajorManagement: React.FC = () => {
 
   // Child Major state
   const [isChildMajorFormOpen, setIsChildMajorFormOpen] = useState(false);
-  const [editingChildMajor, setEditingChildMajor] = useState<ChildMajor | null>(null);
+  const [editingChildMajor, setEditingChildMajor] = useState<Major | null>(null);
   const [childMajorFormMode, setChildMajorFormMode] = useState<'create' | 'edit'>('create');
-  const [childMajors, setChildMajors] = useState<ChildMajor[]>([]);
+  const [childMajors, setChildMajors] = useState<Major[]>([]);
   const [loadingChildMajors, setLoadingChildMajors] = useState(false);
 
 
   // Convert API response to Major model
-  const mapApiResponseToMajor = (apiMajor: MajorApiResponse): Major => ({
+  const mapApiResponseToMajor = (apiMajor: Major): Major => ({
     id: apiMajor.id,
     name: apiMajor.name,
     description: apiMajor.description,
     duration: apiMajor.duration,
     fee: apiMajor.fee,
-    createdAt: apiMajor.createdAt ? new Date(apiMajor.createdAt) : new Date(),
-    updatedAt: apiMajor.updatedAt ? new Date(apiMajor.updatedAt) : new Date(),
   });
 
   // Fetch all majors and their child majors
@@ -70,15 +67,13 @@ export const MajorManagement: React.FC = () => {
   const fetchAllChildMajors = async () => {
     try {
       const allChildMajors = await childMajorApi.getAllChildMajors(); // This calls your API
-      const mappedChildMajors = allChildMajors.map((childMajor: any) => ({
+      const mappedChildMajors = allChildMajors.map((childMajor: Major) => ({
         id: childMajor.id,
         name: childMajor.name,
         description: childMajor.description,
         duration: childMajor.duration,
         fee: childMajor.fee,
-        parentMajorId: childMajor.parentMajorId, // This is where parentMajorId should be mapped
-        createdAt: childMajor.createdAt ? new Date(childMajor.createdAt) : undefined,
-        updatedAt: childMajor.updatedAt ? new Date(childMajor.updatedAt) : undefined,
+        parentMajors: childMajor.parentMajors
       }));
       setChildMajors(mappedChildMajors);
     } catch (error) {
@@ -145,15 +140,14 @@ export const MajorManagement: React.FC = () => {
     }
   };
 
-  const handleCreateMajor = async (formData: MajorFormData) => {
+  const handleCreateMajor = async (formData: Major, idCampus: string) => {
     try {
       await majorApi.createMajor({
-        idCampus: formData.idCampus,
         name: formData.name,
         description: formData.description,
         duration: formData.duration,
-        fee: formData.fee
-      });
+        fee: formData.fee,
+      }, idCampus);
       await fetchMajors();
       setCurrentPage('major-list');
     } catch (err) {
@@ -162,12 +156,11 @@ export const MajorManagement: React.FC = () => {
     }
   };
 
-  const handleUpdateMajor = async (formData: MajorFormData) => {
+  const handleUpdateMajor = async (formData: Major) => {
     if (!editingMajor) return;
 
     try {
-      await majorApi.updateMajor(editingMajor.id, {
-        idCampus: formData.idCampus,
+      await majorApi.updateMajor(editingMajor.id || '', {
         name: formData.name,
         description: formData.description,
         duration: formData.duration,
@@ -195,12 +188,9 @@ export const MajorManagement: React.FC = () => {
   };
 
   // In MajorManagement.tsx
-  const handleEditChildMajor = (childMajor: ChildMajor) => {
-    console.log('Editing child major:', childMajor);
-    console.log('Parent Major ID:', childMajor.parentMajorId);
-
+  const handleEditChildMajor = (childMajor: Major) => {
     // Ensure parentMajorId exists
-    if (!childMajor.parentMajorId) {
+    if (!childMajor.parentMajors) {
       console.warn('⚠️ Child major missing parentMajorId!');
     }
 
@@ -209,10 +199,10 @@ export const MajorManagement: React.FC = () => {
     setIsChildMajorFormOpen(true);
   };
 
-  const handleSubmitChildMajor = async (formData: ChildMajorFormData, isEdit?: boolean) => {
+  const handleSubmitChildMajor = async (formData: Major, isEdit?: boolean) => {
     try {
       if (isEdit && editingChildMajor) {
-        await childMajorApi.updateChildMajor(editingChildMajor.id, formData);
+        await childMajorApi.updateChildMajor(editingChildMajor.id || '', formData);
         console.log('Child major updated successfully!');
       } else {
         await childMajorApi.createChildMajor(formData);

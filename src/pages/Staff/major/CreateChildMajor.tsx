@@ -1,10 +1,10 @@
 import React from 'react';
 import { ArrowLeft, BookOpen } from 'lucide-react';
-import type { ChildMajorFormData } from '../model/Model';
 import { ChildMajorForm } from './ChidMajorForm';
+import type { Major } from '../model/Model';
 
 interface CreateMajorPageProps {
-  onSubmit: (data: ChildMajorFormData) => void;
+  onSubmit: (data: Major) => void;
   onBack: () => void;
 }
 
