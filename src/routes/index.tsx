@@ -27,6 +27,7 @@ import TrainingProgramPage from '../pages/Post/TrainingProgramPage';
 import GlobalExperiencePage from '../pages/Post/GlobalExperiencePage';
 import ContactPage from '../pages/Contact/ContactPage';
 import AboutPage from '../pages/About/AboutPage';
+import ApplicationForm from '../pages/Application/ApplicationForm';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: 'gioi-thieu',
         element: <AboutPage />
+      },
+      {
+        path: 'dang-ky',
+        element: <ApplicationForm />
       }
     ]
   },

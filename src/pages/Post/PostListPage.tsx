@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface PostListPageProps {
-    basePath: string; // Thêm prop này
+    basePath: string;
 }
 
 const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
@@ -130,7 +130,7 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
 
     return (
         <div className="p-6 space-y-6 bg-gray-50 min-h-screen text-gray-800">
-            <h1 className="text-2xl font-bold text-gray-900">Quản lý bài viết</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Quản lý bài viết</h1>
 
             <div className="flex flex-col md:flex-row md:items-center gap-4">
                 <input
@@ -139,12 +139,12 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
                     value={filter.title}
                     onChange={handleChange}
                     placeholder="Tìm theo tiêu đề"
-                    className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900 w-full md:w-1/3"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-orange-200 rounded-lg text-gray-700 placeholder-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 md:w-1/3"
                 />
                 <div className="flex gap-2">
                     <button
                         onClick={handleSearch}
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                         Tìm kiếm
                     </button>
@@ -157,7 +157,7 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
                 </div>
                 <button
                     onClick={() => navigate(`${basePath}/posts/new`)}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                     ➕ Tạo bài viết
                 </button>
