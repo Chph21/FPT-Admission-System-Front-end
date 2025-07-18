@@ -106,3 +106,40 @@ h1 {
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out forwards;
 }
+
+/* Fix select dropdown visibility */
+select {
+  background-color: white !important;
+  color: #374151 !important;
+  z-index: 9999 !important;
+  position: relative !important;
+}
+
+select option {
+  background-color: white !important;
+  color: #374151 !important;
+  padding: 8px 12px !important;
+  display: block !important;
+}
+
+select:focus {
+  z-index: 9999 !important;
+  background-color: white !important;
+}
+
+select:focus option {
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+}
+
+/* Force dropdown to show */
+select:focus option:hover {
+  background-color: #fbbf24 !important;
+  color: white !important;
+}
+
+/* Ensure dropdown appears above other elements */
+select:focus {
+  z-index: 9999 !important;
+  position: relative !important;
+}
