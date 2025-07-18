@@ -92,15 +92,13 @@ const ContactPage: React.FC = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div
-          className="relative w-full h-[400px] bg-center bg-cover bg-no-repeat flex items-center justify-center"
+          className="relative w-full h-[400px] bg-cover flex items-center justify-center"
           style={{
-            backgroundImage: `url('/src/assets/backgr.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundImage: "url('https://ptehelper.com.au/wp-content/uploads/2023/07/tieng-anh-dau-vao-dai-hoc-fpt-1536x864.webp')",
+            backgroundPosition: 'center 70%',
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-          <div className="relative z-10 text-center">
+         <div className="relative z-10 text-center">
             <h1 className="text-white text-4xl md:text-6xl font-bold uppercase tracking-wide drop-shadow-2xl mb-4">
               Liên hệ
             </h1>
@@ -303,12 +301,21 @@ const ContactPage: React.FC = () => {
                   <Globe className="w-8 h-8 text-orange-500" />
                   Bản đồ
                 </h3>
-                <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center">
-                  <div className="text-center text-gray-500">
-                    <MapPin className="w-16 h-16 mx-auto mb-4" />
-                    <p>Bản đồ sẽ được tích hợp tại đây</p>
-                    <p className="text-sm">Lô E2a-7, Đường D1, Khu Công nghệ cao</p>
-                  </div>
+                <div className="bg-gray-200 rounded-lg h-80 overflow-hidden">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.484123456789!2d106.8064!3d10.8416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752731176b07b1%3A0xf752c24b43b042bd!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBGUFQgLSBDxqEgc-G7nyBI4buHcCBCw6_AgdG9pbmc!5e0!3m2!1svi!2s!4v1234567890"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Đại học FPT TP.HCM"
+                  ></iframe>
+                </div>
+                <div className="mt-4 text-center text-gray-600">
+                  <p className="font-medium">Đại học FPT TP.HCM</p>
+                  <p className="text-sm">Lô E2a-7, Đường D1, Khu Công nghệ cao, P.Long Thạnh Mỹ, Q.9, TP.HCM</p>
                 </div>
               </div>
             </div>
