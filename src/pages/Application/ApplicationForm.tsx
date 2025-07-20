@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useAppSelector } from '../../store/hooks';
+import { useNavigate } from 'react-router-dom';
 
 interface Campus {
   timeCreated: string;
@@ -49,6 +51,9 @@ const steps = [
 ];
 
 const ApplicationForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { token, isAuthenticated, user } = useAppSelector((state) => state.auth);
+  
   const [step, setStep] = useState(1);
   const [campuses, setCampuses] = useState<Campus[]>([]);
   const [majors, setMajors] = useState<Major[]>([]);
@@ -61,9 +66,17 @@ const ApplicationForm: React.FC = () => {
   const [loadingCampus, setLoadingCampus] = useState(true);
   const [loadingMajors, setLoadingMajors] = useState(true);
 
-  const token = localStorage.getItem('token') || undefined;
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated || !token) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, token, navigate]);
 
-
+  // Don't proceed if not authenticated
+  if (!isAuthenticated || !token) {
+    return null;
+  }
 
   // Fetch campuses
   useEffect(() => {
@@ -95,9 +108,17 @@ const ApplicationForm: React.FC = () => {
     fetch('http://localhost:8080/api/majors', {
       headers: buildHeaders(token),
     })
-      .then(res => {
+      .then(async res => {
         console.log('Majors response status:', res.status);
-        if (!res.ok) throw new Error('Unauthorized');
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Majors API error:', errorText);
+          if (res.status === 401) {
+            throw new Error('Unauthorized');
+          } else {
+            throw new Error(`Server error: ${res.status} ${res.statusText}`);
+          }
+        }
         return res.json();
       })
       .then(data => {

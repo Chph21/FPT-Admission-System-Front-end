@@ -17,6 +17,7 @@ import Analytics from '../pages/Admin/Analytics';
 import UserManager from '../pages/Admin/UserManager';
 import { Setting } from '../pages/Admin/Setting';
 import Error404 from '../pages/Admin/Error404';
+import Applications from '../pages/Admin/Applications';
 import PostListPage from '../pages/Post/PostListPage';
 import CreatePostPage from '../pages/Post/CreatePostPage';
 // import EditPostPage from '../pages/Post/EditPostPage';
@@ -150,6 +151,10 @@ const router = createBrowserRouter([
       {
         path: 'users',
         element: <UserManager />
+      },
+      {
+        path: 'applications',
+        element: <Applications />
       },
       {
         path: 'settings',
