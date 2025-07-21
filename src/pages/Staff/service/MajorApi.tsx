@@ -1,8 +1,23 @@
 import type { Major } from "../model/Model";
 
-const API_BASE_URL = 'http://localhost:8080/api'; // Replace with your actual API URL
+// const API_BASE_URL = 'http://localhost:8080/api'; // Replace with your actual API URL
+const API_BASE_URL = 'https://fpt-admission-system.onrender.com/api';
 
 // Define the ChildMajor interface based on your API response structure
+
+export interface ChildMajorResponse {
+  id: string;
+  name: string;
+  description: string;
+  timeCreated?: string;
+  timeUpdatedLast?: string;
+  deleted?: boolean;
+  major?: {
+    id: string;
+    name: string;
+    description?: string;
+  };
+}
 
 export const majorApi = {
 
@@ -22,6 +37,31 @@ export const majorApi = {
       return await response.json();
     } catch (error) {
       console.error('Error fetching majors:', error);
+      throw error;
+    }
+  },
+
+  getChildrenByMajorId: async (majorId: string): Promise<ChildMajorResponse[]> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/majors/${majorId}/children`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch children for major ${majorId}: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(`Children for major ${majorId}:`, data);
+
+      // Return the data array (adjust based on your API response structure)
+      return data.listData || data || [];
+    } catch (error) {
+      console.error('Error fetching children by major ID:', error);
       throw error;
     }
   },
@@ -164,3 +204,7 @@ export const majorApi = {
     }
   },
 };
+
+
+
+

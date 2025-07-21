@@ -1,13 +1,15 @@
 import type { Major } from "../model/Model";
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'https://fpt-admission-system.onrender.com/api';
+// const API_BASE_URL = 'http://localhost:8080/api'; 
+
 
 export const childMajorApi = {
   // CREATE
-  createChildMajor: async (childMajor: Major): Promise<Major> => {
+  createChildMajor: async (childMajor: any): Promise<Major> => {
     try {
       console.log('Creating child major:', childMajor);
-      const response = await fetch(`${API_BASE_URL}/majors/child`, {
+      const response = await fetch(`${API_BASE_URL}/majors/child?parentMajorId=${childMajor.parentMajorsId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +53,7 @@ export const childMajorApi = {
   // READ - Get child major by ID
   getChildMajorById: async (id: string): Promise<Major> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/child-majors/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/majors/child/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -120,7 +122,6 @@ export const childMajorApi = {
           description: updateData.description,
           duration: updateData.duration,
           fee: updateData.fee,
-          parentMajorId: updateData.parentMajors?.id || null, // Ensure parentMajorId is set correctly
         }),
       });
       

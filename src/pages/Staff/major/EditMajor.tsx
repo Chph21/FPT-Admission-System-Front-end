@@ -34,15 +34,7 @@ export const EditMajorPage: React.FC<EditMajorPageProps> = ({
             Back to Staff List
           </button>
 
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg">
-              <GraduationCap className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold text-gray-800">Edit Major</h1>
-              {/* <p className="text-gray-600 mt-1">Update {major.name}'s information</p> */}
-            </div>
-          </div>
+          
         </div>
 
         <MajorForm

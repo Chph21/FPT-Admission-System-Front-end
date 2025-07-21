@@ -3,7 +3,7 @@ import Home from '../pages/Home/Home';
 import Layout from '../components/Layout/Layout';
 import ChatBotPage from '../pages/ChatBot/ChatBotPage';
 import StaffLayout from '../pages/Staff/layout/StaffLayout';
-import { MajorManagement } from '../pages/Staff/major/MajorManagement';
+import  MajorManagement  from '../pages/Staff/major/MajorManagement';
 import AdmissionSchedulePage from '../pages/AdmissionSchedule/AdmissionSchedulePage';
 import StaffAdmissionSchedulePage from '../pages/StaffAdmissionSchedule/StaffAdmissionSchedulePage';
 import Login from '../pages/Authen/Login';

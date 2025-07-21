@@ -199,10 +199,11 @@ export const MajorManagement: React.FC = () => {
     setIsChildMajorFormOpen(true);
   };
 
-  const handleSubmitChildMajor = async (formData: Major, isEdit?: boolean) => {
+  const handleSubmitChildMajor = async (formData: any, isEdit?: boolean) => {
     try {
-      if (isEdit && editingChildMajor) {
-        await childMajorApi.updateChildMajor(editingChildMajor.id || '', formData);
+      console.log('Submitting child major:', formData);
+      if (isEdit && editingChildMajor ) {
+        await childMajorApi.updateChildMajor(formData.id, formData);
         console.log('Child major updated successfully!');
       } else {
         await childMajorApi.createChildMajor(formData);
@@ -381,3 +382,5 @@ export const MajorManagement: React.FC = () => {
 };
 
 export default MajorManagement;
+
+
