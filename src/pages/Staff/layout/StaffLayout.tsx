@@ -1,8 +1,22 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Sidebar } from '../layout/Sidebar';
 import { Header } from '../layout/Header';
 const StaffLayout = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userStr = localStorage.getItem('user');
+    let user: any = null;
+    if (userStr) {
+      try {
+        user = JSON.parse(userStr);
+      } catch {}
+    }
+    if (!user || user.role !== 'STAFF') {
+      navigate('/');
+    }
+  }, [navigate]);
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />

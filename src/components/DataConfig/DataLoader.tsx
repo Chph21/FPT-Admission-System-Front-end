@@ -1,48 +1,50 @@
 import {
     Home, Users, Settings, BookOpen, BarChart3, FileText, User,
     Mail, Phone, MapPin, Shield, Key,
+    ShieldCheck,
+    ShieldBan,
 } from 'lucide-react';
-import type { Account } from './Interface';
+import type { Account, Accounts } from './Interface';
 
-export const readOnlyFields = (userProfile: any) => [
+export const readOnlyFields = (userProfile: Accounts) => [
     {
         label: 'UUID',
-        value: userProfile.uuid,
-        icon: Key
+        value: userProfile.id,
+        icon: Key, type: 'text',
+        placeholder: 'UUID',
     },
     {
-        label: 'Role',
+        label: 'Chức vụ',
         value: userProfile.role,
-        icon: Shield
-    }
+        icon: Shield, type: 'text',
+        placeholder: 'Role',
+    },
+    {
+        label: 'Trạng thái hoạt động',
+        value: userProfile.enable ? 'Đang hoạt động' : 'Đã ngừng hoạt động',
+        icon: ShieldCheck, type: 'text',
+        placeholder: 'Is enable?',
+    },
+    {
+        label: 'Trạng thái xóa',
+        value: userProfile.deleted ? 'Đã bị xóa' : 'Vẫn tồn tại',
+        icon: ShieldBan, type: 'text',
+        placeholder: 'Is deleted?',
+    },
 ];
 
-export const editableFields = (editableData: any) => [
+export const editableFields = (editableData: Accounts) => [
+    
     {
-        label: 'Full Name',
-        field: 'fullName',
-        value: editableData.fullName,
-        icon: User, type: 'text',
-        placeholder: 'Enter full name'
-    },
-    {
-        label: 'Address',
-        field: 'address',
-        value: editableData.address,
-        icon: MapPin,
-        type: 'text',
-        placeholder: 'Enter address'
-    },
-    {
-        label: 'Username',
-        field: 'userName',
-        value: editableData.userName,
+        label: 'Tên tài khoản',
+        field: 'username',
+        value: editableData.username,
         icon: User,
         type: 'text',
         placeholder: 'Enter username'
     },
     {
-        label: 'Email',
+        label: 'Địa chỉ email',
         field: 'email',
         value: editableData.email,
         icon: Mail,
@@ -50,9 +52,9 @@ export const editableFields = (editableData: any) => [
         placeholder: 'Enter email address'
     },
     {
-        label: 'Phone',
-        field: 'phone',
-        value: editableData.phone,
+        label: 'Số điện thoại',
+        field: 'phoneNumber',
+        value: editableData.phoneNumber || '',
         icon: Phone,
         type: 'tel',
         placeholder: 'Enter phone number'
@@ -62,7 +64,7 @@ export const editableFields = (editableData: any) => [
 export const NavigationItems = [
     { name: 'Dashboard', href: '/admin', icon: Home },
     { name: 'User Manager', href: '/admin/users', icon: Users },
-    { name: 'Applications', href: '/admin/error404', icon: FileText },
+    { name: 'Applications', href: '/admin/applications', icon: FileText },
     { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
     { name: 'Posts', href: '/admin/posts', icon: BookOpen },
     { name: 'Settings', href: '/admin/settings', icon: Settings },

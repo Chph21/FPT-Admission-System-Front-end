@@ -8,6 +8,20 @@ export interface LoginResponse {
   token: string
 }
 
+export interface Accounts {
+  id?: string,
+  username: string,
+  email: string,
+  enable?: boolean,
+  phoneNumber?: string | null,
+  firebaseUid?: string | null,
+  verificationCode?: string | null,
+  timeCreated?: Date,
+  timeUpdatedLast?: Date,
+  deleted?: boolean,
+  role?: 'ADMIN' | 'STAFF' | 'USER',
+}
+
 export interface Account {
   id: string,
   name: string,
@@ -19,20 +33,20 @@ export interface Account {
 }
 
 export interface UserProfile {
-    uuid: string;
-    fullName: string;
-    userName: string;
-    email: string;
-    phone: string;
-    address: string;
-    role: string;
-    image: string;
+  uuid: string,
+  fullName: string,
+  userName: string,
+  email: string,
+  phone: string,
+  address: string,
+  role: string,
+  image: string,
 }
 
 export interface User {
+  id: string,
   name: string,
   email: string,
-  id: string,
   phone: string | null,
   avata: string | null
 }
@@ -62,4 +76,47 @@ export interface RegisterRequest {
   name: string,
   password: string,
   email: string,
+}
+
+export interface Application {
+  deleted?: boolean,
+  id: string,
+  campus: Campus,
+  major: Major,
+  scholarship: string,
+  accounts: Accounts,
+  applicationStatus: 'PENDING' | 'APPROVED' | 'REJECTED',
+  timeCreated?: Date,
+  timeUpdatedLast?: Date,
+}
+
+export interface Campus {
+  id: string,
+  name: string,
+  address: string,
+  phone: string,
+  email: string,
+  timeCreated?: Date,
+  timeUpdatedLast?: Date,
+  deleted?: boolean,
+  major_campuses?: Major_Campus[]
+}
+
+export interface Major {
+  id: string,
+  name: string,
+  description: string,
+  duration: number,
+  fee: number,
+  timeCreated?: Date,
+  timeUpdatedLast?: Date,
+  deleted?: boolean,
+  major_campuses?: Major_Campus[]
+}
+
+export interface Major_Campus {
+  timeCreated?: Date,
+  timeUpdatedLast?: Date,
+  deleted?: boolean,
+  id: string
 }

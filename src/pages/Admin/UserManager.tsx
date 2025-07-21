@@ -12,7 +12,7 @@ import {
 import { getEnableColor, getRoleColor } from '../../components/DataConfig/DataLoader';
 import { AddModal } from '../../components/Admin/modal/AddModal';
 import { EditModal } from '../../components/Admin/modal/EditModal';
-import { api } from '../../components/DataConfig/Api';
+import { getApi } from '../../components/DataConfig/Api';
 import type { Account, EditFormData, RegisterRequest, Response } from '../../components/DataConfig/Interface';
 
 const AccountManager: React.FC = () => {
@@ -24,17 +24,20 @@ const AccountManager: React.FC = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
 
   useEffect(() => {
-
     fetchAccounts();
-  }, []);
+    setCurrentPage(1); // Reset to page 1 on initial load
+  }, [searchTerm, selectedRole, selectedStatus]);
 
   const fetchAccounts = async () => {
     setIsLoading(true);
-    api.get<Response<Account[]>>('/authen/get-all')
+    getApi().get<Response<Account[]>>('/authen/get-all')
       .then(response => {
         if (response.data && response.data.data) {
           setAccounts(response.data.data);
@@ -59,10 +62,27 @@ const AccountManager: React.FC = () => {
     return matchesSearch && matchesRole && matchesStatus;
   });
 
+  const totalPages = Math.ceil(filteredAccounts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentAccounts = filteredAccounts.slice(startIndex, endIndex);
+
+  const handlePrevPage = () => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  };
+
+  const handlePageClick = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const handleDelete = async (accountId: string) => {
     setIsLoading(true);
     try {
-      await api.delete(`/authen/delete/${accountId}`)
+      await getApi().delete(`/authen/delete/${accountId}`)
         .then(response => {
           if (response.status === 200 || response.status === 204) {
 
@@ -81,7 +101,7 @@ const AccountManager: React.FC = () => {
   const handleUpgradeAccount = async (accountId: string) => {
     setIsLoading(true);
     try {
-      await api.post(`/authen/staff?id=${accountId}`)
+      await getApi().post(`/authen/staff?id=${accountId}`)
         .then(response => {
           if (response.status === 200 || response.status === 201) {
 
@@ -100,7 +120,7 @@ const AccountManager: React.FC = () => {
   const handleAddAccount = async (data: RegisterRequest) => {
     setIsLoading(true);
     try {
-      await api.post('/authen/register', data)
+      await getApi().post('/authen/register', data)
         .then(response => {
           if (response.status === 200 || response.status === 201) {
 
@@ -119,7 +139,7 @@ const AccountManager: React.FC = () => {
   const handleEditAccount = async (data: EditFormData) => {
     setIsLoading(true);
     try {
-      const response = await api.put(`/authen/edit/${data.id}/${data.type}?content=${data.content}`);
+      const response = await getApi().put(`/authen/edit/${data.id}/${data.type}?content=${data.content}`);
       if (response.status === 200 || response.status === 204) {
         setIsOpenEditModal(false);
         fetchAccounts(); // Refresh accounts after editing
@@ -232,7 +252,7 @@ const AccountManager: React.FC = () => {
                   </td>
                 </tr>
               ) : (
-                filteredAccounts.map((account) => (
+                currentAccounts.map((account) => (
                   <tr key={account.id} className="hover:bg-orange-50 transition-colors duration-200">
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-3">
@@ -305,17 +325,35 @@ const AccountManager: React.FC = () => {
       {filteredAccounts.length > 0 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-600">
-            Hiển thị {filteredAccounts.length} trong tổng số {accounts.length} tài khoản
+            Hiển thị {startIndex + 1} - {Math.min(endIndex, filteredAccounts.length)} trong tổng số {filteredAccounts.length} tài khoản
           </p>
           <div className="flex items-center space-x-2">
-            <button className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Trước
             </button>
-            <button className="px-3 py-2 bg-orange-600 text-white rounded-lg">1</button>
-            <button className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200">
-              2
-            </button>
-            <button className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200">
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button
+                key={page}
+                onClick={() => handlePageClick(page)}
+                className={`px-3 py-2 rounded-lg transition-all duration-200 ${currentPage === page
+                    ? 'bg-orange-600 text-white'
+                    : 'bg-gray-100 border border-gray-300 text-gray-600 hover:text-gray-800 hover:bg-gray-200'
+                  }`}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Tiếp
             </button>
           </div>
