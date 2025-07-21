@@ -16,7 +16,7 @@ const menuItems = [
   { id: 'campuses', label: 'Campuses', icon: Building, path: '/staff/campuses' },
   { id: 'admissionschedule', label: 'Manage Schedule', icon: BarChart3   },
   { id: 'tickets', label: 'Tickets', icon: FileText },
-  { id: 'posts', label: 'Posts', icon: FileText },
+  { id: 'posts', label: 'Posts', icon: FileText, path: '/staff/posts' },
 ];
 
 export const Sidebar = () => {

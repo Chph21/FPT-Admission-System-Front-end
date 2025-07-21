@@ -62,7 +62,7 @@ export const registerUser = createAsyncThunk(
         password: userData.password
       };
       
-      const response = await fetch('http://localhost:8080/api/authen/register', {
+      const response = await fetch('https://fpt-admission-system.onrender.com/api/authen/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (userData: LoginRequest, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:8080/api/authen/login', {
+      const response = await fetch('https://fpt-admission-system.onrender.com/api/authen/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
