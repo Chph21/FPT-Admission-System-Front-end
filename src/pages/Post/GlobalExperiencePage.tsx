@@ -59,8 +59,8 @@ const GlobalExperiencePage: React.FC = () => {
     };
 
     return (
-        <section className="max-w-6xl mx-auto px-4 py-10">
-            <div
+        <div className="w-full overflow-hidden">
+                    <div
                 className="relative w-full h-[301px] bg-cover flex items-center justify-center"
                 style={{
                     backgroundImage:
@@ -72,6 +72,8 @@ const GlobalExperiencePage: React.FC = () => {
                     TRẢI NGHIỆM TOÀN CẦU
                 </h1>
             </div>
+        <section className="max-w-6xl mx-auto px-4 py-10">
+         
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {posts.map((post) => (
@@ -104,6 +106,7 @@ const GlobalExperiencePage: React.FC = () => {
                 </div>
             )}
         </section>
+        </div>
     );
 };
 
