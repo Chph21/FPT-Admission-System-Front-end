@@ -4,7 +4,7 @@ import { useWebSocket } from './useWebSocket';
 import { useAppSelector } from '../store/hooks';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/chatboxes';
+const API_URL = 'https://fpt-admission-system.onrender.com/api/chatboxes';
 
 export const useChat = (sessionId?: string | null) => {
   const [messages, setMessages] = useState<ChatUIMessage[]>([]);

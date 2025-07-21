@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '../../store/hooks';
+import { CheckCircle, XCircle, Eye } from 'lucide-react';
 
 interface Application {
   timeCreated: string;
@@ -110,20 +111,19 @@ const Applications: React.FC = () => {
     
     try {
       setProcessingActions(prev => new Set(prev).add(applicationId));
-      
-      const response = await fetch(`http://localhost:8080/api/applications/rejectApplication${applicationId}`, {
+      let reason = window.prompt('Nhập lý do từ chối:', 'Từ chối bởi admin') || 'Từ chối bởi admin';
+      const res = await fetch(`http://localhost:8080/api/applications/rejectApplication/${applicationId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
           'accept': '*/*',
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(reason),
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
-
-      // Refresh the applications list after successful action
       await fetchApplications();
       alert('Đã từ chối đơn đăng ký thành công!');
     } catch (err) {
@@ -269,7 +269,10 @@ const Applications: React.FC = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Ngày đăng ký
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Chi tiết
+                </th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Thao tác
                 </th>
               </tr>
@@ -325,43 +328,42 @@ const Applications: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {formatDate(application.timeCreated)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <button 
-                        onClick={() => handleViewDetail(application.id)}
-                        disabled={detailLoading}
-                        className={`${
-                          detailLoading
-                            ? 'text-gray-400 cursor-not-allowed'
-                            : 'text-orange-600 hover:text-orange-900'
-                        }`}
-                      >
-                        {detailLoading ? 'Đang tải...' : 'Xem chi tiết'}
-                      </button>
+                  {/* Ô Chi tiết riêng */}
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    <button 
+                      onClick={() => handleViewDetail(application.id)}
+                      disabled={detailLoading}
+                      className="flex items-center gap-1 px-3 py-2 bg-orange-50 border border-orange-300 text-orange-700 rounded-lg font-semibold hover:bg-orange-100 hover:text-orange-900 transition-all shadow-sm mx-auto"
+                    >
+                      <Eye className="w-4 h-4" />
+                      {detailLoading ? 'Đang tải...' : 'Chi tiết'}
+                    </button>
+                  </td>
+                  {/* Ô Thao tác chỉ chứa duyệt/từ chối */}
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    <div className="flex flex-col sm:flex-row gap-2 items-center justify-center">
                       {application.applicationStatus === 'PENDING' && (
                         <>
-                          <button 
-                            onClick={() => handleAcceptApplication(application.id)}
-                            disabled={processingActions.has(application.id)}
-                            className={`font-medium ${
-                              processingActions.has(application.id)
-                                ? 'text-gray-400 cursor-not-allowed'
-                                : 'text-green-600 hover:text-green-900'
-                            }`}
-                          >
-                            {processingActions.has(application.id) ? 'Đang xử lý...' : 'Duyệt'}
-                          </button>
-                          <button 
-                            onClick={() => handleRejectApplication(application.id)}
-                            disabled={processingActions.has(application.id)}
-                            className={`font-medium ${
-                              processingActions.has(application.id)
-                                ? 'text-gray-400 cursor-not-allowed'
-                                : 'text-red-600 hover:text-red-900'
-                            }`}
-                          >
-                            {processingActions.has(application.id) ? 'Đang xử lý...' : 'Từ chối'}
-                          </button>
+                          <div>
+                            <button 
+                              onClick={() => handleAcceptApplication(application.id)}
+                              disabled={processingActions.has(application.id)}
+                              className={`flex items-center gap-1 px-3 py-2 bg-green-50 border border-green-300 text-green-700 rounded-lg font-semibold hover:bg-green-100 hover:text-green-900 transition-all shadow-sm ${processingActions.has(application.id) ? 'opacity-60 cursor-not-allowed' : ''}`}
+                            >
+                              <CheckCircle className="w-4 h-4" />
+                              {processingActions.has(application.id) ? 'Đang xử lý...' : 'Duyệt'}
+                            </button>
+                          </div>
+                          <div>
+                            <button 
+                              onClick={() => handleRejectApplication(application.id)}
+                              disabled={processingActions.has(application.id)}
+                              className={`flex items-center gap-1 px-3 py-2 bg-red-50 border border-red-300 text-red-700 rounded-lg font-semibold hover:bg-red-100 hover:text-red-900 transition-all shadow-sm ${processingActions.has(application.id) ? 'opacity-60 cursor-not-allowed' : ''}`}
+                            >
+                              <XCircle className="w-4 h-4" />
+                              {processingActions.has(application.id) ? 'Đang xử lý...' : 'Từ chối'}
+                            </button>
+                          </div>
                         </>
                       )}
                     </div>

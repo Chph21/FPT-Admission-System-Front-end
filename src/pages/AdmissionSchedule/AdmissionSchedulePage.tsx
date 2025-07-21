@@ -33,7 +33,7 @@ const AdmissionSchedulePage: React.FC = () => {
   /* ---------------- FETCH ONCE ---------------- */
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch('https://fpt-admission-system.onrender.com/api/schedules', {
+    fetch('https://fpt-admission-system.onrender.com/api/schedules/user', {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
       .then((res) => res.json())

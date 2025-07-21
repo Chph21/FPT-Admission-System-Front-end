@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import SockJS from 'sockjs-client';
 import { Client, type IMessage } from '@stomp/stompjs';
 
-const SOCKET_URL = 'http://localhost:8080/ws';
+const SOCKET_URL = 'https://fpt-admission-system.onrender.com/ws';
 
 export const useWebSocket = (token?: string | null) => {
   const [connected, setConnected] = useState(false);
