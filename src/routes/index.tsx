@@ -20,7 +20,7 @@ import Error404 from '../pages/Admin/Error404';
 import Applications from '../pages/Admin/Applications';
 import PostListPage from '../pages/Post/PostListPage';
 import CreatePostPage from '../pages/Post/CreatePostPage';
-// import EditPostPage from '../pages/Post/EditPostPage';
+import EditPostPage from '../pages/Post/EditPostPage';
 import AlumniNewsPage from '../pages/Post/AlumiNewPage';
 import NewsPage from '../pages/Post/NewPage';
 import PostDetailPage from '../pages/Post/PostDetailPage';
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: '/staff/admission-schedule',
+        path: '/admission-schedule',
         element: <AdmissionSchedulePage />
       },
       {
@@ -112,10 +112,10 @@ const router = createBrowserRouter([
         path: 'posts/new',
         element: <CreatePostPage />
       },
-      // {
-      //   path: 'posts/:id/edit',
-      //   element: <EditPostPage />
-      // }
+      {
+        path: 'posts/:id/edit',
+        element: <EditPostPage />
+      }
     ]
   },
   {
@@ -173,10 +173,10 @@ const router = createBrowserRouter([
         path: 'posts/new',
         element: <CreatePostPage />
       },
-      // {
-      //   path: 'posts/:id/edit',
-      //   element: <EditPostPage />
-      // }
+      {
+        path: 'posts/:id/edit',
+        element: <EditPostPage />
+      }
     ]
   },
 ]);
