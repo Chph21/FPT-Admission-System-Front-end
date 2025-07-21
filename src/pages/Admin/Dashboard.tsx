@@ -4,6 +4,7 @@ import {
   TrendingUp,
   Users,
   FileText,
+  BookOpen,
 } from 'lucide-react';
 import {
   AreaChart,
@@ -20,20 +21,24 @@ import {
   ResponsiveContainer,
   Legend
 } from 'recharts';
-import type { Account, Response } from '../../components/DataConfig/Interface';
+import type { Account, Application, Response } from '../../components/DataConfig/Interface';
 import { api } from '../../components/DataConfig/Api';
-import { applicationTrendData, coursePopularityData, getSimpleRoleColor, recentApplications } from '../../components/DataConfig/DataLoader';
+import { applicationTrendData, coursePopularityData, getSimpleRoleColor } from '../../components/DataConfig/DataLoader';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
 
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
+
   const [isAccountLoading, setIsAccountLoading] = useState<boolean>(false);
+  const [isApplicationLoading, setIsApplicationLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchAccounts();
+    fetchApplications();
   }, []);
 
   const fetchAccounts = async () => {
@@ -50,10 +55,26 @@ const Dashboard: React.FC = () => {
         console.error('Error fetching accounts:', error);
       })
       .finally(() => {
-
         setIsAccountLoading(false);
       });
   }
+
+  const fetchApplications = async () => {
+    setIsApplicationLoading(true);
+    api.get<Application[]>('/applications')
+      .then(response => {
+        if (response.data) {
+          setApplications(response.data);
+        } else {
+          console.error('No data found in response');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching applications:', error);
+      }).finally(() => {
+        setIsApplicationLoading(false);
+      });
+  };
 
   // Đếm số lượng từng role
   const roleCounts = accounts.reduce<Record<string, number>>((acc, account) => {
@@ -68,19 +89,14 @@ const Dashboard: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800 border-green-200';
-      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'under_review': return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-green-500';
-      default: return 'bg-gray-500';
+      case 'APPROVED':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'REJECTED':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'PENDING':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
@@ -169,7 +185,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Status Distribution */}
+        {/* User Role Distribution */}
         <div className="bg-white border border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Phân bố vai trò tài khoản</h2>
           <div className="h-80">
@@ -196,7 +212,8 @@ const Dashboard: React.FC = () => {
                   </Pie>
                   <Tooltip content={<CustomTooltip />} />
                   <Legend />
-                </PieChart>)}
+                </PieChart>
+              )}
             </ResponsiveContainer>
           </div>
         </div>
@@ -228,30 +245,34 @@ const Dashboard: React.FC = () => {
               <button className="text-orange-600 hover:text-orange-700 text-sm font-medium transition-colors duration-200">Xem tất cả</button>
             </div>
             <div className="space-y-4">
-              {recentApplications.map((application) => (
-                <div key={application.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 transition-all duration-200 hover:shadow-md">
-                  <div className="flex items-center space-x-4">
-                    <div className="relative">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center shadow-md">
-                        <span className="text-white font-medium text-sm">
-                          {application.name.split(' ').map(n => n[0]).join('')}
-                        </span>
+              {!isApplicationLoading ? (
+                applications.map((application) => (
+                  <div key={application.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 transition-all duration-200 hover:shadow-md">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center shadow-md">
+                          <span className="text-white font-medium text-sm">
+                            {application.accounts.username.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
                       </div>
-                      <div className={`absolute -top-1 -right-1 h-3 w-3 rounded-full ${getPriorityColor(application.priority)}`}></div>
+                      <div>
+                        <p className="font-medium text-gray-800">{application.accounts.username}</p>
+                        <p className="text-gray-600">{application.accounts.email}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium text-gray-800">{application.name}</p>
-                      <p className="text-sm text-gray-600">{application.course}</p>
+                    <div className="flex items-center space-x-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(application.applicationStatus)}`}>
+                        {application.applicationStatus}
+                      </span>
+                      <span className="text-sm text-gray-500">{application.timeCreated ? new Date(application.timeCreated).toLocaleDateString() : 'N/A'}</span>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(application.status)}`}>
-                      {application.status.replace('_', ' ')}
-                    </span>
-                    <span className="text-sm text-gray-500">{application.date}</span>
-                  </div>
+                ))) : (
+                <div className="flex items-center justify-center h-20">
+                  <span className="text-gray-600">Đang tải...</span>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
@@ -270,9 +291,15 @@ const Dashboard: React.FC = () => {
               </button>
               <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all 
               duration-200 text-left border border-orange-200 hover:border-orange-300"
-              onClick={() => navigate('/admin/users')}>
+                onClick={() => navigate('/admin/users')}>
                 <Users className="h-5 w-5 text-orange-600" />
                 <span className="text-gray-800 font-medium">Quản lý người dùng</span>
+              </button>
+              <button className="w-full flex items-center space-x-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all 
+              duration-200 text-left border border-orange-200 hover:border-orange-300"
+                onClick={() => navigate('/admin/posts')}>
+                <BookOpen className="h-5 w-5 text-orange-600" />
+                <span className="text-gray-800 font-medium">Quản lý bài đăng</span>
               </button>
             </div>
           </div>
