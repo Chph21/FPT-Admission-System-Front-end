@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: '/staff/admission-schedule',
+        path: '/admission-schedule',
         element: <AdmissionSchedulePage />
       },
       {

@@ -5,7 +5,7 @@ import { useAppSelector } from '../store/hooks';
 import axios from 'axios';
 import { formatLocalTime, formatRelativeTime } from '../utils/timeUtils';
 
-const API_URL = 'http://localhost:8080/api/chatboxes';
+const API_URL = 'https://fpt-admission-system.onrender.com/api/chatboxes';
 
 export const useChat = (sessionId?: string | null) => {
   const [messages, setMessages] = useState<ChatUIMessage[]>([]);

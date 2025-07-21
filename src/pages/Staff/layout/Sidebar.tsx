@@ -16,7 +16,7 @@ const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/staff/dashboard' },
   { id: 'majors', label: 'Majors', icon: GraduationCap, path: '/staff/majors' },
   { id: 'campuses', label: 'Campuses', icon: Building, path: '/staff/campuses' },
-  { id: 'admissionschedule', label: 'Manage Schedule', icon: BarChart3, path: '/staff/admission-schedule' },
+  { id: 'admissionschedule', label: 'Manage Schedule', icon: BarChart3, path: '/staff/admissionschedule' },
   { id: 'tickets', label: 'Tickets', icon: FileText, path: '/staff/tickets' },
   { id: 'posts', label: 'Posts', icon: FileText, path: '/staff/posts' },
 ];
