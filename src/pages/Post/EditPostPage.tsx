@@ -192,7 +192,7 @@ const EditPostPage: React.FC = () => {
                     }}
                 />
 
-                <div className="flex gap-4">
+                <div className="mt-4 flex gap-4">
                     <button
                         type="submit"
                         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
