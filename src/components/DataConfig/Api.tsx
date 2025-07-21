@@ -1,9 +1,9 @@
 import axios from "axios"
 
 const URL = 'https://fpt-admission-system.onrender.com/api'
-const TOKEN = localStorage.getItem('token') || '';
 
-const createApi = () => {
+export const getApi = () => {
+    const TOKEN = localStorage.getItem('token') || '';
     return axios.create({
         baseURL: URL,
         headers: {
@@ -11,6 +11,4 @@ const createApi = () => {
             ...(TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {})
         },
     });
-}
-
-export const api = createApi();
+};

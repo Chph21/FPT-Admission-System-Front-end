@@ -8,6 +8,7 @@ export interface User {
   email: string;
   phone?: string;
   avata?: string | null;
+  role?: string; // Thêm role
 }
 
 export interface RegisterRequest {
@@ -158,12 +159,12 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        const { token, name, email, id, phone, avata } = action.payload.data;
+        const { token, name, email, id, phone, avata, role } = action.payload.data;
         state.token = token;
-        state.user = { name, email, id, phone, avata };
+        state.user = { name, email, id, phone, avata, role };
         state.isAuthenticated = true;
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify({ name, email, id, phone, avata }));
+        localStorage.setItem('user', JSON.stringify({ name, email, id, phone, avata, role }));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

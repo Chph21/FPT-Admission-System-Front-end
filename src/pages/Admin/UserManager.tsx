@@ -12,7 +12,7 @@ import {
 import { getEnableColor, getRoleColor } from '../../components/DataConfig/DataLoader';
 import { AddModal } from '../../components/Admin/modal/AddModal';
 import { EditModal } from '../../components/Admin/modal/EditModal';
-import { api } from '../../components/DataConfig/Api';
+import { getApi } from '../../components/DataConfig/Api';
 import type { Account, EditFormData, RegisterRequest, Response } from '../../components/DataConfig/Interface';
 
 const AccountManager: React.FC = () => {
@@ -34,7 +34,7 @@ const AccountManager: React.FC = () => {
 
   const fetchAccounts = async () => {
     setIsLoading(true);
-    api.get<Response<Account[]>>('/authen/get-all')
+    getApi().get<Response<Account[]>>('/authen/get-all')
       .then(response => {
         if (response.data && response.data.data) {
           setAccounts(response.data.data);
@@ -62,7 +62,7 @@ const AccountManager: React.FC = () => {
   const handleDelete = async (accountId: string) => {
     setIsLoading(true);
     try {
-      await api.delete(`/authen/delete/${accountId}`)
+      await getApi().delete(`/authen/delete/${accountId}`)
         .then(response => {
           if (response.status === 200 || response.status === 204) {
 
@@ -81,7 +81,7 @@ const AccountManager: React.FC = () => {
   const handleUpgradeAccount = async (accountId: string) => {
     setIsLoading(true);
     try {
-      await api.post(`/authen/staff?id=${accountId}`)
+      await getApi().post(`/authen/staff?id=${accountId}`)
         .then(response => {
           if (response.status === 200 || response.status === 201) {
 
@@ -100,7 +100,7 @@ const AccountManager: React.FC = () => {
   const handleAddAccount = async (data: RegisterRequest) => {
     setIsLoading(true);
     try {
-      await api.post('/authen/register', data)
+      await getApi().post('/authen/register', data)
         .then(response => {
           if (response.status === 200 || response.status === 201) {
 
@@ -119,7 +119,7 @@ const AccountManager: React.FC = () => {
   const handleEditAccount = async (data: EditFormData) => {
     setIsLoading(true);
     try {
-      const response = await api.put(`/authen/edit/${data.id}/${data.type}?content=${data.content}`);
+      const response = await getApi().put(`/authen/edit/${data.id}/${data.type}?content=${data.content}`);
       if (response.status === 200 || response.status === 204) {
         setIsOpenEditModal(false);
         fetchAccounts(); // Refresh accounts after editing

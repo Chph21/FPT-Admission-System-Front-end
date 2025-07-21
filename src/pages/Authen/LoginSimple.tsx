@@ -67,8 +67,21 @@ const LoginSimple: React.FC = () => {
       
       console.log('Login attempt:', formData);
       
-      // Navigate to home page
-      navigate('/');
+      // Lấy user từ localStorage và điều hướng theo role
+      const userStr = localStorage.getItem('user');
+      let user: any = null;
+      if (userStr) {
+        try {
+          user = JSON.parse(userStr);
+        } catch {}
+      }
+      if (user && user.role === 'ADMIN') {
+        navigate('/admin');
+      } else if (user && user.role === 'STAFF') {
+        navigate('/staff');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       console.error('Login error:', error);
     } finally {
