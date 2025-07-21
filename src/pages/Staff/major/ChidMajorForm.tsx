@@ -4,7 +4,7 @@ import { majorApi } from '../service/MajorApi';
 import type { Major } from '../model/Model';
 
 interface ChildMajorFormProps {
-  onSubmit: (data: Major, isEdit?: boolean) => void;
+  onSubmit: (data: any, isEdit?: boolean) => void;
   onBack: () => void;
   isOpen: boolean;
   editingChildMajor?: Major | null; // For edit mode
@@ -18,16 +18,16 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
   editingChildMajor,
   mode = 'create'
 }) => {
-  const [formData, setFormData] = useState<Major>({
+  const [formData, setFormData] = useState<any>({
     id: '',
     name: '',
     description: '',
     duration: 0,
     fee: 0,
-    parentMajors: null
+    parentMajorsId: ''
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof Major, string>>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof typeof formData, string>>>({});
   const [loading, setLoading] = useState(false);
   const [majors, setMajors] = useState<Major[]>([]);
   const [loadingMajors, setLoadingMajors] = useState(true);
@@ -43,7 +43,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
         description: editingChildMajor.description,
         duration: editingChildMajor.duration,
         fee: editingChildMajor.fee,
-        parentMajors: editingChildMajor.parentMajors
+        parentMajorsId: editingChildMajor.parentMajors?.id || ''
       });
       console.log('Editing child major:', editingChildMajor); // Debug log
     } else {
@@ -54,7 +54,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
         description: '',
         duration: 0,
         fee: 0,
-        parentMajors: null
+        parentMajorsId: ''
       });
     }
   }, [editingChildMajor, mode, isOpen]);
@@ -71,7 +71,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
           description: apiMajor.description,
           duration: apiMajor.duration ?? 0,
           fee: apiMajor.fee ?? 0,
-          parentMajors: null
+          parentMajorsId: apiMajor.parentMajors?.id || null
         }));
         setMajors(mappedMajors);
       } catch (error) {
@@ -87,7 +87,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
   }, [isOpen]);
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<Record<keyof Major, string>> = {};
+    const newErrors: Partial<Record<keyof typeof formData, string>> = {};
 
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
@@ -97,8 +97,8 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
       newErrors.description = 'Description is required';
     }
 
-    if (!formData.parentMajors) {
-      newErrors.parentMajors = 'Please select a major';
+    if (mode === 'create' && !formData.parentMajorsId) {
+      newErrors.parentMajorsId = 'Please select a major';
     }
 
     if (formData.duration <= 0) {
@@ -143,7 +143,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
     }));
 
     // Clear error when user starts typing
-    if (errors[name as keyof Major]) {
+    if (errors[name as keyof typeof formData]) {
       setErrors(prev => ({
         ...prev,
         [name]: undefined
@@ -159,7 +159,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
       description: '',
       duration: 0,
       fee: 0,
-      parentMajors: null
+      parentMajorsId: ''
     });
     setErrors({});
     onBack();
@@ -188,7 +188,7 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6">
+        <form onSubmit={handleSubmit} method='PUT' className="p-6">
           <div className="space-y-6">
             {/* Child Major Name */}
             <div>
@@ -211,40 +211,41 @@ export const ChildMajorForm: React.FC<ChildMajorFormProps> = ({
             </div>
 
             {/* Major Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <User className="w-4 h-4 inline mr-2" />
-                Select Major *
-              </label>
-              {loadingMajors ? (
-                <div className="flex items-center justify-center py-3 border border-gray-300 rounded-md">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-2"></div>
-                  <span className="text-gray-600">Loading majors...</span>
-                </div>
-              ) : (
-                <select
-                  name="parentMajors"
-                  value={formData.parentMajors?.id}
-                  onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${errors.parentMajors ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                >
-                  <option value="">-- Select a Major --</option>
-                  {/* Only show default option in create mode */}
+            {mode === 'create' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <User className="w-4 h-4 inline mr-2" />
+                  Select Major *
+                </label>
+                {loadingMajors ? (
+                  <div className="flex items-center justify-center py-3 border border-gray-300 rounded-md">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-2"></div>
+                    <span className="text-gray-600">Loading majors...</span>
+                  </div>
+                ) : (
+                  <select
+                    name="parentMajorsId"
+                    value={formData.parentMajorsId}
+                    onChange={handleChange}
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${errors.parentMajorsId ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                  >
+                    <option value="">-- Select a Major --</option>
+                    {/* Only show default option in create mode */}
 
-                  {majors.map((major) => (
-                    <option key={major.id} value={major.id}>
-                      {major.name}
-                    </option>
-                  ))}
-                </select>
-              )}
+                    {majors.map((major) => (
+                      <option key={major.id} value={major.id}>
+                        {major.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
 
-              {errors.parentMajors && (
-                <p className="text-red-500 text-sm mt-1">{errors.parentMajors}</p>
-              )}
-            </div>
-
+                {errors.parentMajorsId && (
+                  <p className="text-red-500 text-sm mt-1">{errors.parentMajorsId}</p>
+                )}
+              </div>
+            )}
             {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

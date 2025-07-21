@@ -9,7 +9,7 @@ const NewsPage: React.FC = () => {
         className="relative w-full h-[301px] bg-cover flex items-center justify-center"
         style={{
           backgroundImage:
-            "url('https://daihoc.fpt.edu.vn/wp-content/uploads/2025/01/header-2024-png.avif')",
+            "url('/header-2024-png.avif')",
           backgroundPosition: 'center 100%',
         }}
       >

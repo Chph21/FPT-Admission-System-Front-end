@@ -23,6 +23,8 @@ const [stats, setStats] = useState({
 
         const campusesResponse = await campusApi.getAllCampuses();
         const campusesCount = campusesResponse.length;
+        
+
 
         const postsCount = 0; 
 

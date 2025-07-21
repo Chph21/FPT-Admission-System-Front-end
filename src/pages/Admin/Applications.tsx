@@ -35,6 +35,7 @@ interface Application {
   applicationStatus: 'PENDING' | 'APPROVED' | 'REJECTED';
 }
 
+
 const Applications: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +53,7 @@ const Applications: React.FC = () => {
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/applications', {
+      const response = await fetch('https://fpt-admission-system.onrender.com/api/applications', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -141,7 +142,7 @@ const Applications: React.FC = () => {
   const handleViewDetail = async (applicationId: string) => {
     try {
       setDetailLoading(true);
-      const response = await fetch(`http://localhost:8080/api/applications/${applicationId}`, {
+      const response = await fetch(`https://fpt-admission-system.onrender.com/api/applications/${applicationId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -189,7 +190,7 @@ const Applications: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: Date) => {
     return new Date(dateString).toLocaleDateString('vi-VN', {
       year: 'numeric',
       month: '2-digit',
@@ -383,7 +384,7 @@ const Applications: React.FC = () => {
 
       {/* Detail Modal */}
       {showDetailModal && selectedApplication && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 backdrop-blur-sm bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 border-b border-gray-200">
               <div className="flex justify-between items-center">
@@ -424,7 +425,7 @@ const Applications: React.FC = () => {
                       <p className="text-gray-900">{selectedApplication.accounts.role}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Trạng thái tài khoản:</label>
+                      <label className="text-sm font-medium text-gray-600">Trạng thái tài khoản: </label>
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                         selectedApplication.accounts.enable 
                           ? 'bg-green-100 text-green-800' 
@@ -513,7 +514,7 @@ const Applications: React.FC = () => {
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Trạng thái:</label>
+                      <label className="text-sm font-medium text-gray-600">Trạng thái: </label>
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(selectedApplication.applicationStatus)}`}>
                         {getStatusText(selectedApplication.applicationStatus)}
                       </span>

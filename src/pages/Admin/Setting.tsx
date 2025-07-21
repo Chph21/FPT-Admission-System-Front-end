@@ -11,25 +11,12 @@ import {
     Edit3,
     LogOut
 } from 'lucide-react';
-import type { UserProfile } from '../../components/DataConfig/Interface';
 import { editableFields, readOnlyFields } from '../../components/DataConfig/DataLoader';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logout } from '../../store/slice/authSlice';
+import type { Accounts } from '../../components/DataConfig/Interface';
 
-interface UserAccount {
-    timeCreated: string;
-    timeUpdatedLast: string | null;
-    deleted: boolean;
-    id: string;
-    username: string;
-    firebaseUid: string | null;
-    phoneNumber: string | null;
-    email: string;
-    role: string;
-    enable: boolean;
-    verificationCode: string | null;
-}
 
 export const Setting: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -38,19 +25,19 @@ export const Setting: React.FC = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [userAccount, setUserAccount] = useState<UserAccount | null>(null);
+    const [userAccount, setUserAccount] = useState<Accounts | null>(null);
 
     // Editable fields state
     const [editableData, setEditableData] = useState({
-        fullName: '',
-        userName: '',
+        username: '',
         email: '',
-        phone: '',
-        address: '',
-
+        phoneNumber: '',
+        // API doesn't provide address field
+        // address: '',
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
+
     });
 
     const { token } = useAppSelector((state) => state.auth);
@@ -62,7 +49,7 @@ export const Setting: React.FC = () => {
         const fetchUserAccount = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:8080/api/accounts/me', {
+                const response = await fetch('https://fpt-admission-system.onrender.com/api/accounts/me', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
@@ -92,12 +79,11 @@ export const Setting: React.FC = () => {
     useEffect(() => {
         if (userAccount) {
             setEditableData({
-                fullName: userAccount.username,
-                userName: userAccount.username,
+                username: userAccount.username,
                 email: userAccount.email,
-                phone: userAccount.phoneNumber || '',
-                address: '', // API doesn't provide address field
-
+                phoneNumber: userAccount.phoneNumber || '',
+                // API doesn't provide address field
+                // address: '',
                 currentPassword: '',
                 newPassword: '',
                 confirmPassword: ''
@@ -121,15 +107,36 @@ export const Setting: React.FC = () => {
         setIsSaving(true);
 
         // Validate passwords match if changing password
-        if (editableData.newPassword && editableData.newPassword !== editableData.confirmPassword) {
-            alert('New passwords do not match');
-            setIsSaving(false);
-            return;
-        }
+        // if (editableData.newPassword && editableData.newPassword !== editableData.confirmPassword) {
+        //     alert('New passwords do not match');
+        //     setIsSaving(false);
+        //     return;
+        // }
 
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            setLoading(true);
+            const response = await fetch(`https://fpt-admission-system.onrender.com/api/accounts/${userAccount?.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                method: 'PUT',
+                body: JSON.stringify({editableData}),
+            });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setUserAccount(data);
+        } catch (err) {
+            console.error('Error fetching user account:', err);
+            setError('Xảy ra lỗi khi cập nhật thông tin tài khoản');
+        } finally {
+            setLoading(false);
+        }
         setIsSaving(false);
         setIsEditing(false);
 
@@ -140,19 +147,16 @@ export const Setting: React.FC = () => {
             newPassword: '',
             confirmPassword: ''
         }));
-
-        alert('Profile updated successfully!');
     };
 
     const handleCancel = () => {
         if (userAccount) {
             setEditableData({
-                userName: userAccount.username,
+                username: userAccount.username,
                 email: userAccount.email,
-                phone: userAccount.phoneNumber || '',
-                fullName: userAccount.username,
-                address: '',
-
+                phoneNumber: userAccount.phoneNumber || '',
+                // API doesn't provide address field
+                // address: '',
                 currentPassword: '',
                 newPassword: '',
                 confirmPassword: ''
@@ -221,7 +225,7 @@ export const Setting: React.FC = () => {
                             </div>
                             <div className="text-center">
                                 <p className="text-gray-800 font-medium">{userAccount.username}</p>
-                                <p className="text-gray-600 text-sm">#{userAccount.username}</p>
+                                <p className="text-gray-600 text-sm">#{userAccount.role}</p>
                                 <p className="text-gray-500 text-xs mt-1">{userAccount.email}</p>
                             </div>
                         </div>
@@ -380,48 +384,16 @@ export const Setting: React.FC = () => {
                         <h2 className="text-xl font-semibold text-gray-800 mb-6">Thông tin tài khoản</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Custom read-only fields for userAccount */}
-                            <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                                    <span className="h-4 w-4 text-orange-600">🔑</span>
-                                    <span>ID</span>
-                                </label>
-                                <div className="bg-gray-50 border border-orange-200 rounded-lg px-4 py-3">
-                                    <p className="text-gray-800 font-mono text-sm">{userAccount.id}</p>
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                                    <span className="h-4 w-4 text-orange-600">👤</span>
-                                    <span>Vai trò</span>
-                                </label>
-                                <div className="bg-gray-50 border border-orange-200 rounded-lg px-4 py-3">
-                                    <p className="text-gray-800">{userAccount.role}</p>
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                                    <span className="h-4 w-4 text-orange-600">📅</span>
-                                    <span>Ngày tạo</span>
-                                </label>
-                                <div className="bg-gray-50 border border-orange-200 rounded-lg px-4 py-3">
-                                    <p className="text-gray-800">{new Date(userAccount.timeCreated).toLocaleDateString('vi-VN')}</p>
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                                    <span className="h-4 w-4 text-orange-600">✅</span>
-                                    <span>Trạng thái</span>
-                                </label>
-                                <div className="bg-gray-50 border border-orange-200 rounded-lg px-4 py-3">
-                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                        userAccount.enable 
-                                          ? 'bg-green-100 text-green-800' 
-                                          : 'bg-red-100 text-red-800'
-                                    }`}>
-                                        {userAccount.enable ? 'Hoạt động' : 'Không hoạt động'}
-                                    </span>
-                                </div>
-                            </div>
+                            {readOnlyFields(userAccount).map((field) => (
+                                <div className="space-y-2">
+                                    <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+                                        <field.icon className="h-4 w-4 text-orange-600" />
+                                        <span>{field.label}</span>
+                                    </label>
+                                    <div className="bg-gray-50 border border-orange-200 rounded-lg px-4 py-3">
+                                        <p className="text-gray-800 font-mono text-sm">{field.value}</p>
+                                    </div>
+                                </div>))}
                         </div>
                     </div>
 

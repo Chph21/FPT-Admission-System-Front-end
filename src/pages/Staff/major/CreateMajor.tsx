@@ -18,13 +18,13 @@ export const CreateMajorPage: React.FC<CreateMajorPageProps> = ({
         <div className="mb-8">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-6 transition-colors duration-200"
+            className="flex items-center gap-2 text-orange-600 hover:text-orange-700 mb-6 transition-colors duration-200"
           >
             <ArrowLeft className="w-5 h-5" />
             Back to Major List
           </button>
 
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             <div className="p-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg">
               <BookOpen className="w-8 h-8 text-white" />
             </div>
@@ -32,7 +32,7 @@ export const CreateMajorPage: React.FC<CreateMajorPageProps> = ({
               <h1 className="text-4xl font-bold text-gray-800">Create New Major</h1>
               <p className="text-gray-600 mt-1">Add a new academic major to the system</p>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <MajorForm

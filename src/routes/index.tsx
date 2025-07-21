@@ -3,7 +3,7 @@ import Home from '../pages/Home/Home';
 import Layout from '../components/Layout/Layout';
 import ChatBotPage from '../pages/ChatBot/ChatBotPage';
 import StaffLayout from '../pages/Staff/layout/StaffLayout';
-import { MajorManagement } from '../pages/Staff/major/MajorManagement';
+import  MajorManagement  from '../pages/Staff/major/MajorManagement';
 import AdmissionSchedulePage from '../pages/AdmissionSchedule/AdmissionSchedulePage';
 import StaffAdmissionSchedulePage from '../pages/StaffAdmissionSchedule/StaffAdmissionSchedulePage';
 import Login from '../pages/Authen/Login';
@@ -20,7 +20,7 @@ import Error404 from '../pages/Admin/Error404';
 import Applications from '../pages/Admin/Applications';
 import PostListPage from '../pages/Post/PostListPage';
 import CreatePostPage from '../pages/Post/CreatePostPage';
-// import EditPostPage from '../pages/Post/EditPostPage';
+import EditPostPage from '../pages/Post/EditPostPage';
 import AlumniNewsPage from '../pages/Post/AlumiNewPage';
 import NewsPage from '../pages/Post/NewPage';
 import PostDetailPage from '../pages/Post/PostDetailPage';
@@ -112,10 +112,10 @@ const router = createBrowserRouter([
         path: 'posts/new',
         element: <CreatePostPage />
       },
-      // {
-      //   path: 'posts/:id/edit',
-      //   element: <EditPostPage />
-      // }
+      {
+        path: 'posts/:id/edit',
+        element: <EditPostPage />
+      }
     ]
   },
   {
@@ -173,10 +173,10 @@ const router = createBrowserRouter([
         path: 'posts/new',
         element: <CreatePostPage />
       },
-      // {
-      //   path: 'posts/:id/edit',
-      //   element: <EditPostPage />
-      // }
+      {
+        path: 'posts/:id/edit',
+        element: <EditPostPage />
+      }
     ]
   },
 ]);

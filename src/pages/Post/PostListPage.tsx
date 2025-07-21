@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { FaEdit, FaUpload, FaTrashAlt } from 'react-icons/fa';
 
 interface PostListPageProps {
     basePath: string;
@@ -165,7 +166,7 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
             </div>
 
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-30 z-40 flex justify-center items-center">
+                <div className="fixed inset-0 bg-white/30 backdrop-blur-sm z-40 flex justify-center items-center">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-xl z-50">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-semibold">Bộ lọc</h2>
@@ -265,40 +266,49 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
             )}
 
             <div className="overflow-x-auto">
-                <table className="min-w-full table-auto border border-gray-300 text-sm bg-white">
-                    <thead className="bg-gray-100 text-gray-700 font-semibold">
+                <table className="min-w-full table-auto border border-gray-200 text-sm bg-white rounded-lg overflow-hidden">
+                    <thead className="bg-orange-50 text-gray-800 font-semibold">
                         <tr>
-                            <th className="border px-4 py-2 text-left">Tiêu đề</th>
-                            <th className="border px-4 py-2 text-left">Danh mục</th>
-                            <th className="border px-4 py-2 text-left">Ngày tạo</th>
-                            <th className="border px-4 py-2 text-left">Trạng thái</th>
-                            <th className="border px-4 py-2 text-left">Ngày đăng</th>
-                            <th className="border px-4 py-2 text-left">Hành động</th>
+                            <th className="px-4 py-3 text-left">Tiêu đề</th>
+                            <th className="px-4 py-3 text-left">Danh mục</th>
+                            <th className="px-4 py-3 text-left">Ngày tạo</th>
+                            <th className="px-4 py-3 text-left">Trạng thái</th>
+                            <th className="px-4 py-3 text-left">Ngày đăng</th>
+                            <th className="px-4 py-3 text-center">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody className="text-gray-800">
                         {posts.map((post: any) => (
-                            <tr key={post.id} className="hover:bg-gray-50">
-                                <td className="border px-4 py-2 max-w-[200px] truncate">{post.title}</td>
-                                <td className="border px-4 py-2">{post.category}</td>
-                                <td className="border px-4 py-2">{safeFormatDate(post.createdAt)}</td>
-                                <td className="border px-4 py-2">{post.status}</td>
-                                <td className="border px-4 py-2">{safeFormatDate(post.publishedAt)}</td>
-                                <td className="border px-4 py-2 space-x-2">
-                                    <button
-                                        onClick={() => navigate(`${basePath}/posts/${post.id}/edit`)}
-                                        className="text-blue-600 hover:underline"
-                                    >
-                                        Chi tiết
-                                    </button>
-                                    {post.status === "DRAFT" && (
+                            <tr key={post.id} className="hover:bg-gray-50 border-t">
+                                <td className="px-4 py-3 max-w-[220px] truncate">{post.title}</td>
+                                <td className="px-4 py-3">{post.category}</td>
+                                <td className="px-4 py-3">{safeFormatDate(post.createdAt)}</td>
+                                <td className="px-4 py-3">
+                                    <span className={`px-2 py-1 rounded-full text-xs font-medium 
+              ${post.status === 'DRAFT' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}`}>
+                                        {post.status === 'DRAFT' ? 'Bản nháp' : 'Đã đăng'}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-3">{safeFormatDate(post.publishedAt)}</td>
+                                <td className="px-4 py-3 text-center">
+                                    <div className="flex justify-center items-center gap-3">
                                         <button
-                                            onClick={() => handlePublish(post.id)}
-                                            className="text-green-600 hover:underline"
+                                            title="Chi tiết"
+                                            onClick={() => navigate(`${basePath}/posts/${post.id}/edit`)}
+                                            className="text-blue-600 hover:text-blue-800 transition"
                                         >
-                                            Đăng bài
+                                            <FaEdit />
                                         </button>
-                                    )}
+                                        {post.status === 'DRAFT' && (
+                                            <button
+                                                title="Đăng bài"
+                                                onClick={() => handlePublish(post.id)}
+                                                className="text-orange-500 hover:text-orange-700 transition"
+                                            >
+                                                <FaUpload />
+                                            </button>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -306,25 +316,37 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
                 </table>
             </div>
 
-            <div className="flex justify-end items-center space-x-4 pt-4">
+            <div className="flex justify-end items-center space-x-2 pt-4">
                 <button
                     disabled={page <= 0}
                     onClick={() => setPage(page - 1)}
-                    className="px-3 py-1 bg-gray-200 text-gray-800 rounded disabled:opacity-50"
+                    className="px-4 py-2 rounded-md bg-gray-100 text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Trước
                 </button>
-                <span className="text-gray-700">
-                    Trang {page + 1} / {totalPages}
-                </span>
+
+                {[...Array(totalPages)].map((_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setPage(i)}
+                        className={`px-4 py-2 rounded-md font-medium ${page === i
+                            ? 'bg-orange-500 text-white'
+                            : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                            }`}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+
                 <button
                     disabled={page + 1 >= totalPages}
                     onClick={() => setPage(page + 1)}
-                    className="px-3 py-1 bg-gray-200 text-gray-800 rounded disabled:opacity-50"
+                    className="px-4 py-2 rounded-md bg-gray-100 text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Tiếp
                 </button>
             </div>
+
         </div>
     );
 };
