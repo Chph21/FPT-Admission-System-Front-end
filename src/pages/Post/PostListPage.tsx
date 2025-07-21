@@ -190,6 +190,17 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
                                 <option value="KHOA_HOC">Khóa học</option>
                             </select>
 
+                            <select
+                                name="status"
+                                value={filter.status}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900"
+                            >
+                                <option value="">-- Trạng thái --</option>
+                                <option value="DRAFT">Nháp</option>
+                                <option value="PUBLISHED">Đã đăng</option>
+                            </select>
+                            
                             {/* Ngày tạo */}
                             <div className="flex gap-2">
                                 <div className="w-full">
@@ -237,17 +248,6 @@ const PostListPage: React.FC<PostListPageProps> = ({ basePath }) => {
                                     />
                                 </div>
                             </div>
-
-                            <select
-                                name="status"
-                                value={filter.status}
-                                onChange={handleChange}
-                                className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900"
-                            >
-                                <option value="">-- Trạng thái --</option>
-                                <option value="DRAFT">Nháp</option>
-                                <option value="PUBLISHED">Đã đăng</option>
-                            </select>
                         </div>
 
                         <div className="flex justify-end gap-2 mt-6">
