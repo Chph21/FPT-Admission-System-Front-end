@@ -22,7 +22,7 @@ import {
   Legend
 } from 'recharts';
 import type { Account, Application, Response } from '../../components/DataConfig/Interface';
-import { api } from '../../components/DataConfig/Api';
+import { getApi } from '../../components/DataConfig/Api';
 import { applicationTrendData, coursePopularityData, getSimpleRoleColor } from '../../components/DataConfig/DataLoader';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,7 +43,7 @@ const Dashboard: React.FC = () => {
 
   const fetchAccounts = async () => {
     setIsAccountLoading(true);
-    api.get<Response<Account[]>>('/authen/get-all')
+    getApi().get<Response<Account[]>>('/authen/get-all')
       .then(response => {
         if (response.data && response.data.data) {
           setAccounts(response.data.data);
@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
 
   const fetchApplications = async () => {
     setIsApplicationLoading(true);
-    api.get<Application[]>('/applications')
+    getApi().get<Application[]>('/applications')
       .then(response => {
         if (response.data) {
           setApplications(response.data);

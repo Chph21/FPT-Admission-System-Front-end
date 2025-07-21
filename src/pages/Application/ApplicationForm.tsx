@@ -46,7 +46,6 @@ function buildHeaders(token?: string) {
 const steps = [
   'Chọn cơ sở',
   'Chọn ngành',
-  'Thông tin bổ sung',
   'Xác nhận'
 ];
 
@@ -290,37 +289,18 @@ const ApplicationForm: React.FC = () => {
             </div>
           </div>
         )}
-        {/* Step 3: Nhập thông tin bổ sung */}
+        {/* Bỏ bước học bổng, chuyển từ chọn ngành sang xác nhận luôn */}
+        {/* Step 3: Xác nhận và gửi đơn */}
         {step === 3 && (
-          <div className="animate-fade-in">
-            <label className="block mb-2 font-semibold text-gray-700">Học bổng (nếu có)</label>
-            <input
-              className="w-full border-2 border-orange-200 rounded-lg px-4 py-3 mb-6 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition"
-              value={scholarship}
-              onChange={e => setScholarship(e.target.value)}
-              placeholder="Không bắt buộc"
-            />
-            <div className="flex justify-between gap-4">
-              <button type="button" className="w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-lg shadow transition" onClick={() => setStep(2)}>
-                Quay lại
-              </button>
-              <button type="button" className="w-1/2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg shadow transition" onClick={() => setStep(4)}>
-                Tiếp tục
-              </button>
-            </div>
-          </div>
-        )}
-        {/* Step 4: Xác nhận và gửi đơn */}
-        {step === 4 && (
           <div className="animate-fade-in">
             <div className="mb-6 bg-orange-50 rounded-lg p-4">
               <div className="mb-2"><b>Cơ sở:</b> <span className="text-orange-700">{campuses.find(c => c.id === selectedCampus)?.name}</span></div>
               <div className="mb-2"><b>Ngành:</b> <span className="text-orange-700">{majors.find(m => m.id === selectedMajor)?.name}</span></div>
-              <div className="mb-2"><b>Học bổng:</b> <span className="text-orange-700">{scholarship || 'Không'}</span></div>
+              {/* Bỏ dòng học bổng */}
             </div>
             {error && <div className="text-red-600 mb-2 text-center font-semibold bg-red-50 rounded p-2">{error}</div>}
             <div className="flex justify-between gap-4">
-              <button type="button" className="w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-lg shadow transition" onClick={() => setStep(3)} disabled={submitting}>
+              <button type="button" className="w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-lg shadow transition" onClick={() => setStep(2)} disabled={submitting}>
                 Quay lại
               </button>
               <button type="submit" className="w-1/2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg shadow transition disabled:opacity-50" disabled={submitting}>
