@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import SockJS from 'sockjs-client';
 import { Client, type IMessage } from '@stomp/stompjs';
+import { formatLocalTime } from '../utils/timeUtils';
 
 const SOCKET_URL = 'http://localhost:8080/ws';
 
@@ -55,15 +56,50 @@ export const useWebSocket = (token?: string | null) => {
     };
   }, [token]); // Reconnect when token changes
 
+  // Helper function to format timestamp fields in received data
+  const formatTimestampFields = (data: any): any => {
+    if (!data || typeof data !== 'object') return data;
+    
+    // Handle arrays
+    if (Array.isArray(data)) {
+      return data.map(item => formatTimestampFields(item));
+    }
+    
+    // Handle objects
+    const formattedData = { ...data };
+    
+    // Common timestamp field names to format
+    const timestampFields = ['createdAt', 'updatedAt', 'timestamp', 'sentAt', 'receivedAt'];
+    
+    timestampFields.forEach(field => {
+      if (formattedData[field]) {
+        try {
+          // Keep original timestamp for data processing
+          formattedData[`${field}_original`] = formattedData[field];
+          // Add formatted version for display
+          formattedData[`${field}_formatted`] = formatLocalTime(formattedData[field]);
+        } catch (error) {
+          // console.warn(`Failed to format timestamp field ${field}:`, error);
+        }
+      }
+    });
+    
+    return formattedData;
+  };
+
   // Subscribe to a topic
   const subscribe = useCallback((destination: string, callback: (message: any) => void) => {
     if (client.current && client.current.connected) {
       return client.current.subscribe(destination, (message: IMessage) => {
         try {
           const parsedMessage = JSON.parse(message.body);
-          callback(parsedMessage);
+          
+          // Format timestamp fields in the received message
+          const formattedMessage = formatTimestampFields(parsedMessage);
+          
+          callback(formattedMessage);
         } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+          // console.error('Error parsing WebSocket message:', error);
         }
       }, {
         // Add authorization header to subscription if needed
@@ -76,9 +112,16 @@ export const useWebSocket = (token?: string | null) => {
   // Send a message
   const sendMessage = useCallback((destination: string, body: any) => {
     if (client.current && client.current.connected) {
+      // Ensure timestamps are in proper format when sending
+      const messageBody = { 
+        ...body,
+        // Add current timestamp if not present
+        createdAt: body.createdAt || new Date().toISOString()
+      };
+      
       client.current.publish({
         destination,
-        body: JSON.stringify(body),
+        body: JSON.stringify(messageBody),
         headers: {
           'Authorization': token ? `Bearer ${token}` : '' // Add token to message headers
         }
@@ -92,5 +135,6 @@ export const useWebSocket = (token?: string | null) => {
     connected,
     subscribe,
     sendMessage,
+    formatLocalTime, // Export the utility function for direct use
   };
 };
