@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'admission-schedule',
+        path: '/staff/admission-schedule',
         element: <AdmissionSchedulePage />
       },
       {
@@ -89,6 +89,7 @@ const router = createBrowserRouter([
     children: [
        {
         index: true,
+        path: 'dashboard',
         element: <DashboardOverview />
       },
       {
@@ -134,7 +135,7 @@ const router = createBrowserRouter([
     element: <LoginSimple />
   },
   {
-    path: '/tickets',
+    path: '/staff/tickets',
     element: <TicketListPage />},
   {
     path: '/admin',
