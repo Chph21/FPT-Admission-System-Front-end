@@ -3,6 +3,7 @@ import { ROLES, type ChatUIMessage, type ChatSessionUI } from '../types/chatType
 import { useWebSocket } from './useWebSocket';
 import { useAppSelector } from '../store/hooks';
 import axios from 'axios';
+import { formatLocalTime, formatRelativeTime } from '../utils/timeUtils';
 
 const API_URL = 'http://localhost:8080/api/chatboxes';
 
@@ -42,7 +43,7 @@ export const useChat = (sessionId?: string | null) => {
           title: session.title,
           createdAt: session.createdAt,
           lastMessage: '...',
-          timestamp: new Date(session.createdAt).toLocaleString()
+          timestamp: formatRelativeTime(session.createdAt) // Use utility function
         }));
         setSessions(sessionsData);
       } catch (error) {
@@ -72,7 +73,7 @@ export const useChat = (sessionId?: string | null) => {
               ...s, 
               title: updatedSession.title || s.title,
               lastMessage: updatedSession.lastMessage || s.lastMessage,
-              timestamp: new Date(updatedSession.createdAt || s.createdAt).toLocaleString()
+              timestamp: formatRelativeTime(updatedSession.createdAt || s.createdAt) // Use utility function
             } : s);
           } else {
             console.log('➕ Adding new session');
@@ -81,7 +82,7 @@ export const useChat = (sessionId?: string | null) => {
               title: updatedSession.title || 'Cuộc trò chuyện mới',
               createdAt: updatedSession.createdAt,
               lastMessage: updatedSession.lastMessage || 'Cuộc trò chuyện mới',
-              timestamp: new Date(updatedSession.createdAt).toLocaleString()
+              timestamp: formatRelativeTime(updatedSession.createdAt) // Use utility function
             }, ...prev];
           }
         });
@@ -115,7 +116,7 @@ export const useChat = (sessionId?: string | null) => {
           createdAt: msg.createdAt,
           status: msg.status || 'DELIVERED',
           isUser: msg.role === ROLES.USER,
-          timestamp: new Date(msg.createdAt).toLocaleString(),
+          timestamp: formatLocalTime(msg.createdAt), // Use utility function
           requestId: msg.requestId
         }));
         setMessages(messagesData);
@@ -163,7 +164,7 @@ export const useChat = (sessionId?: string | null) => {
               const newMsg = {
                 ...newMessage,
                 isUser: newMessage.role === ROLES.USER,
-                timestamp: new Date(newMessage.createdAt || new Date()).toLocaleString()
+                timestamp: formatLocalTime(newMessage.createdAt || new Date()) // Use utility function
               };
               return [...prev, newMsg];
             }
@@ -176,7 +177,7 @@ export const useChat = (sessionId?: string | null) => {
                 ? { 
                     ...session, 
                     lastMessage: newMessage.content.substring(0, 50) + (newMessage.content.length > 50 ? '...' : ''),
-                    timestamp: new Date(newMessage.createdAt || new Date()).toLocaleString()
+                    timestamp: formatRelativeTime(newMessage.createdAt || new Date()) // Use utility function
                   } 
                 : session
             ).sort((a, b) => 
@@ -243,7 +244,7 @@ export const useChat = (sessionId?: string | null) => {
             title: createdSession.title || 'Cuộc trò chuyện mới',
             createdAt: createdSession.createdAt,
             lastMessage: firstMessage || 'Cuộc trò chuyện mới',
-            timestamp: new Date(createdSession.createdAt).toLocaleString()
+            timestamp: formatRelativeTime(createdSession.createdAt) // Use utility function
           };
           
           return [newSessionUI, ...prev].sort((a, b) => 
