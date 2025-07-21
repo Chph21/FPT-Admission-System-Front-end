@@ -28,7 +28,7 @@ const CreatePostPage = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        userId: data.id
+        userId: String(data.id)
       },
       body: JSON.stringify({ title, category, content })
     });

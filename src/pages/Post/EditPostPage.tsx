@@ -129,7 +129,7 @@ const EditPostPage: React.FC = () => {
 
         if (res.ok) {
             alert("Đã xoá bài viết.");
-            navigate("/admin/posts"); // điều hướng về danh sách bài viết admin
+            navigate("/admin/posts"); 
         } else {
             const error = await res.json();
             alert("Lỗi xoá: " + (error?.error || "Không rõ"));

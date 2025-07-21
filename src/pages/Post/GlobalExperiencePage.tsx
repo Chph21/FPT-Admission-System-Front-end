@@ -60,13 +60,17 @@ const GlobalExperiencePage: React.FC = () => {
 
     return (
         <section className="max-w-6xl mx-auto px-4 py-10">
-            <div className="w-full bg-orange-500 text-white font-bold text-xl px-6 py-3 rounded-md mb-8 text-center">
-                <span className="inline-flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M10 2a2 2 0 00-2 2v1.586L5.707 3.293A1 1 0 104.293 4.707L7.586 8H6a2 2 0 00-2 2v2a2 2 0 002 2h1.586l-3.293 3.293a1 1 0 001.414 1.414L8 15.414V17a2 2 0 002 2h2a2 2 0 002-2v-1.586l3.293 3.293a1 1 0 001.414-1.414L15.414 14H17a2 2 0 002-2v-2a2 2 0 00-2-2h-1.586l3.293-3.293a1 1 0 00-1.414-1.414L14 6.586V5a2 2 0 00-2-2h-2z" />
-                    </svg>
-                    Trải nghiệm toàn cầu
-                </span>
+            <div
+                className="relative w-full h-[301px] bg-cover flex items-center justify-center"
+                style={{
+                    backgroundImage:
+                        "url('/header-2024-png.avif')",
+                    backgroundPosition: 'center 100%',
+                }}
+            >
+                <h1 className="text-white text-3xl md:text-5xl font-bold uppercase tracking-wide drop-shadow-lg">
+                    TRẢI NGHIỆM TOÀN CẦU
+                </h1>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
